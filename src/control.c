@@ -1,36 +1,34 @@
-//-------- DIGITAL PIN settings -----------
-
 //-------- INPUT PIN settings -------------
 
-int eStopRemoteIn  = 18;
-int eStopMainIn    = 19;
+const int eStopRemoteIn  = 18;
+const int eStopMainIn    = 19;
 
-int armingChain    = 40;
+const int armingChain    = 40;
 
-int laptopModeIn   = 42;
+const int laptopModeIn   = 42;
 
-int drawIn         = 44;
-int fireIn         = 46;
+const int drawIn         = 44;
+const int fireIn         = 46;
 
-int fBump	   = 20;
-int rBump       = 21;
+const int fBump	   = 20;
+const int rBump       = 21;
 
 //--------- OUTPUT PIN settings -----------
 
-int drawRelay	   = 34;
-int resetRelay   = 36;
-int fireSolenoid   = 38;
+const int drawRelay	   = 34;
+const int resetRelay   = 36;
+const int fireSolenoid   = 38;
 
-//-------- STATE variable settings -------------
+//-------- STATE const declarations -------------
 
 int currentState;
-int STATE_idle    = 1;
-int STATE_armed   = 2;
-int STATE_drawing = 3;
-int STATE_drawn   = 4;
-int STATE_firing  = 5;
-int STATE_fired  = 6;
-int STATE_HALT  = 7;
+const int STATE_idle    = 1;
+const int STATE_armed   = 2;
+const int STATE_drawing = 3;
+const int STATE_drawn   = 4;
+const int STATE_firing  = 5;
+const int STATE_fired   = 6;
+const int STATE_HALT    = 7;
 
 //-------- ANALOG PIN settings ------------
 
@@ -41,7 +39,11 @@ int rOptic = 9;
 //  Function Declarations
 //=========================================
 
-
+//=========================================
+//=========================================
+// Arduino methods
+//=========================================
+//=========================================
 
 //=========================================
 void setup()
@@ -68,10 +70,10 @@ void setup()
 	pinMode(resetRelay, OUTPUT);
 	pinMode(fireSolenoid, OUTPUT);
 
-	attachInterrupt(2, drawn, RISING);
-	attachInterrupt(3, armed, RISING);
-	attachInterrupt(4, eStop, RISING);
-	attachInterrupt(5, eStop, RISING);
+	attachInterrupt(2, fBumpInterrupt, RISING);
+	attachInterrupt(3, rBumpInterrupt, RISING);
+	attachInterrupt(4, eStopInterrupt, RISING);
+	attachInterrupt(5, eStopInterrupt, RISING);
 
 	currentState = STATE_idle;
 }
@@ -106,6 +108,21 @@ void loop()
         default:
             break;
     }
+}
+
+//=========================================
+//=========================================
+// State Outputs
+//=========================================
+//=========================================
+
+//=========================================
+void set_halt_outputs()
+//=========================================
+{
+    digitalWrite(drawRelay, LOW);
+	digitalWrite(resetRelay, LOW);
+	digitalWrite(fireSolenoid, LOW);
 }
 
 //=========================================
@@ -163,30 +180,35 @@ void set_fired_outputs()
 }
 
 //=========================================
-void eStop()
+//=========================================
+// Transition Tests
+//=========================================
+//=========================================
+
+//=========================================
+//=========================================
+// Interrupt Handlers
+//=========================================
+//=========================================
+
+//=========================================
+void eStopInterrupt()
 //=========================================
 {
 	Serial.println("eSTOP");
 	currentState = STATE_HALT;
 }
 
-void set_halt_outputs()
+//=========================================
+void fBumpInterrupt()
+//=========================================
 {
-    digitalWrite(drawRelay, LOW);
-	digitalWrite(resetRelay, LOW);
-	digitalWrite(fireSolenoid, LOW);
+
 }
 
-//Pass in true if you want to draw the winch
-//false causes it to release
-//
 //=========================================
-void winchActive(bool draw)
+void rBumpInterrupt()
 //=========================================
 {
-	int drawState = LOW;
-	if(draw)
-		drawState = HIGH;
-	digitalWrite(drawRelay, drawState);
-	digitalWrite(resetRelay, 1 - drawState);
+
 }

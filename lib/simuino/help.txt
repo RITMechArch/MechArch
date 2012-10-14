@@ -1,0 +1,36 @@
+[Run Mode]
+Goto:
+ f  step forward
+ b  step backward
+ r  loop forward
+ o  loop reset
+ p  loop backward
+ a  goto first step
+ z  goto last step
+ t  step to next analogRead/digitalRead
+
+Animation(realtime time delay):
+ R  loop forward
+ P  loop backward
+ G  step through scenario
+
+Scenario breakpoints:
+ y  View Scenario Breakpoints
+ x  Expanded view of Scenario Breakpoints
+ v  set value analogRead/digitalRead
+    Current step must be one step before Read
+    Use 't' to step between Read events.
+ i  set Scenario Breakpoint at current step
+    Example: a 4 323  (analog pin=4 value=323)
+
+Window:
+ w  toggles window layout mode.
+
+Information:
+ c  show current configuration
+ d  show scenario delay overview
+ l  show loop information
+ s  show debug sketch
+------------------------------------
+ q  quit Run Mode, enter Admin Mode. 
+ h  show this information

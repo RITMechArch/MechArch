@@ -1,0 +1,1004 @@
+# Servuino Event Log Version: 0.1.2
+#// SKETCH_NAME: HelloWorld_MEGA
+#// BOARD_TYPE   MEGA
++ 1 ? setup
++ 2 ? Serial.begin baud=9600
++ 3 ? pinMode pin=32 OUTPUT
++ 4 ? pinMode pin=31 OUTPUT
++ 5 ? pinMode pin=52 INPUT
++ 6 ? pinMode pin=53 INPUT
++ 7 ? pinMode pin=15 OUTPUT
++ 8 ? pinMode pin=44 INPUT
++ 9 ? pinMode pin=45 OUTPUT
++ 10 ? pinMode pin=46 OUTPUT
++ 11 ? pinMode pin=47 INPUT
++ 12 ? attached CHANGE interrupt 2
++ 13 ? attached RISING interrupt 3
++ 14 ? attached FALLING interrupt 21
++ 15 ? attached LOW interrupt 20
++ 16 ? attached CHANGE interrupt 19
++ 17 ? attached RISING interrupt 18
++ 18 ? servuinoLoop 1
++ 19 ? Serial.println(char) Hello Simuino!
++ 20 ? analogRead pin=4 value=5
++ 21 ? analogRead pin=5 value=8
++ 22 ? Serial.print(char) Analog 1 value read: 
++ 23 ? Serial.println(int) 5
++ 24 ? Serial.print(char) Analog 2 value read: 
++ 25 ? Serial.println(int) 8
++ 26 ? digitalWrite pin=32 value=1
++ 27 ? delay 500 ms
++ 28 ? digitalWrite pin=32 value=0
++ 29 ? digitalWrite pin=32 value=1
++ 30 ? delay 500 ms
++ 31 ? digitalWrite pin=32 value=0
++ 32 ? digitalRead pin=52 value=0
++ 33 ? digitalRead pin=53 value=0
++ 34 ? Serial.print(char) Digital IN_PIN read: 
++ 35 ? Serial.println(int) 0
++ 36 ? Serial.print(char) Digital CONTROL read: 
++ 37 ? Serial.println(int) 0
++ 38 ? analogWrite pin=10 value=123
++ 39 ? analogWrite pin=11 value=167
++ 40 ? analogWrite pin=3 value=127
++ 41 ? analogWrite pin=4 value=147
++ 42 ? delay 1000 ms
++ 43 ? servuinoLoop 2
++ 44 ? Serial.println(char) Hello Simuino!
++ 45 ? analogRead pin=4 value=5
++ 46 ? analogRead pin=5 value=8
++ 47 ? Serial.print(char) Analog 1 value read: 
++ 48 ? Serial.println(int) 5
++ 49 ? Serial.print(char) Analog 2 value read: 
++ 50 ? Serial.println(int) 8
++ 51 ? digitalWrite pin=32 value=1
++ 52 ? delay 500 ms
++ 53 ? digitalWrite pin=32 value=0
++ 54 ? digitalWrite pin=32 value=1
++ 55 ? delay 500 ms
++ 56 ? digitalWrite pin=32 value=0
++ 57 ? digitalRead pin=52 value=0
++ 58 ? digitalRead pin=53 value=0
++ 59 ? Serial.print(char) Digital IN_PIN read: 
++ 60 ? Serial.println(int) 0
++ 61 ? Serial.print(char) Digital CONTROL read: 
++ 62 ? Serial.println(int) 0
++ 63 ? analogWrite pin=10 value=123
++ 64 ? analogWrite pin=11 value=167
++ 65 ? analogWrite pin=3 value=127
++ 66 ? analogWrite pin=4 value=147
++ 67 ? delay 1000 ms
++ 68 ? servuinoLoop 3
++ 69 ? Serial.println(char) Hello Simuino!
++ 70 ? analogRead pin=4 value=5
++ 71 ? analogRead pin=5 value=8
++ 72 ? Serial.print(char) Analog 1 value read: 
++ 73 ? Serial.println(int) 5
++ 74 ? Serial.print(char) Analog 2 value read: 
++ 75 ? Serial.println(int) 8
++ 76 ? digitalWrite pin=32 value=1
++ 77 ? delay 500 ms
++ 78 ? digitalWrite pin=32 value=0
++ 79 ? digitalWrite pin=32 value=1
++ 80 ? delay 500 ms
++ 81 ? digitalWrite pin=32 value=0
++ 82 ? digitalRead pin=52 value=0
++ 83 ? digitalRead pin=53 value=0
++ 84 ? Serial.print(char) Digital IN_PIN read: 
++ 85 ? Serial.println(int) 0
++ 86 ? Serial.print(char) Digital CONTROL read: 
++ 87 ? Serial.println(int) 0
++ 88 ? analogWrite pin=10 value=123
++ 89 ? analogWrite pin=11 value=167
++ 90 ? analogWrite pin=3 value=127
++ 91 ? analogWrite pin=4 value=147
++ 92 ? delay 1000 ms
++ 93 ? servuinoLoop 4
++ 94 ? Serial.println(char) Hello Simuino!
++ 95 ? analogRead pin=4 value=12
++ 96 ? analogRead pin=5 value=8
++ 97 ? Serial.print(char) Analog 1 value read: 
++ 98 ? Serial.println(int) 12
++ 99 ? Serial.print(char) Analog 2 value read: 
++ 100 ? Serial.println(int) 8
++ 101 ? digitalWrite pin=32 value=1
++ 102 ? delay 500 ms
++ 103 ? digitalWrite pin=32 value=0
++ 104 ? digitalWrite pin=32 value=1
++ 105 ? delay 500 ms
++ 106 ? digitalWrite pin=32 value=0
++ 107 ? digitalRead pin=52 value=0
++ 108 ? digitalRead pin=53 value=0
++ 109 ? Serial.print(char) Digital IN_PIN read: 
++ 110 ? Serial.println(int) 0
++ 111 ? Serial.print(char) Digital CONTROL read: 
++ 112 ? Serial.println(int) 0
++ 113 ? analogWrite pin=10 value=123
++ 114 ? analogWrite pin=11 value=167
++ 115 ? analogWrite pin=3 value=127
++ 116 ? analogWrite pin=4 value=147
++ 117 ? delay 1000 ms
++ 118 ? servuinoLoop 5
++ 119 ? Serial.println(char) Hello Simuino!
++ 120 ? analogRead pin=4 value=12
++ 121 ? analogRead pin=5 value=18
++ 122 ? Serial.print(char) Analog 1 value read: 
++ 123 ? Serial.println(int) 12
++ 124 ? Serial.print(char) Analog 2 value read: 
++ 125 ? Serial.println(int) 18
++ 126 ? digitalWrite pin=32 value=1
++ 127 ? delay 500 ms
++ 128 ? digitalWrite pin=32 value=0
++ 129 ? digitalWrite pin=32 value=1
++ 130 ? delay 500 ms
++ 131 ? digitalWrite pin=32 value=0
++ 132 ? digitalRead pin=52 value=0
++ 133 ? digitalRead pin=53 value=0
++ 134 ? Serial.print(char) Digital IN_PIN read: 
++ 135 ? Serial.println(int) 0
++ 136 ? Serial.print(char) Digital CONTROL read: 
++ 137 ? Serial.println(int) 0
++ 138 ? analogWrite pin=10 value=123
++ 139 ? analogWrite pin=11 value=167
++ 140 ? analogWrite pin=3 value=127
++ 141 ? analogWrite pin=4 value=147
++ 142 ? delay 1000 ms
++ 143 ? servuinoLoop 6
++ 144 ? Serial.println(char) Hello Simuino!
++ 145 ? analogRead pin=4 value=12
++ 146 ? analogRead pin=5 value=18
++ 147 ? Serial.print(char) Analog 1 value read: 
++ 148 ? Serial.println(int) 12
++ 149 ? Serial.print(char) Analog 2 value read: 
++ 150 ? Serial.println(int) 18
++ 151 ? digitalWrite pin=32 value=1
++ 152 ? delay 500 ms
++ 153 ? digitalWrite pin=32 value=0
++ 154 ? digitalWrite pin=32 value=1
++ 155 ? delay 500 ms
++ 156 ? digitalWrite pin=32 value=0
++ 157 ? digitalRead pin=52 value=0
++ 158 ? digitalRead pin=53 value=0
++ 159 ? Serial.print(char) Digital IN_PIN read: 
++ 160 ? Serial.println(int) 0
++ 161 ? Serial.print(char) Digital CONTROL read: 
++ 162 ? Serial.println(int) 0
++ 163 ? analogWrite pin=10 value=123
++ 164 ? analogWrite pin=11 value=167
++ 165 ? analogWrite pin=3 value=127
++ 166 ? analogWrite pin=4 value=147
++ 167 ? delay 1000 ms
++ 168 ? servuinoLoop 7
++ 169 ? Serial.println(char) Hello Simuino!
++ 170 ? analogRead pin=4 value=12
++ 171 ? analogRead pin=5 value=18
++ 172 ? Serial.print(char) Analog 1 value read: 
++ 173 ? Serial.println(int) 12
++ 174 ? Serial.print(char) Analog 2 value read: 
++ 175 ? Serial.println(int) 18
++ 176 ? digitalWrite pin=32 value=1
++ 177 ? delay 500 ms
++ 178 ? digitalWrite pin=32 value=0
++ 179 ? digitalWrite pin=32 value=1
++ 180 ? delay 500 ms
++ 181 ? digitalWrite pin=32 value=0
++ 182 ? digitalRead pin=52 value=0
++ 183 ? digitalRead pin=53 value=0
++ 184 ? Serial.print(char) Digital IN_PIN read: 
++ 185 ? Serial.println(int) 0
++ 186 ? Serial.print(char) Digital CONTROL read: 
++ 187 ? Serial.println(int) 0
++ 188 ? analogWrite pin=10 value=123
++ 189 ? analogWrite pin=11 value=167
++ 190 ? analogWrite pin=3 value=127
++ 191 ? analogWrite pin=4 value=147
++ 192 ? delay 1000 ms
++ 193 ? servuinoLoop 8
++ 194 ? Serial.println(char) Hello Simuino!
++ 195 ? analogRead pin=4 value=12
++ 196 ? analogRead pin=5 value=18
++ 197 ? Serial.print(char) Analog 1 value read: 
++ 198 ? Serial.println(int) 12
++ 199 ? Serial.print(char) Analog 2 value read: 
++ 200 ? Serial.println(int) 18
++ 201 ? digitalWrite pin=32 value=1
++ 202 ? delay 500 ms
++ 203 ? digitalWrite pin=32 value=0
++ 204 ? digitalWrite pin=32 value=1
++ 205 ? delay 500 ms
++ 206 ? digitalWrite pin=32 value=0
++ 207 ? digitalRead pin=52 value=0
++ 208 ? digitalRead pin=53 value=0
++ 209 ? Serial.print(char) Digital IN_PIN read: 
++ 210 ? Serial.println(int) 0
++ 211 ? Serial.print(char) Digital CONTROL read: 
++ 212 ? Serial.println(int) 0
++ 213 ? analogWrite pin=10 value=123
++ 214 ? analogWrite pin=11 value=167
++ 215 ? analogWrite pin=3 value=127
++ 216 ? analogWrite pin=4 value=147
++ 217 ? delay 1000 ms
++ 218 ? servuinoLoop 9
++ 219 ? Serial.println(char) Hello Simuino!
++ 220 ? analogRead pin=4 value=12
++ 221 ? analogRead pin=5 value=18
++ 222 ? Serial.print(char) Analog 1 value read: 
++ 223 ? Serial.println(int) 12
++ 224 ? Serial.print(char) Analog 2 value read: 
++ 225 ? Serial.println(int) 18
++ 226 ? digitalWrite pin=32 value=1
++ 227 ? delay 500 ms
++ 228 ? digitalWrite pin=32 value=0
++ 229 ? digitalWrite pin=32 value=1
++ 230 ? delay 500 ms
++ 231 ? digitalWrite pin=32 value=0
++ 232 ? digitalRead pin=52 value=0
++ 233 ? digitalRead pin=53 value=0
++ 234 ? Serial.print(char) Digital IN_PIN read: 
++ 235 ? Serial.println(int) 0
++ 236 ? Serial.print(char) Digital CONTROL read: 
++ 237 ? Serial.println(int) 0
++ 238 ? analogWrite pin=10 value=123
++ 239 ? analogWrite pin=11 value=167
++ 240 ? analogWrite pin=3 value=127
++ 241 ? analogWrite pin=4 value=147
++ 242 ? delay 1000 ms
++ 243 ? servuinoLoop 10
++ 244 ? Serial.println(char) Hello Simuino!
++ 245 ? analogRead pin=4 value=12
++ 246 ? analogRead pin=5 value=18
++ 247 ? Serial.print(char) Analog 1 value read: 
++ 248 ? Serial.println(int) 12
++ 249 ? Serial.print(char) Analog 2 value read: 
++ 250 ? Serial.println(int) 18
++ 251 ? digitalWrite pin=32 value=1
++ 252 ? delay 500 ms
++ 253 ? digitalWrite pin=32 value=0
++ 254 ? digitalWrite pin=32 value=1
++ 255 ? delay 500 ms
++ 256 ? digitalWrite pin=32 value=0
++ 257 ? digitalRead pin=52 value=0
++ 258 ? digitalRead pin=53 value=0
++ 259 ? Serial.print(char) Digital IN_PIN read: 
++ 260 ? Serial.println(int) 0
++ 261 ? Serial.print(char) Digital CONTROL read: 
++ 262 ? Serial.println(int) 0
++ 263 ? analogWrite pin=10 value=123
++ 264 ? analogWrite pin=11 value=167
++ 265 ? analogWrite pin=3 value=127
++ 266 ? analogWrite pin=4 value=147
++ 267 ? delay 1000 ms
++ 268 ? servuinoLoop 11
++ 269 ? Serial.println(char) Hello Simuino!
++ 270 ? analogRead pin=4 value=12
++ 271 ? analogRead pin=5 value=18
++ 272 ? Serial.print(char) Analog 1 value read: 
++ 273 ? Serial.println(int) 12
++ 274 ? Serial.print(char) Analog 2 value read: 
++ 275 ? Serial.println(int) 18
++ 276 ? digitalWrite pin=32 value=1
++ 277 ? delay 500 ms
++ 278 ? digitalWrite pin=32 value=0
++ 279 ? digitalWrite pin=32 value=1
++ 280 ? delay 500 ms
++ 281 ? digitalWrite pin=32 value=0
++ 282 ? digitalRead pin=52 value=0
++ 283 ? digitalRead pin=53 value=0
++ 284 ? Serial.print(char) Digital IN_PIN read: 
++ 285 ? Serial.println(int) 0
++ 286 ? Serial.print(char) Digital CONTROL read: 
++ 287 ? Serial.println(int) 0
++ 288 ? analogWrite pin=10 value=123
++ 289 ? analogWrite pin=11 value=167
++ 290 ? analogWrite pin=3 value=127
++ 291 ? analogWrite pin=4 value=147
++ 292 ? delay 1000 ms
++ 293 ? servuinoLoop 12
++ 294 ? Serial.println(char) Hello Simuino!
++ 295 ? analogRead pin=4 value=12
++ 296 ? analogRead pin=5 value=18
++ 297 ? Serial.print(char) Analog 1 value read: 
++ 298 ? Serial.println(int) 12
++ 299 ? Serial.print(char) Analog 2 value read: 
++ 300 ? Serial.println(int) 18
++ 301 ? digitalWrite pin=32 value=1
++ 302 ? delay 500 ms
++ 303 ? digitalWrite pin=32 value=0
++ 304 ? digitalWrite pin=32 value=1
++ 305 ? delay 500 ms
++ 306 ? digitalWrite pin=32 value=0
++ 307 ? digitalRead pin=52 value=0
++ 308 ? digitalRead pin=53 value=0
++ 309 ? Serial.print(char) Digital IN_PIN read: 
++ 310 ? Serial.println(int) 0
++ 311 ? Serial.print(char) Digital CONTROL read: 
++ 312 ? Serial.println(int) 0
++ 313 ? analogWrite pin=10 value=123
++ 314 ? analogWrite pin=11 value=167
++ 315 ? analogWrite pin=3 value=127
++ 316 ? analogWrite pin=4 value=147
++ 317 ? delay 1000 ms
++ 318 ? servuinoLoop 13
++ 319 ? Serial.println(char) Hello Simuino!
++ 320 ? analogRead pin=4 value=12
++ 321 ? analogRead pin=5 value=18
++ 322 ? Serial.print(char) Analog 1 value read: 
++ 323 ? Serial.println(int) 12
++ 324 ? Serial.print(char) Analog 2 value read: 
++ 325 ? Serial.println(int) 18
++ 326 ? digitalWrite pin=32 value=1
++ 327 ? delay 500 ms
++ 328 ? digitalWrite pin=32 value=0
++ 329 ? digitalWrite pin=32 value=1
++ 330 ? delay 500 ms
++ 331 ? digitalWrite pin=32 value=0
++ 332 ? digitalRead pin=52 value=0
++ 333 ? digitalRead pin=53 value=0
++ 334 ? Serial.print(char) Digital IN_PIN read: 
++ 335 ? Serial.println(int) 0
++ 336 ? Serial.print(char) Digital CONTROL read: 
++ 337 ? Serial.println(int) 0
++ 338 ? analogWrite pin=10 value=123
++ 339 ? analogWrite pin=11 value=167
++ 340 ? analogWrite pin=3 value=127
++ 341 ? analogWrite pin=4 value=147
++ 342 ? delay 1000 ms
++ 343 ? servuinoLoop 14
++ 344 ? Serial.println(char) Hello Simuino!
++ 345 ? analogRead pin=4 value=12
++ 346 ? analogRead pin=5 value=18
++ 347 ? Serial.print(char) Analog 1 value read: 
++ 348 ? Serial.println(int) 12
++ 349 ? Serial.print(char) Analog 2 value read: 
++ 350 ? Serial.println(int) 18
++ 351 ? digitalWrite pin=32 value=1
++ 352 ? delay 500 ms
++ 353 ? digitalWrite pin=32 value=0
++ 354 ? digitalWrite pin=32 value=1
++ 355 ? delay 500 ms
++ 356 ? digitalWrite pin=32 value=0
++ 357 ? digitalRead pin=52 value=0
++ 358 ? digitalRead pin=53 value=0
++ 359 ? Serial.print(char) Digital IN_PIN read: 
++ 360 ? Serial.println(int) 0
++ 361 ? Serial.print(char) Digital CONTROL read: 
++ 362 ? Serial.println(int) 0
++ 363 ? analogWrite pin=10 value=123
++ 364 ? analogWrite pin=11 value=167
++ 365 ? analogWrite pin=3 value=127
++ 366 ? analogWrite pin=4 value=147
++ 367 ? delay 1000 ms
++ 368 ? servuinoLoop 15
++ 369 ? Serial.println(char) Hello Simuino!
++ 370 ? analogRead pin=4 value=12
++ 371 ? analogRead pin=5 value=18
++ 372 ? Serial.print(char) Analog 1 value read: 
++ 373 ? Serial.println(int) 12
++ 374 ? Serial.print(char) Analog 2 value read: 
++ 375 ? Serial.println(int) 18
++ 376 ? digitalWrite pin=32 value=1
++ 377 ? delay 500 ms
++ 378 ? digitalWrite pin=32 value=0
++ 379 ? digitalWrite pin=32 value=1
++ 380 ? delay 500 ms
++ 381 ? digitalWrite pin=32 value=0
++ 382 ? digitalRead pin=52 value=0
++ 383 ? digitalRead pin=53 value=0
++ 384 ? Serial.print(char) Digital IN_PIN read: 
++ 385 ? Serial.println(int) 0
++ 386 ? Serial.print(char) Digital CONTROL read: 
++ 387 ? Serial.println(int) 0
++ 388 ? analogWrite pin=10 value=123
++ 389 ? analogWrite pin=11 value=167
++ 390 ? analogWrite pin=3 value=127
++ 391 ? analogWrite pin=4 value=147
++ 392 ? delay 1000 ms
++ 393 ? servuinoLoop 16
++ 394 ? Serial.println(char) Hello Simuino!
++ 395 ? analogRead pin=4 value=12
++ 396 ? analogRead pin=5 value=18
++ 397 ? Serial.print(char) Analog 1 value read: 
++ 398 ? Serial.println(int) 12
++ 399 ? Serial.print(char) Analog 2 value read: 
++ 400 ? Serial.println(int) 18
++ 401 ? digitalWrite pin=32 value=1
++ 402 ? delay 500 ms
++ 403 ? digitalWrite pin=32 value=0
++ 404 ? digitalWrite pin=32 value=1
++ 405 ? delay 500 ms
++ 406 ? digitalWrite pin=32 value=0
++ 407 ? digitalRead pin=52 value=0
++ 408 ? digitalRead pin=53 value=0
++ 409 ? Serial.print(char) Digital IN_PIN read: 
++ 410 ? Serial.println(int) 0
++ 411 ? Serial.print(char) Digital CONTROL read: 
++ 412 ? Serial.println(int) 0
++ 413 ? analogWrite pin=10 value=123
++ 414 ? analogWrite pin=11 value=167
++ 415 ? analogWrite pin=3 value=127
++ 416 ? analogWrite pin=4 value=147
++ 417 ? delay 1000 ms
++ 418 ? servuinoLoop 17
++ 419 ? Serial.println(char) Hello Simuino!
++ 420 ? analogRead pin=4 value=12
++ 421 ? analogRead pin=5 value=18
++ 422 ? Serial.print(char) Analog 1 value read: 
++ 423 ? Serial.println(int) 12
++ 424 ? Serial.print(char) Analog 2 value read: 
++ 425 ? Serial.println(int) 18
++ 426 ? digitalWrite pin=32 value=1
++ 427 ? delay 500 ms
++ 428 ? digitalWrite pin=32 value=0
++ 429 ? digitalWrite pin=32 value=1
++ 430 ? delay 500 ms
++ 431 ? digitalWrite pin=32 value=0
++ 432 ? digitalRead pin=52 value=0
++ 433 ? digitalRead pin=53 value=0
++ 434 ? Serial.print(char) Digital IN_PIN read: 
++ 435 ? Serial.println(int) 0
++ 436 ? Serial.print(char) Digital CONTROL read: 
++ 437 ? Serial.println(int) 0
++ 438 ? analogWrite pin=10 value=123
++ 439 ? analogWrite pin=11 value=167
++ 440 ? analogWrite pin=3 value=127
++ 441 ? analogWrite pin=4 value=147
++ 442 ? delay 1000 ms
++ 443 ? servuinoLoop 18
++ 444 ? Serial.println(char) Hello Simuino!
++ 445 ? analogRead pin=4 value=12
++ 446 ? analogRead pin=5 value=18
++ 447 ? Serial.print(char) Analog 1 value read: 
++ 448 ? Serial.println(int) 12
++ 449 ? Serial.print(char) Analog 2 value read: 
++ 450 ? Serial.println(int) 18
++ 451 ? digitalWrite pin=32 value=1
++ 452 ? delay 500 ms
++ 453 ? digitalWrite pin=32 value=0
++ 454 ? digitalWrite pin=32 value=1
++ 455 ? delay 500 ms
++ 456 ? digitalWrite pin=32 value=0
++ 457 ? digitalRead pin=52 value=0
++ 458 ? digitalRead pin=53 value=0
++ 459 ? Serial.print(char) Digital IN_PIN read: 
++ 460 ? Serial.println(int) 0
++ 461 ? Serial.print(char) Digital CONTROL read: 
++ 462 ? Serial.println(int) 0
++ 463 ? analogWrite pin=10 value=123
++ 464 ? analogWrite pin=11 value=167
++ 465 ? analogWrite pin=3 value=127
++ 466 ? analogWrite pin=4 value=147
++ 467 ? delay 1000 ms
++ 468 ? servuinoLoop 19
++ 469 ? Serial.println(char) Hello Simuino!
++ 470 ? analogRead pin=4 value=12
++ 471 ? analogRead pin=5 value=18
++ 472 ? Serial.print(char) Analog 1 value read: 
++ 473 ? Serial.println(int) 12
++ 474 ? Serial.print(char) Analog 2 value read: 
++ 475 ? Serial.println(int) 18
++ 476 ? digitalWrite pin=32 value=1
++ 477 ? delay 500 ms
++ 478 ? digitalWrite pin=32 value=0
++ 479 ? digitalWrite pin=32 value=1
++ 480 ? delay 500 ms
++ 481 ? digitalWrite pin=32 value=0
++ 482 ? digitalRead pin=52 value=0
++ 483 ? digitalRead pin=53 value=0
++ 484 ? Serial.print(char) Digital IN_PIN read: 
++ 485 ? Serial.println(int) 0
++ 486 ? Serial.print(char) Digital CONTROL read: 
++ 487 ? Serial.println(int) 0
++ 488 ? analogWrite pin=10 value=123
++ 489 ? analogWrite pin=11 value=167
++ 490 ? analogWrite pin=3 value=127
++ 491 ? analogWrite pin=4 value=147
++ 492 ? delay 1000 ms
++ 493 ? servuinoLoop 20
++ 494 ? Serial.println(char) Hello Simuino!
++ 495 ? analogRead pin=4 value=12
++ 496 ? analogRead pin=5 value=18
++ 497 ? Serial.print(char) Analog 1 value read: 
++ 498 ? Serial.println(int) 12
++ 499 ? Serial.print(char) Analog 2 value read: 
++ 500 ? Serial.println(int) 18
++ 501 ? digitalWrite pin=32 value=1
++ 502 ? delay 500 ms
++ 503 ? digitalWrite pin=32 value=0
++ 504 ? digitalWrite pin=32 value=1
++ 505 ? delay 500 ms
++ 506 ? digitalWrite pin=32 value=0
++ 507 ? digitalRead pin=52 value=0
++ 508 ? digitalRead pin=53 value=0
++ 509 ? Serial.print(char) Digital IN_PIN read: 
++ 510 ? Serial.println(int) 0
++ 511 ? Serial.print(char) Digital CONTROL read: 
++ 512 ? Serial.println(int) 0
++ 513 ? analogWrite pin=10 value=123
++ 514 ? analogWrite pin=11 value=167
++ 515 ? analogWrite pin=3 value=127
++ 516 ? analogWrite pin=4 value=147
++ 517 ? delay 1000 ms
++ 518 ? servuinoLoop 21
++ 519 ? Serial.println(char) Hello Simuino!
++ 520 ? analogRead pin=4 value=12
++ 521 ? analogRead pin=5 value=18
++ 522 ? Serial.print(char) Analog 1 value read: 
++ 523 ? Serial.println(int) 12
++ 524 ? Serial.print(char) Analog 2 value read: 
++ 525 ? Serial.println(int) 18
++ 526 ? digitalWrite pin=32 value=1
++ 527 ? delay 500 ms
++ 528 ? digitalWrite pin=32 value=0
++ 529 ? digitalWrite pin=32 value=1
++ 530 ? delay 500 ms
++ 531 ? digitalWrite pin=32 value=0
++ 532 ? digitalRead pin=52 value=0
++ 533 ? digitalRead pin=53 value=0
++ 534 ? Serial.print(char) Digital IN_PIN read: 
++ 535 ? Serial.println(int) 0
++ 536 ? Serial.print(char) Digital CONTROL read: 
++ 537 ? Serial.println(int) 0
++ 538 ? analogWrite pin=10 value=123
++ 539 ? analogWrite pin=11 value=167
++ 540 ? analogWrite pin=3 value=127
++ 541 ? analogWrite pin=4 value=147
++ 542 ? delay 1000 ms
++ 543 ? servuinoLoop 22
++ 544 ? Serial.println(char) Hello Simuino!
++ 545 ? analogRead pin=4 value=12
++ 546 ? analogRead pin=5 value=18
++ 547 ? Serial.print(char) Analog 1 value read: 
++ 548 ? Serial.println(int) 12
++ 549 ? Serial.print(char) Analog 2 value read: 
++ 550 ? Serial.println(int) 18
++ 551 ? digitalWrite pin=32 value=1
++ 552 ? delay 500 ms
++ 553 ? digitalWrite pin=32 value=0
++ 554 ? digitalWrite pin=32 value=1
++ 555 ? delay 500 ms
++ 556 ? digitalWrite pin=32 value=0
++ 557 ? digitalRead pin=52 value=0
++ 558 ? digitalRead pin=53 value=0
++ 559 ? Serial.print(char) Digital IN_PIN read: 
++ 560 ? Serial.println(int) 0
++ 561 ? Serial.print(char) Digital CONTROL read: 
++ 562 ? Serial.println(int) 0
++ 563 ? analogWrite pin=10 value=123
++ 564 ? analogWrite pin=11 value=167
++ 565 ? analogWrite pin=3 value=127
++ 566 ? analogWrite pin=4 value=147
++ 567 ? delay 1000 ms
++ 568 ? servuinoLoop 23
++ 569 ? Serial.println(char) Hello Simuino!
++ 570 ? analogRead pin=4 value=12
++ 571 ? analogRead pin=5 value=18
++ 572 ? Serial.print(char) Analog 1 value read: 
++ 573 ? Serial.println(int) 12
++ 574 ? Serial.print(char) Analog 2 value read: 
++ 575 ? Serial.println(int) 18
++ 576 ? digitalWrite pin=32 value=1
++ 577 ? delay 500 ms
++ 578 ? digitalWrite pin=32 value=0
++ 579 ? digitalWrite pin=32 value=1
++ 580 ? delay 500 ms
++ 581 ? digitalWrite pin=32 value=0
++ 582 ? digitalRead pin=52 value=0
++ 583 ? digitalRead pin=53 value=0
++ 584 ? Serial.print(char) Digital IN_PIN read: 
++ 585 ? Serial.println(int) 0
++ 586 ? Serial.print(char) Digital CONTROL read: 
++ 587 ? Serial.println(int) 0
++ 588 ? analogWrite pin=10 value=123
++ 589 ? analogWrite pin=11 value=167
++ 590 ? analogWrite pin=3 value=127
++ 591 ? analogWrite pin=4 value=147
++ 592 ? delay 1000 ms
++ 593 ? servuinoLoop 24
++ 594 ? Serial.println(char) Hello Simuino!
++ 595 ? analogRead pin=4 value=12
++ 596 ? analogRead pin=5 value=18
++ 597 ? Serial.print(char) Analog 1 value read: 
++ 598 ? Serial.println(int) 12
++ 599 ? Serial.print(char) Analog 2 value read: 
++ 600 ? Serial.println(int) 18
++ 601 ? digitalWrite pin=32 value=1
++ 602 ? delay 500 ms
++ 603 ? digitalWrite pin=32 value=0
++ 604 ? digitalWrite pin=32 value=1
++ 605 ? delay 500 ms
++ 606 ? digitalWrite pin=32 value=0
++ 607 ? digitalRead pin=52 value=0
++ 608 ? digitalRead pin=53 value=0
++ 609 ? Serial.print(char) Digital IN_PIN read: 
++ 610 ? Serial.println(int) 0
++ 611 ? Serial.print(char) Digital CONTROL read: 
++ 612 ? Serial.println(int) 0
++ 613 ? analogWrite pin=10 value=123
++ 614 ? analogWrite pin=11 value=167
++ 615 ? analogWrite pin=3 value=127
++ 616 ? analogWrite pin=4 value=147
++ 617 ? delay 1000 ms
++ 618 ? servuinoLoop 25
++ 619 ? Serial.println(char) Hello Simuino!
++ 620 ? analogRead pin=4 value=12
++ 621 ? analogRead pin=5 value=18
++ 622 ? Serial.print(char) Analog 1 value read: 
++ 623 ? Serial.println(int) 12
++ 624 ? Serial.print(char) Analog 2 value read: 
++ 625 ? Serial.println(int) 18
++ 626 ? digitalWrite pin=32 value=1
++ 627 ? delay 500 ms
++ 628 ? digitalWrite pin=32 value=0
++ 629 ? digitalWrite pin=32 value=1
++ 630 ? delay 500 ms
++ 631 ? digitalWrite pin=32 value=0
++ 632 ? digitalRead pin=52 value=0
++ 633 ? digitalRead pin=53 value=0
++ 634 ? Serial.print(char) Digital IN_PIN read: 
++ 635 ? Serial.println(int) 0
++ 636 ? Serial.print(char) Digital CONTROL read: 
++ 637 ? Serial.println(int) 0
++ 638 ? analogWrite pin=10 value=123
++ 639 ? analogWrite pin=11 value=167
++ 640 ? analogWrite pin=3 value=127
++ 641 ? analogWrite pin=4 value=147
++ 642 ? delay 1000 ms
++ 643 ? servuinoLoop 26
++ 644 ? Serial.println(char) Hello Simuino!
++ 645 ? analogRead pin=4 value=12
++ 646 ? analogRead pin=5 value=18
++ 647 ? Serial.print(char) Analog 1 value read: 
++ 648 ? Serial.println(int) 12
++ 649 ? Serial.print(char) Analog 2 value read: 
++ 650 ? Serial.println(int) 18
++ 651 ? digitalWrite pin=32 value=1
++ 652 ? delay 500 ms
++ 653 ? digitalWrite pin=32 value=0
++ 654 ? digitalWrite pin=32 value=1
++ 655 ? delay 500 ms
++ 656 ? digitalWrite pin=32 value=0
++ 657 ? digitalRead pin=52 value=0
++ 658 ? digitalRead pin=53 value=0
++ 659 ? Serial.print(char) Digital IN_PIN read: 
++ 660 ? Serial.println(int) 0
++ 661 ? Serial.print(char) Digital CONTROL read: 
++ 662 ? Serial.println(int) 0
++ 663 ? analogWrite pin=10 value=123
++ 664 ? analogWrite pin=11 value=167
++ 665 ? analogWrite pin=3 value=127
++ 666 ? analogWrite pin=4 value=147
++ 667 ? delay 1000 ms
++ 668 ? servuinoLoop 27
++ 669 ? Serial.println(char) Hello Simuino!
++ 670 ? analogRead pin=4 value=12
++ 671 ? analogRead pin=5 value=18
++ 672 ? Serial.print(char) Analog 1 value read: 
++ 673 ? Serial.println(int) 12
++ 674 ? Serial.print(char) Analog 2 value read: 
++ 675 ? Serial.println(int) 18
++ 676 ? digitalWrite pin=32 value=1
++ 677 ? delay 500 ms
++ 678 ? digitalWrite pin=32 value=0
++ 679 ? digitalWrite pin=32 value=1
++ 680 ? delay 500 ms
++ 681 ? digitalWrite pin=32 value=0
++ 682 ? digitalRead pin=52 value=0
++ 683 ? digitalRead pin=53 value=0
++ 684 ? Serial.print(char) Digital IN_PIN read: 
++ 685 ? Serial.println(int) 0
++ 686 ? Serial.print(char) Digital CONTROL read: 
++ 687 ? Serial.println(int) 0
++ 688 ? analogWrite pin=10 value=123
++ 689 ? analogWrite pin=11 value=167
++ 690 ? analogWrite pin=3 value=127
++ 691 ? analogWrite pin=4 value=147
++ 692 ? delay 1000 ms
++ 693 ? servuinoLoop 28
++ 694 ? Serial.println(char) Hello Simuino!
++ 695 ? analogRead pin=4 value=12
++ 696 ? analogRead pin=5 value=18
++ 697 ? Serial.print(char) Analog 1 value read: 
++ 698 ? Serial.println(int) 12
++ 699 ? Serial.print(char) Analog 2 value read: 
++ 700 ? Serial.println(int) 18
++ 701 ? digitalWrite pin=32 value=1
++ 702 ? delay 500 ms
++ 703 ? digitalWrite pin=32 value=0
++ 704 ? digitalWrite pin=32 value=1
++ 705 ? delay 500 ms
++ 706 ? digitalWrite pin=32 value=0
++ 707 ? digitalRead pin=52 value=0
++ 708 ? digitalRead pin=53 value=0
++ 709 ? Serial.print(char) Digital IN_PIN read: 
++ 710 ? Serial.println(int) 0
++ 711 ? Serial.print(char) Digital CONTROL read: 
++ 712 ? Serial.println(int) 0
++ 713 ? analogWrite pin=10 value=123
++ 714 ? analogWrite pin=11 value=167
++ 715 ? analogWrite pin=3 value=127
++ 716 ? analogWrite pin=4 value=147
++ 717 ? delay 1000 ms
++ 718 ? servuinoLoop 29
++ 719 ? Serial.println(char) Hello Simuino!
++ 720 ? analogRead pin=4 value=12
++ 721 ? analogRead pin=5 value=18
++ 722 ? Serial.print(char) Analog 1 value read: 
++ 723 ? Serial.println(int) 12
++ 724 ? Serial.print(char) Analog 2 value read: 
++ 725 ? Serial.println(int) 18
++ 726 ? digitalWrite pin=32 value=1
++ 727 ? delay 500 ms
++ 728 ? digitalWrite pin=32 value=0
++ 729 ? digitalWrite pin=32 value=1
++ 730 ? delay 500 ms
++ 731 ? digitalWrite pin=32 value=0
++ 732 ? digitalRead pin=52 value=0
++ 733 ? digitalRead pin=53 value=0
++ 734 ? Serial.print(char) Digital IN_PIN read: 
++ 735 ? Serial.println(int) 0
++ 736 ? Serial.print(char) Digital CONTROL read: 
++ 737 ? Serial.println(int) 0
++ 738 ? analogWrite pin=10 value=123
++ 739 ? analogWrite pin=11 value=167
++ 740 ? analogWrite pin=3 value=127
++ 741 ? analogWrite pin=4 value=147
++ 742 ? delay 1000 ms
++ 743 ? servuinoLoop 30
++ 744 ? Serial.println(char) Hello Simuino!
++ 745 ? analogRead pin=4 value=12
++ 746 ? analogRead pin=5 value=18
++ 747 ? Serial.print(char) Analog 1 value read: 
++ 748 ? Serial.println(int) 12
++ 749 ? Serial.print(char) Analog 2 value read: 
++ 750 ? Serial.println(int) 18
++ 751 ? digitalWrite pin=32 value=1
++ 752 ? delay 500 ms
++ 753 ? digitalWrite pin=32 value=0
++ 754 ? digitalWrite pin=32 value=1
++ 755 ? delay 500 ms
++ 756 ? digitalWrite pin=32 value=0
++ 757 ? digitalRead pin=52 value=0
++ 758 ? digitalRead pin=53 value=0
++ 759 ? Serial.print(char) Digital IN_PIN read: 
++ 760 ? Serial.println(int) 0
++ 761 ? Serial.print(char) Digital CONTROL read: 
++ 762 ? Serial.println(int) 0
++ 763 ? analogWrite pin=10 value=123
++ 764 ? analogWrite pin=11 value=167
++ 765 ? analogWrite pin=3 value=127
++ 766 ? analogWrite pin=4 value=147
++ 767 ? delay 1000 ms
++ 768 ? servuinoLoop 31
++ 769 ? Serial.println(char) Hello Simuino!
++ 770 ? analogRead pin=4 value=12
++ 771 ? analogRead pin=5 value=18
++ 772 ? Serial.print(char) Analog 1 value read: 
++ 773 ? Serial.println(int) 12
++ 774 ? Serial.print(char) Analog 2 value read: 
++ 775 ? Serial.println(int) 18
++ 776 ? digitalWrite pin=32 value=1
++ 777 ? delay 500 ms
++ 778 ? digitalWrite pin=32 value=0
++ 779 ? digitalWrite pin=32 value=1
++ 780 ? delay 500 ms
++ 781 ? digitalWrite pin=32 value=0
++ 782 ? digitalRead pin=52 value=0
++ 783 ? digitalRead pin=53 value=0
++ 784 ? Serial.print(char) Digital IN_PIN read: 
++ 785 ? Serial.println(int) 0
++ 786 ? Serial.print(char) Digital CONTROL read: 
++ 787 ? Serial.println(int) 0
++ 788 ? analogWrite pin=10 value=123
++ 789 ? analogWrite pin=11 value=167
++ 790 ? analogWrite pin=3 value=127
++ 791 ? analogWrite pin=4 value=147
++ 792 ? delay 1000 ms
++ 793 ? servuinoLoop 32
++ 794 ? Serial.println(char) Hello Simuino!
++ 795 ? analogRead pin=4 value=12
++ 796 ? analogRead pin=5 value=18
++ 797 ? Serial.print(char) Analog 1 value read: 
++ 798 ? Serial.println(int) 12
++ 799 ? Serial.print(char) Analog 2 value read: 
++ 800 ? Serial.println(int) 18
++ 801 ? digitalWrite pin=32 value=1
++ 802 ? delay 500 ms
++ 803 ? digitalWrite pin=32 value=0
++ 804 ? digitalWrite pin=32 value=1
++ 805 ? delay 500 ms
++ 806 ? digitalWrite pin=32 value=0
++ 807 ? digitalRead pin=52 value=0
++ 808 ? digitalRead pin=53 value=0
++ 809 ? Serial.print(char) Digital IN_PIN read: 
++ 810 ? Serial.println(int) 0
++ 811 ? Serial.print(char) Digital CONTROL read: 
++ 812 ? Serial.println(int) 0
++ 813 ? analogWrite pin=10 value=123
++ 814 ? analogWrite pin=11 value=167
++ 815 ? analogWrite pin=3 value=127
++ 816 ? analogWrite pin=4 value=147
++ 817 ? delay 1000 ms
++ 818 ? servuinoLoop 33
++ 819 ? Serial.println(char) Hello Simuino!
++ 820 ? analogRead pin=4 value=12
++ 821 ? analogRead pin=5 value=18
++ 822 ? Serial.print(char) Analog 1 value read: 
++ 823 ? Serial.println(int) 12
++ 824 ? Serial.print(char) Analog 2 value read: 
++ 825 ? Serial.println(int) 18
++ 826 ? digitalWrite pin=32 value=1
++ 827 ? delay 500 ms
++ 828 ? digitalWrite pin=32 value=0
++ 829 ? digitalWrite pin=32 value=1
++ 830 ? delay 500 ms
++ 831 ? digitalWrite pin=32 value=0
++ 832 ? digitalRead pin=52 value=0
++ 833 ? digitalRead pin=53 value=0
++ 834 ? Serial.print(char) Digital IN_PIN read: 
++ 835 ? Serial.println(int) 0
++ 836 ? Serial.print(char) Digital CONTROL read: 
++ 837 ? Serial.println(int) 0
++ 838 ? analogWrite pin=10 value=123
++ 839 ? analogWrite pin=11 value=167
++ 840 ? analogWrite pin=3 value=127
++ 841 ? analogWrite pin=4 value=147
++ 842 ? delay 1000 ms
++ 843 ? servuinoLoop 34
++ 844 ? Serial.println(char) Hello Simuino!
++ 845 ? analogRead pin=4 value=12
++ 846 ? analogRead pin=5 value=18
++ 847 ? Serial.print(char) Analog 1 value read: 
++ 848 ? Serial.println(int) 12
++ 849 ? Serial.print(char) Analog 2 value read: 
++ 850 ? Serial.println(int) 18
++ 851 ? digitalWrite pin=32 value=1
++ 852 ? delay 500 ms
++ 853 ? digitalWrite pin=32 value=0
++ 854 ? digitalWrite pin=32 value=1
++ 855 ? delay 500 ms
++ 856 ? digitalWrite pin=32 value=0
++ 857 ? digitalRead pin=52 value=0
++ 858 ? digitalRead pin=53 value=0
++ 859 ? Serial.print(char) Digital IN_PIN read: 
++ 860 ? Serial.println(int) 0
++ 861 ? Serial.print(char) Digital CONTROL read: 
++ 862 ? Serial.println(int) 0
++ 863 ? analogWrite pin=10 value=123
++ 864 ? analogWrite pin=11 value=167
++ 865 ? analogWrite pin=3 value=127
++ 866 ? analogWrite pin=4 value=147
++ 867 ? delay 1000 ms
++ 868 ? servuinoLoop 35
++ 869 ? Serial.println(char) Hello Simuino!
++ 870 ? analogRead pin=4 value=12
++ 871 ? analogRead pin=5 value=18
++ 872 ? Serial.print(char) Analog 1 value read: 
++ 873 ? Serial.println(int) 12
++ 874 ? Serial.print(char) Analog 2 value read: 
++ 875 ? Serial.println(int) 18
++ 876 ? digitalWrite pin=32 value=1
++ 877 ? delay 500 ms
++ 878 ? digitalWrite pin=32 value=0
++ 879 ? digitalWrite pin=32 value=1
++ 880 ? delay 500 ms
++ 881 ? digitalWrite pin=32 value=0
++ 882 ? digitalRead pin=52 value=0
++ 883 ? digitalRead pin=53 value=0
++ 884 ? Serial.print(char) Digital IN_PIN read: 
++ 885 ? Serial.println(int) 0
++ 886 ? Serial.print(char) Digital CONTROL read: 
++ 887 ? Serial.println(int) 0
++ 888 ? analogWrite pin=10 value=123
++ 889 ? analogWrite pin=11 value=167
++ 890 ? analogWrite pin=3 value=127
++ 891 ? analogWrite pin=4 value=147
++ 892 ? delay 1000 ms
++ 893 ? servuinoLoop 36
++ 894 ? Serial.println(char) Hello Simuino!
++ 895 ? analogRead pin=4 value=12
++ 896 ? analogRead pin=5 value=18
++ 897 ? Serial.print(char) Analog 1 value read: 
++ 898 ? Serial.println(int) 12
++ 899 ? Serial.print(char) Analog 2 value read: 
++ 900 ? Serial.println(int) 18
++ 901 ? digitalWrite pin=32 value=1
++ 902 ? delay 500 ms
++ 903 ? digitalWrite pin=32 value=0
++ 904 ? digitalWrite pin=32 value=1
++ 905 ? delay 500 ms
++ 906 ? digitalWrite pin=32 value=0
++ 907 ? digitalRead pin=52 value=0
++ 908 ? digitalRead pin=53 value=0
++ 909 ? Serial.print(char) Digital IN_PIN read: 
++ 910 ? Serial.println(int) 0
++ 911 ? Serial.print(char) Digital CONTROL read: 
++ 912 ? Serial.println(int) 0
++ 913 ? analogWrite pin=10 value=123
++ 914 ? analogWrite pin=11 value=167
++ 915 ? analogWrite pin=3 value=127
++ 916 ? analogWrite pin=4 value=147
++ 917 ? delay 1000 ms
++ 918 ? servuinoLoop 37
++ 919 ? Serial.println(char) Hello Simuino!
++ 920 ? analogRead pin=4 value=12
++ 921 ? analogRead pin=5 value=18
++ 922 ? Serial.print(char) Analog 1 value read: 
++ 923 ? Serial.println(int) 12
++ 924 ? Serial.print(char) Analog 2 value read: 
++ 925 ? Serial.println(int) 18
++ 926 ? digitalWrite pin=32 value=1
++ 927 ? delay 500 ms
++ 928 ? digitalWrite pin=32 value=0
++ 929 ? digitalWrite pin=32 value=1
++ 930 ? delay 500 ms
++ 931 ? digitalWrite pin=32 value=0
++ 932 ? digitalRead pin=52 value=0
++ 933 ? digitalRead pin=53 value=0
++ 934 ? Serial.print(char) Digital IN_PIN read: 
++ 935 ? Serial.println(int) 0
++ 936 ? Serial.print(char) Digital CONTROL read: 
++ 937 ? Serial.println(int) 0
++ 938 ? analogWrite pin=10 value=123
++ 939 ? analogWrite pin=11 value=167
++ 940 ? analogWrite pin=3 value=127
++ 941 ? analogWrite pin=4 value=147
++ 942 ? delay 1000 ms
++ 943 ? servuinoLoop 38
++ 944 ? Serial.println(char) Hello Simuino!
++ 945 ? analogRead pin=4 value=12
++ 946 ? analogRead pin=5 value=18
++ 947 ? Serial.print(char) Analog 1 value read: 
++ 948 ? Serial.println(int) 12
++ 949 ? Serial.print(char) Analog 2 value read: 
++ 950 ? Serial.println(int) 18
++ 951 ? digitalWrite pin=32 value=1
++ 952 ? delay 500 ms
++ 953 ? digitalWrite pin=32 value=0
++ 954 ? digitalWrite pin=32 value=1
++ 955 ? delay 500 ms
++ 956 ? digitalWrite pin=32 value=0
++ 957 ? digitalRead pin=52 value=0
++ 958 ? digitalRead pin=53 value=0
++ 959 ? Serial.print(char) Digital IN_PIN read: 
++ 960 ? Serial.println(int) 0
++ 961 ? Serial.print(char) Digital CONTROL read: 
++ 962 ? Serial.println(int) 0
++ 963 ? analogWrite pin=10 value=123
++ 964 ? analogWrite pin=11 value=167
++ 965 ? analogWrite pin=3 value=127
++ 966 ? analogWrite pin=4 value=147
++ 967 ? delay 1000 ms
++ 968 ? servuinoLoop 39
++ 969 ? Serial.println(char) Hello Simuino!
++ 970 ? analogRead pin=4 value=12
++ 971 ? analogRead pin=5 value=18
++ 972 ? Serial.print(char) Analog 1 value read: 
++ 973 ? Serial.println(int) 12
++ 974 ? Serial.print(char) Analog 2 value read: 
++ 975 ? Serial.println(int) 18
++ 976 ? digitalWrite pin=32 value=1
++ 977 ? delay 500 ms
++ 978 ? digitalWrite pin=32 value=0
++ 979 ? digitalWrite pin=32 value=1
++ 980 ? delay 500 ms
++ 981 ? digitalWrite pin=32 value=0
++ 982 ? digitalRead pin=52 value=0
++ 983 ? digitalRead pin=53 value=0
++ 984 ? Serial.print(char) Digital IN_PIN read: 
++ 985 ? Serial.println(int) 0
++ 986 ? Serial.print(char) Digital CONTROL read: 
++ 987 ? Serial.println(int) 0
++ 988 ? analogWrite pin=10 value=123
++ 989 ? analogWrite pin=11 value=167
++ 990 ? analogWrite pin=3 value=127
++ 991 ? analogWrite pin=4 value=147
++ 992 ? delay 1000 ms
++ 993 ? servuinoLoop 40
++ 994 ? Serial.println(char) Hello Simuino!
++ 995 ? analogRead pin=4 value=12
++ 996 ? analogRead pin=5 value=18
++ 997 ? Serial.print(char) Analog 1 value read: 
++ 998 ? Serial.println(int) 12
++ 999 ? Serial.print(char) Analog 2 value read: 
++ 1000 ? Serial.println(int) 18
+# ENDOFSIM

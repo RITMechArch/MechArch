@@ -86,24 +86,31 @@ void loop()
     {
         case STATE_HALT:
             set_halt_outputs();
+            test_halt_transitions();
             return;
         case STATE_idle:
             set_idle_outputs();
+            test_idle_transitions();
             break;
         case STATE_armed:
             set_armed_outputs();
+            test_armed_transitions();
             break;
         case STATE_drawing:
             set_drawing_outputs();
+            test_drawing_transitions();
             break;
         case STATE_drawn:
             set_drawn_outputs();
+            test_drawn_transitions();
             break;
         case STATE_firing:
             set_firing_outputs();
+            test_firing_transitions();
             break;
         case STATE_fired:
             set_fired_outputs();
+            test_fired_transitions();
             break;
         default:
             break;

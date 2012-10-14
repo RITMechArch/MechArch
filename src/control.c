@@ -10,7 +10,7 @@ const int laptopModeIn   = 42;
 const int drawIn         = 44;
 const int fireIn         = 46;
 
-const int fBump	   = 20;
+const int fBump	      = 20;
 const int rBump       = 21;
 
 //--------- OUTPUT PIN settings -----------
@@ -203,42 +203,71 @@ void test_halt_transitions()
 void test_idle_transitions()
 //=========================================
 {
-
+    if ( digitalRead(armingChain) == HIGH &&
+         analogRead(fOptic) == HIGH )
+    {
+        currentState = STATE_armed;
+    }
 }
 
 //=========================================
 void test_armed_transitions()
 //=========================================
 {
+    if ( digitalRead(armingChain) == HIGH &&
+          analogRead(fOptic) == HIGH &&
+          digitalRead(drawIn) == HIGH )
+    {
+            currentState = STATE_drawing;
+    }
 
+    else if ( digitalRead(armingChain) == LOW )
+    {
+        currentState = STATE_idle;
+    }
 }
 
 //=========================================
 void test_drawing_transitions()
 //=========================================
 {
-
+    if ( digitalRead(rBump) == HIGH )
+    {
+        currentState = STATE_drawn;
+    }
 }
 
 //=========================================
 void test_drawn_transitions()
 //=========================================
 {
-
+    if ( digitalRead(armingChain) == HIGH &&
+          analogRead(rOptic) == HIGH &&
+          digitalRead(fireIn) == HIGH )
+        {
+            currentState = STATE_firing;
+        }
 }
 
 //=========================================
 void test_firing_transitions()
 //=========================================
 {
-
+    if ( analogRead(rOptic) == LOW )
+    {
+        currentState = STATE_fired;
+    }
 }
 
 //=========================================
 void test_fired_transitions()
 //=========================================
 {
-
+    if ( analogRead(fOptic) == LOW &&
+          digitalRead(fBump) == HIGH )
+          {
+              currentState = STATE_idle;
+          }
 }
 
 //=========================================

@@ -1,39 +1,39 @@
 //-------- INPUT PIN settings -------------
 
-const int eStopRemoteIn  = 18;
-const int eStopMainIn    = 19;
+#define eStopRemoteIn	(18)
+#define eStopMainIn	(19)
 
-const int armingChain    = 40;
+#define armingChain	(40)
 
-const int laptopModeIn   = 42;
+#define laptopModeIn	(42)
 
-const int drawIn         = 44;
-const int fireIn         = 46;
+#define drawIn		(44)
+#define fireIn          (46)
 
-const int fBump	      = 20;
-const int rBump       = 21;
+#define fBump	       	(20)
+#define rBump       	(21)
 
 //--------- OUTPUT PIN settings -----------
 
-const int drawRelay	   = 34;
-const int resetRelay   = 36;
-const int fireSolenoid   = 38;
+#define drawRelay	(34)
+#define resetRelay	(36)
+#define fireSolenoid	(38)
 
 //-------- STATE const declarations -------------
 
 int currentState;
-const int STATE_idle    = 1;
-const int STATE_armed   = 2;
-const int STATE_drawing = 3;
-const int STATE_drawn   = 4;
-const int STATE_firing  = 5;
-const int STATE_fired   = 6;
-const int STATE_HALT    = 7;
+#define STATE_idle	(1)
+#define STATE_armed 	(2)
+#define STATE_drawing 	(3)
+#define STATE_drawn   	(4)
+#define STATE_firing  	(5)
+#define STATE_fired  	(6)
+#define STATE_HALT   	(7)
 
 //-------- ANALOG PIN settings ------------
 
-int fOptic = 8;
-int rOptic = 9;
+#define fOptic		(8)
+#define rOptic		(9)
 
 //=========================================
 //  Function Declarations
@@ -204,6 +204,7 @@ void test_idle_transitions()
 //=========================================
 {
     if ( digitalRead(armingChain) == HIGH &&
+	// TODO: Fix Analog Pin Reads
          analogRead(fOptic) == HIGH )
     {
         currentState = STATE_armed;
@@ -215,6 +216,7 @@ void test_armed_transitions()
 //=========================================
 {
     if ( digitalRead(armingChain) == HIGH &&
+	// TODO: Fix Analog Pin Reads
           analogRead(fOptic) == HIGH &&
           digitalRead(drawIn) == HIGH )
     {
@@ -231,10 +233,10 @@ void test_armed_transitions()
 void test_drawing_transitions()
 //=========================================
 {
-    if ( digitalRead(rBump) == HIGH )
-    {
-        currentState = STATE_drawn;
-    }
+    // if ( digitalRead(rBump) == HIGH )
+    // {
+        // currentState = STATE_drawn;
+    // }
 }
 
 //=========================================
@@ -242,6 +244,8 @@ void test_drawn_transitions()
 //=========================================
 {
     if ( digitalRead(armingChain) == HIGH &&
+
+	// TODO: Fix Analog Pin Reads
           analogRead(rOptic) == HIGH &&
           digitalRead(fireIn) == HIGH )
         {
@@ -253,6 +257,7 @@ void test_drawn_transitions()
 void test_firing_transitions()
 //=========================================
 {
+	// TODO: Fix Analog Pin Reads
     if ( analogRead(rOptic) == LOW )
     {
         currentState = STATE_fired;
@@ -263,11 +268,13 @@ void test_firing_transitions()
 void test_fired_transitions()
 //=========================================
 {
-    if ( analogRead(fOptic) == LOW &&
-          digitalRead(fBump) == HIGH )
-          {
-              currentState = STATE_idle;
-          }
+
+	// TODO: Fix Analog Pin Reads
+    // if ( analogRead(fOptic) == LOW &&
+          // digitalRead(fBump) == HIGH )
+          // {
+              // currentState = STATE_idle;
+          // }
 }
 
 //=========================================
@@ -282,18 +289,36 @@ void eStopInterrupt()
 {
 	Serial.println("eSTOP");
 	currentState = STATE_HALT;
+	
+	while(true)
+	{
+		if(digitalRead(fBump) == LOW)
+		{
+			digitalWrite(drawRelay, LOW);
+			digitalWrite(resetRelay, HIGH);
+			digitalWrite(fireSolenoid, LOW);
+		}
+		else 
+		{
+			digitalWrite(drawRelay, LOW);
+			digitalWrite(resetRelay, LOW);
+			digitalWrite(fireSolenoid, LOW);
+		}
+	}
 }
 
 //=========================================
 void fBumpInterrupt()
 //=========================================
 {
-
+	digitalWrite(resetRelay, LOW);
+	currentState = STATE_idle;
 }
 
 //=========================================
 void rBumpInterrupt()
 //=========================================
 {
-
+    	digitalWrite(drawRelay, LOW);
+	currentState = STATE_drawn;
 }

@@ -1,47 +1,47 @@
 //-------- ANALOG Read Constants -------------
-#define analogHighMin		(1023)
-#define analogLowMax		(0)
+#define analogHighMin       (1023)
+#define analogLowMax        (0)
 
 //-------- INPUT PIN settings -------------
 
-#define eStopRemoteIn		(18)
-#define eStopMainIn			(19)
+#define eStopRemoteIn       (18)
+#define eStopMainIn         (19)
 
-#define armingChain			(40)
+#define armingChain         (40)
 
-#define laptopModeIn		(42)
+#define laptopModeIn        (42)
 
-#define drawIn				(44)
-#define fireIn				(46)
+#define drawIn              (44)
+#define fireIn              (46)
 
-#define fBump				(20)
-#define rBump				(21)
+#define fBump               (20)
+#define rBump               (21)
 
-#define resetInput			(48)
+#define resetInput          (48)
 
 //--------- OUTPUT PIN settings -----------
 
-#define drawRelay			(34)
-#define resetRelay			(36)
-#define fireSolenoid		(38)
+#define drawRelay           (34)
+#define resetRelay          (36)
+#define fireSolenoid        (38)
 
 //-------- STATE const declarations -------------
 
 int currentState;
-#define STATE_idle			(1)
-#define STATE_armed 		(2)
-#define STATE_drawing		(3)
-#define STATE_drawn			(4)
-#define STATE_firing		(5)
-#define STATE_fired			(6)
-#define STATE_HALT			(7)
+#define STATE_idle          (1)
+#define STATE_armed         (2)
+#define STATE_drawing       (3)
+#define STATE_drawn         (4)
+#define STATE_firing        (5)
+#define STATE_fired         (6)
+#define STATE_HALT          (7)
 
-#define STATE_retracting	(8)
+#define STATE_retracting    (8)
 
 //-------- ANALOG PIN settings ------------
 
-#define fOptic				(8)
-#define rOptic				(9)
+#define fOptic              (8)
+#define rOptic              (9)
 
 //=========================================
 //  Function Declarations
@@ -57,33 +57,33 @@ int currentState;
 void setup()
 //=========================================
 {
-	Serial.begin(9600);
+    Serial.begin(9600);
 
-	pinMode(eStopRemoteIn, INPUT);
-	pinMode(eStopMainIn, INPUT);
+    pinMode(eStopRemoteIn, INPUT);
+    pinMode(eStopMainIn, INPUT);
 
-	pinMode(armingChain, INPUT);
+    pinMode(armingChain, INPUT);
 
-	pinMode(laptopModeIn, INPUT);
+    pinMode(laptopModeIn, INPUT);
 
-	pinMode(drawIn, INPUT);
-	pinMode(fireIn, INPUT);
+    pinMode(drawIn, INPUT);
+    pinMode(fireIn, INPUT);
 
     pinMode(fBump, INPUT);
-	pinMode(rBump, INPUT);
-	pinMode(fOptic, INPUT);
-	pinMode(rOptic, INPUT);
+    pinMode(rBump, INPUT);
+    pinMode(fOptic, INPUT);
+    pinMode(rOptic, INPUT);
 
-	pinMode(drawRelay, OUTPUT);
-	pinMode(resetRelay, OUTPUT);
-	pinMode(fireSolenoid, OUTPUT);
+    pinMode(drawRelay, OUTPUT);
+    pinMode(resetRelay, OUTPUT);
+    pinMode(fireSolenoid, OUTPUT);
 
-	attachInterrupt(2, fBumpInterrupt, RISING);
-	attachInterrupt(3, rBumpInterrupt, RISING);
-	attachInterrupt(4, eStopInterrupt, RISING);
-	attachInterrupt(5, eStopInterrupt, RISING);
+    attachInterrupt(2, fBumpInterrupt, RISING);
+    attachInterrupt(3, rBumpInterrupt, RISING);
+    attachInterrupt(4, eStopInterrupt, RISING);
+    attachInterrupt(5, eStopInterrupt, RISING);
 
-	currentState = STATE_idle;
+    currentState = STATE_idle;
 }
 
 //=========================================
@@ -120,10 +120,10 @@ void loop()
             set_fired_outputs();
             test_fired_transitions();
             break;
-		case STATE_retracting:
-			set_retracting_otuputs();
-			test_retracting_transitions();
-			break;
+        case STATE_retracting:
+            set_retracting_otuputs();
+            test_retracting_transitions();
+            break;
         default:
             break;
     }
@@ -140,8 +140,8 @@ void set_halt_outputs()
 //=========================================
 {
     digitalWrite(drawRelay, LOW);
-	digitalWrite(resetRelay, LOW);
-	digitalWrite(fireSolenoid, LOW);
+    digitalWrite(resetRelay, LOW);
+    digitalWrite(fireSolenoid, LOW);
 }
 
 //=========================================
@@ -166,12 +166,12 @@ void set_armed_outputs()
 void set_drawing_outputs()
 //=========================================
 {
-	if(digitalRead(fBump) == HIGH)
-	{
-		digitalWrite(drawRelay, HIGH);
-		digitalWrite(resetRelay, LOW);
-		digitalWrite(fireSolenoid, LOW);
-	}
+    if(digitalRead(fBump) == HIGH)
+    {
+        digitalWrite(drawRelay, HIGH);
+        digitalWrite(resetRelay, LOW);
+        digitalWrite(fireSolenoid, LOW);
+    }
 }
 
 //=========================================
@@ -196,21 +196,21 @@ void set_firing_outputs()
 void set_fired_outputs()
 //=========================================
 {
-	if(digitalRead(rBump) == HIGH)
-	{
-		digitalWrite(drawRelay, LOW);
-		digitalWrite(resetRelay, HIGH);
-		digitalWrite(fireSolenoid, LOW);
-	}
+    if(digitalRead(rBump) == HIGH)
+    {
+        digitalWrite(drawRelay, LOW);
+        digitalWrite(resetRelay, HIGH);
+        digitalWrite(fireSolenoid, LOW);
+    }
 }
 
 //=========================================
 void set_retracting_outputs()
 //=========================================
 {
-	digitalWrite(drawRelay, LOW);
-	digitalWrite(resetRelay, HIGH);
-	digitalWrite(fireSolenoid, LOW);
+    digitalWrite(drawRelay, LOW);
+    digitalWrite(resetRelay, HIGH);
+    digitalWrite(fireSolenoid, LOW);
 }
 
 //=========================================
@@ -231,7 +231,7 @@ void test_idle_transitions()
 //=========================================
 {
     if ( digitalRead(armingChain) == HIGH &&
-	// TODO: Fix Analog Pin Reads
+    // TODO: Fix Analog Pin Reads
          analogRead(fOptic) == HIGH )
     {
         currentState = STATE_armed;
@@ -243,7 +243,7 @@ void test_armed_transitions()
 //=========================================
 {
     if ( digitalRead(armingChain) == HIGH &&
-	// TODO: Fix Analog Pin Reads
+    // TODO: Fix Analog Pin Reads
           analogRead(fOptic) == HIGH &&
           digitalRead(drawIn) == HIGH )
     {
@@ -270,25 +270,25 @@ void test_drawn_transitions()
 //=========================================
 {
     if ( digitalRead(armingChain) == HIGH )
-	{
-	// TODO: Fix Analog Pin Reads
+    {
+    // TODO: Fix Analog Pin Reads
         if( analogRead(rOptic) == HIGH &&
           digitalRead(fireIn) == HIGH )
         {
             currentState = STATE_firing;
         }
-		else if( digitalRead(resetIn) == HIGH )
-		{
-			currentState = STATE_retracting;
-		}
-	}
+        else if( digitalRead(resetIn) == HIGH )
+        {
+            currentState = STATE_retracting;
+        }
+    }
 }
 
 //=========================================
 void test_firing_transitions()
 //=========================================
 {
-	// TODO: Fix Analog Pin Reads
+    // TODO: Fix Analog Pin Reads
     if ( analogRead(rOptic) == LOW )
     {
         currentState = STATE_fired;
@@ -300,9 +300,9 @@ void test_fired_transitions()
 //=========================================
 {
     if ( digitalRead(fBump) == HIGH )
-	{
-		currentState = STATE_idle;
-	}
+    {
+        currentState = STATE_idle;
+    }
 }
 
 //=========================================
@@ -310,9 +310,9 @@ void test_retracting_transitions()
 //=========================================
 {
     if ( digitalRead(fBump) == HIGH )
-	{
-		currentState = STATE_armed;
-	}
+    {
+        currentState = STATE_armed;
+    }
 }
 
 //=========================================
@@ -325,31 +325,31 @@ void test_retracting_transitions()
 void eStopInterrupt()
 //=========================================
 {
-	Serial.println("eSTOP");
-	currentState = STATE_HALT;
-	
-	while(true)
-	{
-		if(digitalRead(fBump) == LOW)
-		{
-			digitalWrite(drawRelay, LOW);
-			digitalWrite(resetRelay, HIGH);
-			digitalWrite(fireSolenoid, LOW);
-		}
-		else 
-		{
-			digitalWrite(drawRelay, LOW);
-			digitalWrite(resetRelay, LOW);
-			digitalWrite(fireSolenoid, LOW);
-		}
-	}
+    Serial.println("eSTOP");
+    currentState = STATE_HALT;
+    
+    while(true)
+    {
+        if(digitalRead(fBump) == LOW)
+        {
+            digitalWrite(drawRelay, LOW);
+            digitalWrite(resetRelay, HIGH);
+            digitalWrite(fireSolenoid, LOW);
+        }
+        else 
+        {
+            digitalWrite(drawRelay, LOW);
+            digitalWrite(resetRelay, LOW);
+            digitalWrite(fireSolenoid, LOW);
+        }
+    }
 }
 
 //=========================================
 void fBumpInterrupt()
 //=========================================
 {
-	digitalWrite(resetRelay, LOW);
+    digitalWrite(resetRelay, LOW);
 }
 
 //=========================================

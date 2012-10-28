@@ -1,39 +1,47 @@
+//-------- ANALOG Read Constants -------------
+#define analogHighMin		(1023)
+#define analogLowMax		(0)
+
 //-------- INPUT PIN settings -------------
 
-#define eStopRemoteIn	(18)
-#define eStopMainIn	(19)
+#define eStopRemoteIn		(18)
+#define eStopMainIn			(19)
 
-#define armingChain	(40)
+#define armingChain			(40)
 
-#define laptopModeIn	(42)
+#define laptopModeIn		(42)
 
-#define drawIn		(44)
-#define fireIn          (46)
+#define drawIn				(44)
+#define fireIn				(46)
 
-#define fBump	       	(20)
-#define rBump       	(21)
+#define fBump				(20)
+#define rBump				(21)
+
+#define resetInput			(48)
 
 //--------- OUTPUT PIN settings -----------
 
-#define drawRelay	(34)
-#define resetRelay	(36)
-#define fireSolenoid	(38)
+#define drawRelay			(34)
+#define resetRelay			(36)
+#define fireSolenoid		(38)
 
 //-------- STATE const declarations -------------
 
 int currentState;
-#define STATE_idle	(1)
-#define STATE_armed 	(2)
-#define STATE_drawing 	(3)
-#define STATE_drawn   	(4)
-#define STATE_firing  	(5)
-#define STATE_fired  	(6)
-#define STATE_HALT   	(7)
+#define STATE_idle			(1)
+#define STATE_armed 		(2)
+#define STATE_drawing		(3)
+#define STATE_drawn			(4)
+#define STATE_firing		(5)
+#define STATE_fired			(6)
+#define STATE_HALT			(7)
+
+#define STATE_retracting	(8)
 
 //-------- ANALOG PIN settings ------------
 
-#define fOptic		(8)
-#define rOptic		(9)
+#define fOptic				(8)
+#define rOptic				(9)
 
 //=========================================
 //  Function Declarations
@@ -112,6 +120,10 @@ void loop()
             set_fired_outputs();
             test_fired_transitions();
             break;
+		case STATE_retracting:
+			set_retracting_otuputs();
+			test_retracting_transitions();
+			break;
         default:
             break;
     }
@@ -193,6 +205,15 @@ void set_fired_outputs()
 }
 
 //=========================================
+void set_retracting_outputs()
+//=========================================
+{
+	digitalWrite(drawRelay, LOW);
+	digitalWrite(resetRelay, HIGH);
+	digitalWrite(fireSolenoid, LOW);
+}
+
+//=========================================
 //=========================================
 // Transition Tests
 //=========================================
@@ -228,7 +249,6 @@ void test_armed_transitions()
     {
             currentState = STATE_drawing;
     }
-
     else if ( digitalRead(armingChain) == LOW )
     {
         currentState = STATE_idle;
@@ -249,14 +269,19 @@ void test_drawing_transitions()
 void test_drawn_transitions()
 //=========================================
 {
-    if ( digitalRead(armingChain) == HIGH &&
-
+    if ( digitalRead(armingChain) == HIGH )
+	{
 	// TODO: Fix Analog Pin Reads
-          analogRead(rOptic) == HIGH &&
+        if( analogRead(rOptic) == HIGH &&
           digitalRead(fireIn) == HIGH )
         {
             currentState = STATE_firing;
         }
+		else if( digitalRead(resetIn) == HIGH )
+		{
+			currentState = STATE_retracting;
+		}
+	}
 }
 
 //=========================================
@@ -277,6 +302,16 @@ void test_fired_transitions()
     if ( digitalRead(fBump) == HIGH )
 	{
 		currentState = STATE_idle;
+	}
+}
+
+//=========================================
+void test_retracting_transitions()
+//=========================================
+{
+    if ( digitalRead(fBump) == HIGH )
+	{
+		currentState = STATE_armed;
 	}
 }
 

@@ -154,9 +154,12 @@ void set_armed_outputs()
 void set_drawing_outputs()
 //=========================================
 {
-    digitalWrite(drawRelay, HIGH);
-    digitalWrite(resetRelay, LOW);
-    digitalWrite(fireSolenoid, LOW);
+	if(digitalRead(fBump) == HIGH)
+	{
+		digitalWrite(drawRelay, HIGH);
+		digitalWrite(resetRelay, LOW);
+		digitalWrite(fireSolenoid, LOW);
+	}
 }
 
 //=========================================
@@ -181,9 +184,12 @@ void set_firing_outputs()
 void set_fired_outputs()
 //=========================================
 {
-    digitalWrite(drawRelay, LOW);
-    digitalWrite(resetRelay, HIGH);
-    digitalWrite(fireSolenoid, LOW);
+	if(digitalRead(rBump) == HIGH)
+	{
+		digitalWrite(drawRelay, LOW);
+		digitalWrite(resetRelay, HIGH);
+		digitalWrite(fireSolenoid, LOW);
+	}
 }
 
 //=========================================
@@ -233,10 +239,10 @@ void test_armed_transitions()
 void test_drawing_transitions()
 //=========================================
 {
-    // if ( digitalRead(rBump) == HIGH )
-    // {
-        // currentState = STATE_drawn;
-    // }
+     if ( digitalRead(rBump) == HIGH )
+     {
+         currentState = STATE_drawn;
+     }
 }
 
 //=========================================
@@ -268,13 +274,10 @@ void test_firing_transitions()
 void test_fired_transitions()
 //=========================================
 {
-
-	// TODO: Fix Analog Pin Reads
-    // if ( analogRead(fOptic) == LOW &&
-          // digitalRead(fBump) == HIGH )
-          // {
-              // currentState = STATE_idle;
-          // }
+    if ( digitalRead(fBump) == HIGH )
+	{
+		currentState = STATE_idle;
+	}
 }
 
 //=========================================
@@ -312,13 +315,11 @@ void fBumpInterrupt()
 //=========================================
 {
 	digitalWrite(resetRelay, LOW);
-	currentState = STATE_idle;
 }
 
 //=========================================
 void rBumpInterrupt()
 //=========================================
 {
-    	digitalWrite(drawRelay, LOW);
-	currentState = STATE_drawn;
+    digitalWrite(drawRelay, LOW);
 }

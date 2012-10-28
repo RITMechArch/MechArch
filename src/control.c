@@ -231,8 +231,7 @@ void test_idle_transitions()
 //=========================================
 {
     if ( digitalRead(armingChain) == HIGH &&
-    // TODO: Fix Analog Pin Reads
-         analogRead(fOptic) == HIGH )
+         analogRead(fOptic) <= analogLowMax )
     {
         currentState = STATE_armed;
     }
@@ -243,11 +242,10 @@ void test_armed_transitions()
 //=========================================
 {
     if ( digitalRead(armingChain) == HIGH &&
-    // TODO: Fix Analog Pin Reads
-          analogRead(fOptic) == HIGH &&
-          digitalRead(drawIn) == HIGH )
+          digitalRead(drawIn) == HIGH &&
+    	  analogRead(fOptic) <= analogLowMax)
     {
-            currentState = STATE_drawing;
+		currentState = STATE_drawing;
     }
     else if ( digitalRead(armingChain) == LOW )
     {
@@ -271,8 +269,7 @@ void test_drawn_transitions()
 {
     if ( digitalRead(armingChain) == HIGH )
     {
-    // TODO: Fix Analog Pin Reads
-        if( analogRead(rOptic) == HIGH &&
+        if( analogRead(rOptic) <= analogLowMax &&
           digitalRead(fireIn) == HIGH )
         {
             currentState = STATE_firing;
@@ -288,8 +285,7 @@ void test_drawn_transitions()
 void test_firing_transitions()
 //=========================================
 {
-    // TODO: Fix Analog Pin Reads
-    if ( analogRead(rOptic) == LOW )
+    if ( analogRead(rOptic) >= analogHighMin)
     {
         currentState = STATE_fired;
     }

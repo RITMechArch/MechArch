@@ -121,7 +121,7 @@ void loop()
             test_fired_transitions();
             break;
         case STATE_retracting:
-            set_retracting_otuputs();
+            set_retracting_outputs();
             test_retracting_transitions();
             break;
         default:
@@ -274,7 +274,7 @@ void test_drawn_transitions()
         {
             currentState = STATE_firing;
         }
-        else if( digitalRead(resetIn) == HIGH )
+        else if( digitalRead(resetInput) == HIGH )
         {
             currentState = STATE_retracting;
         }

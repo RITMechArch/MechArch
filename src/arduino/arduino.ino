@@ -155,9 +155,9 @@ void loop()
 	
         #ifdef DEBUG
 	  Serial.print("Front Optic: ");
-          Serial.println(analogRead(fOptic));
+          Serial.println(analogRead(A10));
 	  Serial.print("Rear Optic: ");
-          Serial.println(analogRead(rOptic));
+          Serial.println(analogRead(A9));
         #endif
 }
 
@@ -386,3 +386,4 @@ void rBumpInterrupt()
 {
     digitalWrite(drawRelay, LOW);
 }
+

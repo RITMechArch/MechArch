@@ -1,3 +1,21 @@
+#define DEBUG
+
+#ifdef DEBUG
+#include <WProgram.h>
+#define DEBUG_PRINT(str)    \
+    Serial.print(millis());     \
+    Serial.print(": ");    \
+    Serial.print(__PRETTY_FUNCTION__); \
+    Serial.print(' ');      \
+    Serial.print(__FILE__);     \
+    Serial.print(':');      \
+    Serial.print(__LINE__);     \
+    Serial.print(' ');      \
+    Serial.println(str);
+#else
+#define DEBUG_PRINT(str)
+#endif
+
 //-------- ANALOG Read Constants -------------
 #define analogHighMin       (1023)
 #define analogLowMax        (0)
@@ -93,40 +111,52 @@ void loop()
     switch(currentState)
     {
         case STATE_HALT:
+			DEBUG_PRINT("State: STATE_HALT");
             set_halt_outputs();
             test_halt_transitions();
             return;
         case STATE_idle:
+			DEBUG_PRINT("State: STATE_idle");
             set_idle_outputs();
             test_idle_transitions();
             break;
         case STATE_armed:
+			DEBUG_PRINT("State: STATE_armed");
             set_armed_outputs();
             test_armed_transitions();
             break;
         case STATE_drawing:
+			DEBUG_PRINT("State: STATE_drawing");
             set_drawing_outputs();
             test_drawing_transitions();
             break;
         case STATE_drawn:
+			DEBUG_PRINT("State: STATE_drawn");
             set_drawn_outputs();
             test_drawn_transitions();
             break;
         case STATE_firing:
+			DEBUG_PRINT("State: STATE_firing");
             set_firing_outputs();
             test_firing_transitions();
             break;
         case STATE_fired:
+			DEBUG_PRINT("State: STATE_fired");
             set_fired_outputs();
             test_fired_transitions();
             break;
         case STATE_retracting:
+			DEBUG_PRINT("State: STATE_retracting");
             set_retracting_outputs();
             test_retracting_transitions();
             break;
         default:
+			DEBUG_PRINT("State: Invalid state!");
             break;
     }
+	
+	DEBUG_PRINT("Front Optic: " + analogRead(fOptic));
+	DEBUG_PRINT("Rear Optic: " + analogRead(rOptic));
 }
 
 //=========================================

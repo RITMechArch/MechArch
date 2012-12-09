@@ -15,8 +15,8 @@
 #endif
 
 //-------- ANALOG Read Constants -------------
-#define analogHighMin       (1023)
-#define analogLowMax        (0)
+#define analogHighMin       (950)
+#define analogLowMax        (200)
 
 //-------- INPUT PIN settings -------------
 
@@ -262,8 +262,7 @@ void test_halt_transitions()
 void test_idle_transitions()
 //=========================================
 {
-    if ( digitalRead(armingChain) == HIGH &&
-         analogRead(fOptic) <= analogLowMax )
+    if ( digitalRead(armingChain) == HIGH)
     {
         currentState = STATE_armed;
     }
@@ -302,6 +301,7 @@ void test_drawn_transitions()
     if ( digitalRead(armingChain) == HIGH )
     {
         if( analogRead(rOptic) <= analogLowMax &&
+            analogRead(fOptic) <= analogLowMax &&
           digitalRead(fireIn) == HIGH )
         {
             currentState = STATE_firing;

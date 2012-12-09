@@ -56,8 +56,8 @@ int currentState;
 
 //-------- ANALOG PIN settings ------------
 
-#define fOptic              (87) //A10
-#define rOptic              (88) //A9
+#define fOptic              (A10)
+#define rOptic              (A9)
 
 //=========================================
 //  Function Declarations
@@ -87,8 +87,8 @@ void setup()
 
     pinMode(fBump, INPUT);
     pinMode(rBump, INPUT);
-    pinMode(A10, INPUT);
-    pinMode(A9, INPUT);
+    pinMode(fOptic, INPUT);
+    pinMode(rOptic, INPUT);
 
     pinMode(drawRelay, OUTPUT);
     pinMode(resetRelay, OUTPUT);
@@ -155,9 +155,9 @@ void loop()
 	
         #ifdef DEBUG
 	  Serial.print("Front Optic: ");
-          Serial.println(analogRead(A10));
+          Serial.println(analogRead(fOptic));
 	  Serial.print("Rear Optic: ");
-          Serial.println(analogRead(A9));
+          Serial.println(analogRead(rOptic));
         #endif
 }
 
@@ -356,6 +356,11 @@ void eStopInterrupt()
     Serial.println("eSTOP");
     currentState = STATE_HALT;
     
+    digitalWrite(drawRelay, LOW);
+    digitalWrite(resetRelay, LOW);
+    digitalWrite(fireSolenoid, LOW);
+    delay(1000);
+  
     while(true)
     {
         if(digitalRead(fBump) == LOW)

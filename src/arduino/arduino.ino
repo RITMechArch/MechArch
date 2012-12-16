@@ -45,7 +45,7 @@
 
 int currentState;
 #define STATE_idle          (1)
-#define STATE_armed         (2)
+#define STATE_ready         (2)
 #define STATE_drawing       (3)
 #define STATE_drawn         (4)
 #define STATE_firing        (5)
@@ -121,10 +121,10 @@ void loop()
             set_idle_outputs();
             test_idle_transitions();
             break;
-        case STATE_armed:
-			DEBUG_PRINT("State: STATE_armed");
-            set_armed_outputs();
-            test_armed_transitions();
+        case STATE_ready:
+			DEBUG_PRINT("State: STATE_ready");
+            set_ready_outputs();
+            test_ready_transitions();
             break;
         case STATE_drawing:
 			DEBUG_PRINT("State: STATE_drawing");
@@ -189,7 +189,7 @@ void set_idle_outputs()
 }
 
 //=========================================
-void set_armed_outputs()
+void set_ready_outputs()
 //=========================================
 {
     digitalWrite(drawRelay, LOW);
@@ -262,15 +262,14 @@ void test_halt_transitions()
 void test_idle_transitions()
 //=========================================
 {
-    if ( digitalRead(armingChain) == HIGH ||
-         analogRead(fOptic) <= analogLowMax)
+    if ( digitalRead(armingChain) == HIGH)
     {
-        currentState = STATE_armed;
+        currentState = STATE_ready;
     }
 }
 
 //=========================================
-void test_armed_transitions()
+void test_ready_transitions()
 //=========================================
 {
     if ( digitalRead(armingChain) == HIGH &&
@@ -357,7 +356,7 @@ void test_retracting_transitions()
          digitalRead(fOptic) <= analogLowMax &&
          digitalRead(rOptic) >= analogHighMin)
     {
-        currentState = STATE_armed;
+        currentState = STATE_ready;
     }
 }
 

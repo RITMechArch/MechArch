@@ -74,6 +74,9 @@ void setup()
 //=========================================
 {
     Serial.begin(9600);
+    Serial1.end();
+    Serial2.end();
+    Serial3.end();
 
     pinMode(eStopRemoteIn, INPUT);
     pinMode(eStopMainIn, INPUT);
@@ -198,12 +201,9 @@ void set_armed_outputs()
 void set_drawing_outputs()
 //=========================================
 {
-    if(digitalRead(fBump) == HIGH)
-    {
-        digitalWrite(drawRelay, HIGH);
-        digitalWrite(resetRelay, LOW);
-        digitalWrite(fireSolenoid, LOW);
-    }
+    digitalWrite(drawRelay, HIGH);
+    digitalWrite(resetRelay, LOW);
+    digitalWrite(fireSolenoid, LOW);
 }
 
 //=========================================
@@ -274,7 +274,8 @@ void test_armed_transitions()
 {
     if ( digitalRead(armingChain) == HIGH &&
           digitalRead(drawIn) == HIGH &&
-    	  analogRead(fOptic) <= analogLowMax)
+    	  analogRead(fOptic) <= analogLowMax &&
+          digitalRead(fBump) == HIGH)
     {
 		currentState = STATE_drawing;
     }
@@ -353,7 +354,7 @@ void test_retracting_transitions()
 void eStopInterrupt()
 //=========================================
 {
-    Serial.println("eSTOP");
+//    Serial.println("eSTOP");
     currentState = STATE_HALT;
     
     digitalWrite(drawRelay, LOW);

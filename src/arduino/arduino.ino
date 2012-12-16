@@ -262,7 +262,8 @@ void test_halt_transitions()
 void test_idle_transitions()
 //=========================================
 {
-    if ( digitalRead(armingChain) == HIGH)
+    if ( digitalRead(armingChain) == HIGH ||
+         analogRead(fOptic) <= analogLowMax)
     {
         currentState = STATE_armed;
     }
@@ -274,8 +275,10 @@ void test_armed_transitions()
 {
     if ( digitalRead(armingChain) == HIGH &&
           digitalRead(drawIn) == HIGH &&
-    	  analogRead(fOptic) <= analogLowMax &&
-          digitalRead(fBump) == HIGH)
+          digitalRead(fBump) == HIGH &&
+          digitalRead(rBump) == LOW &&
+       	  analogRead(fOptic) <= analogLowMax &&
+          analogRead(rOptic) >= analogHighMin)
     {
 		currentState = STATE_drawing;
     }
@@ -289,7 +292,10 @@ void test_armed_transitions()
 void test_drawing_transitions()
 //=========================================
 {
-     if ( digitalRead(rBump) == HIGH )
+     if ( digitalRead(fBump) == LOW &&
+           digitalRead(rBump) == HIGH &&
+           analogRead(fOptic) <= analogLowMax &&
+           analogRead(rOptic) <= analogLowMax)
      {
          currentState = STATE_drawn;
      }
@@ -301,9 +307,11 @@ void test_drawn_transitions()
 {
     if ( digitalRead(armingChain) == HIGH )
     {
-        if( analogRead(rOptic) <= analogLowMax &&
+        if( digitalRead(fireIn) == HIGH &&
+            digitalRead(fBump) == LOW &&
+            digitalRead(rBump) == HIGH &&
             analogRead(fOptic) <= analogLowMax &&
-          digitalRead(fireIn) == HIGH )
+            analogRead(rOptic) <= analogLowMax)
         {
             currentState = STATE_firing;
         }
@@ -318,7 +326,10 @@ void test_drawn_transitions()
 void test_firing_transitions()
 //=========================================
 {
-    if ( analogRead(rOptic) >= analogHighMin)
+    if (digitalRead(fBump) == LOW &&
+        digitalRead(rBump) == HIGH &&
+        analogRead(fOptic) >= analogHighMin &&
+        analogRead(rOptic) >= analogHighMin)
     {
         currentState = STATE_fired;
     }
@@ -328,7 +339,10 @@ void test_firing_transitions()
 void test_fired_transitions()
 //=========================================
 {
-    if ( digitalRead(fBump) == HIGH )
+    if ( digitalRead(fBump) == HIGH &&
+         digitalRead(rBump) == LOW &&
+         analogRead(fOptic) >= analogHighMin &&
+         analogRead(rOptic) >= analogHighMin)
     {
         currentState = STATE_idle;
     }
@@ -338,7 +352,10 @@ void test_fired_transitions()
 void test_retracting_transitions()
 //=========================================
 {
-    if ( digitalRead(fBump) == HIGH )
+    if ( digitalRead(fBump) == HIGH &&
+         digitalRead(rBump) == LOW &&
+         digitalRead(fOptic) <= analogLowMax &&
+         digitalRead(rOptic) >= analogHighMin)
     {
         currentState = STATE_armed;
     }
@@ -354,13 +371,13 @@ void test_retracting_transitions()
 void eStopInterrupt()
 //=========================================
 {
-//    Serial.println("eSTOP");
+    Serial.println("eSTOP");
     currentState = STATE_HALT;
     
     digitalWrite(drawRelay, LOW);
     digitalWrite(resetRelay, LOW);
     digitalWrite(fireSolenoid, LOW);
-    delay(1000);
+    delay(10000);
   
     while(true)
     {

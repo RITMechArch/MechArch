@@ -99,8 +99,8 @@ void setup()
 
     attachInterrupt(2, fBumpInterrupt, RISING);
     attachInterrupt(3, rBumpInterrupt, RISING);
-    attachInterrupt(4, eStopInterrupt, RISING);
-    attachInterrupt(5, eStopInterrupt, RISING);
+    attachInterrupt(4, eStopInterrupt, LOW);
+    attachInterrupt(5, eStopInterrupt, LOW);
 
     currentState = STATE_idle;
 }
@@ -373,10 +373,13 @@ void eStopInterrupt()
     Serial.println("eSTOP");
     currentState = STATE_HALT;
     
-    digitalWrite(drawRelay, LOW);
-    digitalWrite(resetRelay, LOW);
-    digitalWrite(fireSolenoid, LOW);
-    delay(10000);
+    double d;
+    for (d = 1.0; sqrt(d) < 16.1; d = d + 1)
+    {
+    	digitalWrite(drawRelay, LOW);
+    	digitalWrite(resetRelay, LOW);
+    	digitalWrite(fireSolenoid, LOW);
+    }
   
     while(true)
     {

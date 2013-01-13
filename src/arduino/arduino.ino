@@ -374,7 +374,7 @@ void eStopInterrupt()
     currentState = STATE_HALT;
     
     double d;
-    for (d = 1.0; sqrt(d) < 16.1; d = d + 1)
+    for (d = 1.0; sqrt(d) < 121.1; d = d + 1)
     {
     	digitalWrite(drawRelay, LOW);
     	digitalWrite(resetRelay, LOW);

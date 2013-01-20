@@ -13,8 +13,17 @@
 #else
 #define DEBUG_PRINT(str)
 #endif
+#include <LiquidCrystal.h>
+//-------- LCD Output Pins ---------------
+#define LCDRegSelect        (37)
+#define LCDEnable           (39)
+#define LCDData4            (41)
+#define LCDData5            (43)
+#define LCDData6            (45)
+#define LCDData7            (47)
+LiquidCrystal lcd( LCDRegSelect, LCDEnable, LCDData4, LCDData5, LCDData6, LCDData7 );
 
-//-------- ANALOG Read Constants -------------
+//-------- ANALOG Read Constants ----------
 #define analogHighMin       (950)
 #define analogLowMax        (200)
 

@@ -112,12 +112,67 @@ void setup()
     attachInterrupt(5, eStopInterrupt, LOW);
 
     currentState = STATE_idle;
+    lcd.begin( 20, 4 );
+    lcd.print( "Status: " );
 }
 
 //=========================================
 void loop()
 //=========================================
 {
+    //Set the second line on the LCD
+    lcd.setCursor( 0, 1 );
+    if ( analogRead(fOptic) > analogHighMin && analogRead(rOptic) > analogHighMin )
+    {
+        lcd.print( "SAFE  " );
+    }
+    else
+    {
+        lcd.print( "LOADED" );
+    }
+    
+    //Set the third line on the LCD
+    lcd.setCursor( 0, 2 );
+    if ( analogRead(fOptic) < analogLowMax && analogRead(rOptic) > analogHighMin )
+    {
+        lcd.print("Arrow Front");
+    }
+    else if ( analogRead(fOptic) < analogLowMax && analogRead(rOptic) < analogLowMax )
+    {
+        lcd.print("Arrow Drawn");
+    }
+    else if ( analogRead(fOptic) > analogHighMin && analogRead (rOptic) > analogHighMin )
+    {
+        lcd.print("           ");
+    }
+    else
+    {
+      lcd.print("ERROR      ");
+    }
+    
+    //Set the fourth line on the LCD
+    lcd.setCursor( 0, 3 );
+    int fOpticVal( analogRead(fOptic) );
+    int rOpticVal( analogRead(rOptic) );
+    if ( ( fOpticVal > analogLowMax && fOpticVal < analogHighMin ) &&
+        ( rOpticVal > analogLowMax && rOpticVal < analogHighMin ) )
+    {
+        lcd.print("Check Sensors");
+    }
+    else if ( rOpticVal > analogLowMax && rOpticVal < analogHighMin )
+    {
+        lcd.print("Check rear   ");
+    }
+    else if ( ( fOpticVal > analogLowMax && fOpticVal < analogHighMin ) ||
+               ( fOpticVal > analogHighMin  && rOpticVal < analogHighMin ) )
+    {
+        lcd.print("Check front  ");
+    }
+    else 
+    {
+        lcd.print("             ");
+    }
+       
     switch(currentState)
     {
         case STATE_HALT:
@@ -126,41 +181,57 @@ void loop()
             test_halt_transitions();
             return;
         case STATE_idle:
-			DEBUG_PRINT("State: STATE_idle");
+            lcd.setCursor( 8, 0 );
+            lcd.print( "IDLE      " );
+            		DEBUG_PRINT("State: STATE_idle");
             set_idle_outputs();
             test_idle_transitions();
             break;
         case STATE_ready:
+            lcd.setCursor( 8, 0 );
+            lcd.print( "Ready     ");
 			DEBUG_PRINT("State: STATE_ready");
             set_ready_outputs();
             test_ready_transitions();
             break;
         case STATE_drawing:
+            lcd.setCursor( 8, 0 );
+            lcd.print( "Drawing   ");
 			DEBUG_PRINT("State: STATE_drawing");
             set_drawing_outputs();
             test_drawing_transitions();
             break;
         case STATE_drawn:
+            lcd.setCursor( 8, 0 );
+            lcd.print( "Drawn     ");
 			DEBUG_PRINT("State: STATE_drawn");
             set_drawn_outputs();
             test_drawn_transitions();
             break;
         case STATE_firing:
+            lcd.setCursor( 8, 0 );
+            lcd.print( "Firing    ");
 			DEBUG_PRINT("State: STATE_firing");
             set_firing_outputs();
             test_firing_transitions();
             break;
         case STATE_fired:
+            lcd.setCursor( 8, 0 );
+            lcd.print( "Fired     ");
 			DEBUG_PRINT("State: STATE_fired");
             set_fired_outputs();
             test_fired_transitions();
             break;
         case STATE_retracting:
+            lcd.setCursor( 8, 0 );
+            lcd.print( "Retracting");
 			DEBUG_PRINT("State: STATE_retracting");
             set_retracting_outputs();
             test_retracting_transitions();
             break;
         default:
+            lcd.setCursor( 8, 0 );
+            lcd.print( "Invalid   ");
 			DEBUG_PRINT("State: Invalid state!");
             break;
     }

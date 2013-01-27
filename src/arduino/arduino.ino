@@ -113,13 +113,15 @@ void setup()
 
     currentState = STATE_idle;
     lcd.begin( 20, 4 );
-    lcd.print( "Status: " );
 }
 
 //=========================================
 void loop()
 //=========================================
 {
+    lcd.clear();
+    lcd.print( "Status: " );
+    
     //Set the second line on the LCD
     lcd.setCursor( 0, 1 );
     if ( analogRead(fOptic) > analogHighMin && analogRead(rOptic) > analogHighMin )
@@ -140,6 +142,10 @@ void loop()
     else if ( analogRead(fOptic) < analogLowMax && analogRead(rOptic) < analogLowMax )
     {
         lcd.print("Arrow Drawn");
+    }
+    else if ( analogRead(rOptic) < analogLowMax && digitalRead(fBump) == HIGH )
+    {
+        lcd.print("ERROR: CHCK R SENOR");
     }
     else if ( analogRead(fOptic) > analogHighMin && analogRead (rOptic) > analogHighMin )
     {
@@ -193,20 +199,44 @@ void loop()
             lcd.print( "Ready     ");
 			DEBUG_PRINT("State: STATE_ready");
             set_ready_outputs();
+            
+            if ( analogRead(fOptic > analogHighMin) )
+            {
+                lcd.setCursor(0, 3);
+                lcd.print("ERROR: UNLOADED");
+            }
+            else if ( fBump == LOW || rBump == HIGH )
+            {
+                lcd.setCursor(0, 3);
+                lcd.print("ERROR: BOW NOT FWD");
+            }
+            
             test_ready_transitions();
             break;
         case STATE_drawing:
-            lcd.setCursor( 8, 0 );
+            lcd.setCursor(8, 0);
             lcd.print( "Drawing   ");
 			DEBUG_PRINT("State: STATE_drawing");
             set_drawing_outputs();
             test_drawing_transitions();
             break;
         case STATE_drawn:
-            lcd.setCursor( 8, 0 );
+            lcd.setCursor(8, 0);
             lcd.print( "Drawn     ");
 			DEBUG_PRINT("State: STATE_drawn");
             set_drawn_outputs();
+            
+            if ( digitalRead(rBump) == LOW ) 
+            {
+                lcd.setCursor(0, 3);
+                lcd.print("ERROR: INCOMPLT DRAW");
+            } 
+            else if ( (analogRead(rOptic) > analogHighMin ) && ( analogRead(fOptic) < analogLowMax ) )
+            {
+                lcd.setCursor(0, 3);
+                lcd.print("ERROR: ARROW NOT BCK");
+            }
+            
             test_drawn_transitions();
             break;
         case STATE_firing:

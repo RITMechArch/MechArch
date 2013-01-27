@@ -172,6 +172,7 @@ void loop()
     {
         lcd.print("             ");
     }
+    
        
     switch(currentState)
     {
@@ -452,6 +453,14 @@ void eStopInterrupt()
 {
     Serial.println("eSTOP");
     currentState = STATE_HALT;
+    lcd.setCursor(0,0);
+    lcd.print("--------------------");
+    lcd.setCursor(0,1);
+    lcd.print("---EMERGENCY HALT---");
+    lcd.setCursor(0,2);
+    lcd.print("--------------------");
+    lcd.setCursor(0,3);
+    lcd.print("RESET H/W TO PROCEED");
     
     double d;
     for (d = 1.0; sqrt(d) < 121.1; d = d + 1)

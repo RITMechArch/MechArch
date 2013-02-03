@@ -119,6 +119,11 @@ void setup()
 void loop()
 //=========================================
 {
+    Serial.print("Drawn: ");
+    Serial.println(digitalRead(rBump));
+    Serial.print("Retract: ");
+    Serial.println(digitalRead(fBump));
+    
     lcd.clear();
     lcd.print( "Status: " );
     
@@ -403,9 +408,7 @@ void test_drawing_transitions()
 //=========================================
 {
      if ( digitalRead(fBump) == LOW &&
-           digitalRead(rBump) == HIGH &&
-           analogRead(fOptic) <= analogLowMax &&
-           analogRead(rOptic) <= analogLowMax)
+           digitalRead(rBump) == HIGH)
      {
          currentState = STATE_drawn;
      }
@@ -450,9 +453,7 @@ void test_fired_transitions()
 //=========================================
 {
     if ( digitalRead(fBump) == HIGH &&
-         digitalRead(rBump) == LOW &&
-         analogRead(fOptic) >= analogHighMin &&
-         analogRead(rOptic) >= analogHighMin)
+         digitalRead(rBump) == LOW)
     {
         currentState = STATE_idle;
     }
@@ -463,9 +464,7 @@ void test_retracting_transitions()
 //=========================================
 {
     if ( digitalRead(fBump) == HIGH &&
-         digitalRead(rBump) == LOW &&
-         digitalRead(fOptic) <= analogLowMax &&
-         digitalRead(rOptic) >= analogHighMin)
+         digitalRead(rBump) == LOW)
     {
         currentState = STATE_ready;
     }

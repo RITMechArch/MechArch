@@ -200,7 +200,7 @@ void loop()
 			DEBUG_PRINT("State: STATE_ready");
             set_ready_outputs();
             
-            if ( analogRead(fOptic > analogHighMin) )
+            if ( analogRead(fOptic) > analogHighMin )
             {
                 lcd.setCursor(0, 3);
                 lcd.print("ERROR: UNLOADED");

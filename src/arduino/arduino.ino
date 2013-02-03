@@ -170,7 +170,7 @@ void loop()
         lcd.print("Check rear   ");
     }
     else if ( ( fOpticVal > analogLowMax && fOpticVal < analogHighMin ) ||
-               ( fOpticVal > analogHighMin  && rOpticVal < analogHighMin ) )
+               ( fOpticVal > analogHighMin  && rOpticVal < analogLowMax ) )
     {
         lcd.print("Check front  ");
     }

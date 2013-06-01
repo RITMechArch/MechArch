@@ -1,4 +1,4 @@
 MechArcher
 ==========
 
-Mechanical Archer project from the archery club at RIT
+Mechanical Archer project from the Archery Club at RIT.

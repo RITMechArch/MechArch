@@ -1,0 +1,3 @@
+elements-dir /home/tyrian/pcbs/footprints
+schematics HBridge.sch
+output-name HBridge

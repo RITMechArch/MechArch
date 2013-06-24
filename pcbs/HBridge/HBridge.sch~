@@ -1,16 +1,51 @@
 v 20110115 2
 C 40000 40000 0 0 0 title-B.sym
-C 48400 49900 1 180 0 jumper-1.sym
+C 44300 50400 1 180 0 jumper-1.sym
 {
-T 48100 49400 5 8 0 0 180 0 1
+T 44000 49900 5 8 0 0 180 0 1
 device=JUMPER
-T 48100 49400 5 10 1 1 180 0 1
+T 44000 49900 5 10 1 1 180 0 1
 refdes=J?
 }
-C 47800 47200 1 270 0 jumper-1.sym
+C 43700 47200 1 270 0 jumper-1.sym
 {
-T 48300 46900 5 8 0 0 270 0 1
+T 44200 46900 5 8 0 0 270 0 1
 device=JUMPER
-T 48300 46900 5 10 1 1 270 0 1
+T 44200 46900 5 10 1 1 270 0 1
 refdes=J?
+}
+T 50000 40700 9 10 1 0 0 0 1
+H-Bridge Motor Controller
+T 50000 40400 9 10 1 0 0 0 1
+HBridge.sch
+T 50500 40100 9 10 1 0 0 0 1
+1
+T 52000 40100 9 10 1 0 0 0 1
+1
+T 53900 40400 9 10 1 0 0 0 1
+1
+T 53900 40100 9 10 1 0 0 0 1
+Bryan Blakeslee
+C 42900 45800 1 0 0 power-nmos.sym
+{
+T 43600 46450 5 10 0 1 0 0 1
+device=pwr-nfet
+T 43600 46250 5 10 1 1 0 0 1
+refdes=M?
+}
+C 45500 45800 1 0 1 power-nmos.sym
+{
+T 44800 46450 5 10 0 1 0 6 1
+device=pwr-nfet
+T 44800 46250 5 10 1 1 0 6 1
+refdes=M?
+}
+T 51900 50600 9 10 1 0 0 0 1
+NOTE:  CHECK TRANSISTORS SYMBOLS FOR PINOUT!
+C 43700 44800 1 0 0 power-nmos.sym
+{
+T 44400 45450 5 10 0 1 0 0 1
+device=pwr-nfet
+T 44400 45250 5 10 1 1 0 0 1
+refdes=M?
 }

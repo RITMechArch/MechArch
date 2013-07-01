@@ -6,6 +6,8 @@ T 44000 49600 5 8 0 0 180 0 1
 device=JUMPER
 T 44000 49600 5 10 1 1 180 0 1
 refdes=TB1
+T 44300 50100 5 10 0 0 0 0 1
+footprint=TE-Barrier-2Pos.fp
 }
 C 43700 48000 1 270 0 jumper-1.sym
 {
@@ -13,6 +15,8 @@ T 44200 47700 5 8 0 0 270 0 1
 device=JUMPER
 T 44000 47600 5 10 1 1 0 0 1
 refdes=TB2
+T 43700 48000 5 10 0 0 0 0 1
+footprint=TE-Barrier-2Pos.fp
 }
 T 50000 40700 9 10 1 0 0 0 1
 H-Bridge Motor Controller
@@ -113,6 +117,8 @@ T 55800 44400 5 10 1 1 0 6 1
 refdes=TB3
 T 55400 44350 5 10 0 0 0 0 1
 device=CONNECTOR_3
+T 55100 42700 5 10 0 0 0 0 1
+footprint=TE-Barrier-3Pos.fp
 }
 C 44100 45500 1 0 0 gnd-1.sym
 C 45200 40600 1 0 0 gnd-1.sym
@@ -403,6 +409,8 @@ T 40900 50800 5 10 1 1 0 0 1
 refdes=TB4
 T 41300 50750 5 10 0 0 0 6 1
 device=CONNECTOR_2
+T 41600 49500 5 10 0 0 0 0 1
+footprint=TE-Barrier-2Pos.fp
 }
 C 41500 49500 1 0 0 gnd-1.sym
 N 41600 49900 41600 49800 4

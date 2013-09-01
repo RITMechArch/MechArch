@@ -317,9 +317,12 @@ void set_ready_outputs()
 void set_drawing_outputs()
 //=========================================
 {
-    digitalWrite(drawRelay, HIGH);
-    digitalWrite(resetRelay, LOW);
-    digitalWrite(fireSolenoid, LOW);
+    if(digitalRead(fBump) == HIGH )
+    {
+        digitalWrite(drawRelay, HIGH);
+        digitalWrite(resetRelay, LOW);
+        digitalWrite(fireSolenoid, LOW);
+    }
 }
 
 //=========================================

@@ -23,10 +23,6 @@
 #define LCDData7            (47)
 LiquidCrystal lcd( LCDRegSelect, LCDEnable, LCDData4, LCDData5, LCDData6, LCDData7 );
 
-//-------- ANALOG Read Constants ----------
-#define analogHighMin       (950)
-#define analogLowMax        (200)
-
 //-------- INPUT PIN settings -------------
 
 #define eStopRemoteIn       (18)
@@ -41,6 +37,9 @@ LiquidCrystal lcd( LCDRegSelect, LCDEnable, LCDData4, LCDData5, LCDData6, LCDDat
 
 #define fBump               (20)
 #define rBump               (21)
+
+#define fOptic              (24)
+#define rOptic              (26)
 
 #define resetInput          (48)
 
@@ -63,10 +62,6 @@ int currentState;
 
 #define STATE_retracting    (8)
 
-//-------- ANALOG PIN settings ------------
-
-#define fOptic              (A10)
-#define rOptic              (A9)
 
 //=========================================
 //  Function Declarations
@@ -119,6 +114,7 @@ void setup()
 void loop()
 //=========================================
 {
+    //LCD Setup
     Serial.print("Drawn: ");
     Serial.println(digitalRead(rBump));
     Serial.print("Retract: ");
@@ -129,7 +125,7 @@ void loop()
     
     //Set the second line on the LCD
     lcd.setCursor( 0, 1 );
-    if ( analogRead(fOptic) > analogHighMin && analogRead(rOptic) > analogHighMin )
+    if ( digitalRead(fOptic) == HIGH && digitalRead(rOptic) == HIGH )
     {
         lcd.print( "SAFE  " );
     }
@@ -140,19 +136,23 @@ void loop()
     
     //Set the third line on the LCD
     lcd.setCursor( 0, 2 );
-    if ( analogRead(fOptic) < analogLowMax && analogRead(rOptic) > analogHighMin )
+    if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == HIGH )
     {
         lcd.print("Arrow Front");
     }
-    else if ( analogRead(fOptic) < analogLowMax && analogRead(rOptic) < analogLowMax )
+    else if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == LOW )
     {
         lcd.print("Arrow Drawn");
     }
-    else if ( analogRead(rOptic) < analogLowMax && digitalRead(fBump) == HIGH )
+    else if ( digitalRead(fOptic) == HIGH && digitalRead(rOptic) == LOW )
     {
-        lcd.print("ERROR: CHCK R SENOR");
+        lcd.print("ERROR: CHCK F SENSOR");
     }
-    else if ( analogRead(fOptic) > analogHighMin && analogRead (rOptic) > analogHighMin )
+    else if ( digitalRead(rOptic) == LOW && digitalRead(fBump) == HIGH )
+    {
+        lcd.print("ERROR: CHCK R SENSOR");
+    }
+    else if ( digitalRead(fOptic) == HIGH && digitalRead(rOptic) == HIGH )
     {
         lcd.print("           ");
     }
@@ -160,30 +160,8 @@ void loop()
     {
       lcd.print("ERROR      ");
     }
-    
-    //Set the fourth line on the LCD
-    lcd.setCursor( 0, 3 );
-    int fOpticVal( analogRead(fOptic) );
-    int rOpticVal( analogRead(rOptic) );
-    if ( ( fOpticVal > analogLowMax && fOpticVal < analogHighMin ) &&
-        ( rOpticVal > analogLowMax && rOpticVal < analogHighMin ) )
-    {
-        lcd.print("Check Sensors");
-    }
-    else if ( rOpticVal > analogLowMax && rOpticVal < analogHighMin )
-    {
-        lcd.print("Check rear   ");
-    }
-    else if ( ( fOpticVal > analogLowMax && fOpticVal < analogHighMin ) ||
-               ( fOpticVal > analogHighMin  && rOpticVal < analogLowMax ) )
-    {
-        lcd.print("Check front  ");
-    }
-    else 
-    {
-        lcd.print("             ");
-    }
-    
+    //END LCD setup
+       
        
     switch(currentState)
     {
@@ -205,7 +183,7 @@ void loop()
 			DEBUG_PRINT("State: STATE_ready");
             set_ready_outputs();
             
-            if ( analogRead(fOptic) > analogHighMin )
+            if ( digitalRead(fOptic) == HIGH )
             {
                 lcd.setCursor(0, 3);
                 lcd.print("ERROR: UNLOADED");
@@ -236,7 +214,7 @@ void loop()
                 lcd.setCursor(0, 3);
                 lcd.print("ERROR: INCOMPLT DRAW");
             } 
-            else if ( (analogRead(rOptic) > analogHighMin ) && ( analogRead(fOptic) < analogLowMax ) )
+            else if ( (digitalRead(rOptic) == HIGH ) && ( digitalRead(fOptic) == LOW ) )
             {
                 lcd.setCursor(0, 3);
                 lcd.print("ERROR: ARROW NOT BCK");
@@ -274,9 +252,9 @@ void loop()
 	
         #ifdef DEBUG
 	  Serial.print("Front Optic: ");
-          Serial.println(analogRead(fOptic));
+          Serial.println(digitalRead(fOptic));
 	  Serial.print("Rear Optic: ");
-          Serial.println(analogRead(rOptic));
+          Serial.println(digitalRead(rOptic));
         #endif
 }
 
@@ -395,8 +373,8 @@ void test_ready_transitions()
           digitalRead(drawIn) == HIGH &&
           digitalRead(fBump) == HIGH &&
           digitalRead(rBump) == LOW &&
-       	  analogRead(fOptic) <= analogLowMax &&
-          analogRead(rOptic) >= analogHighMin)
+       	  digitalRead(fOptic) == LOW &&
+          digitalRead(rOptic) == HIGH )
     {
 		currentState = STATE_drawing;
     }
@@ -426,8 +404,8 @@ void test_drawn_transitions()
         if( digitalRead(fireIn) == HIGH &&
             digitalRead(fBump) == LOW &&
             digitalRead(rBump) == HIGH &&
-            analogRead(fOptic) <= analogLowMax &&
-            analogRead(rOptic) <= analogLowMax)
+            digitalRead(fOptic) == LOW &&
+            digitalRead(rOptic) == LOW )
         {
             currentState = STATE_firing;
         }
@@ -444,8 +422,8 @@ void test_firing_transitions()
 {
     if (digitalRead(fBump) == LOW &&
         digitalRead(rBump) == HIGH &&
-        analogRead(fOptic) >= analogHighMin &&
-        analogRead(rOptic) >= analogHighMin)
+        digitalRead(fOptic) == HIGH &&
+        digitalRead(rOptic) == HIGH )
     {
         currentState = STATE_fired;
     }

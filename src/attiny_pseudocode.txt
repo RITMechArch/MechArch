@@ -1,0 +1,54 @@
+# Inputs
+#--------
+# FWD
+# REV
+
+# Outputs
+#---------
+# LLEG
+# RLEG
+# EN (PWM)
+
+pwmRamp()
+{
+  while(dutyCycle < 1){
+    pwm_reg += interval;
+    delay_us(qty);
+  }
+}
+
+main()
+{
+  if(FWD == REV)
+  {
+    EN = 0;
+    delay_us(qty);
+    LLEG = 1;
+    RLEG = 1;
+    delay_us(qty);
+    EN = 1;
+    busy_wait();
+  }
+  else if (FWD)
+  {
+    EN = 0;
+    delay_us(qty);
+    LLEG = 0;
+    RLEG = 1;
+    delay_us(qty);
+    pwmRamp();
+    busy_wait();
+  }
+  else if (REV)
+  {
+    EN = 0;
+    delay_us(qty);
+    LLEG = 1;
+    RLEG = 0;
+    delay_us(qty);
+    pwmRamp();
+    busy_wait();
+  }
+}
+    
+

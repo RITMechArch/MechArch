@@ -1,0 +1,21 @@
+[labels]
+MIC4467ZN
+refdes=U?
+
+[left]
+1 1A
+2 1B
+3 2A
+4 2B
+5 3A
+6 3B
+7 GND
+
+[right]
+14 VS
+13 1Y
+12 2Y
+11 3Y
+10 4Y
+9 4B
+8 4A

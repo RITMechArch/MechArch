@@ -1,0 +1,18 @@
+[labels]
+MCU-GEN
+refdes=U?
+
+[left]
+1 VCC
+2 ADC
+3 GND
+
+[right]
+4 B1
+5 B2
+6 B3
+7 B4
+8 B5
+9 B6
+10 B7
+11 B8

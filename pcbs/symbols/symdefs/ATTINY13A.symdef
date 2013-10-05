@@ -1,0 +1,15 @@
+[labels]
+ATTINY13A
+refdes=U?
+
+[left]
+1 PB5
+2 PB3
+3 PB4
+4 GND
+
+[right]
+8 VCC
+7 PB2
+6 PB1
+5 PB0

@@ -1,0 +1,15 @@
+[labels]
+NJM12904D
+refdes=U?
+
+[left]
+1 A_OUT
+2 A_IN-
+3 A_IN+
+4 GND
+
+[right]
+8 V+
+7 B_OUT
+6 B_IN-
+5 B_IN+

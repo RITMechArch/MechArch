@@ -28,7 +28,6 @@ LiquidCrystal lcd( LCDRegSelect, LCDEnable, LCDData4, LCDData5, LCDData6, LCDDat
 #define laptopModeIn        (42)
 
 #define drawIn              (44)
-#define letDownIn           (50)
 #define fireIn              (46)
 
 #define fBump               (20)
@@ -58,11 +57,33 @@ void setup(){
 void loop(){
    /* Perform scan of buttons and print status. */
    lcd.setCursor(0, 0);
-   lcd.print(strcat(strcat("AC: ", (digitalRead(armingChain) ? "H" : "L")), strcat("   Fire: ", (digitalRead(fireIn) ? "H" : "L"))));
+   lcd.print("AC: ");
+   delay(50);
+   lcd.print((digitalRead(armingChain) ? "H" : "L"));
+   delay(50);
+   lcd.print("   Fire: ");
+   delay(50);
+   lcd.print((digitalRead(fireIn) ? "H" : "L"));
+   delay(50);
+   //lcd.print(strcat(strcat("AC: ", (digitalRead(armingChain) ? "H" : "L")), strcat("   Fire: ", (digitalRead(fireIn) ? "H" : "L"))));
+   
+   
    lcd.setCursor(0, 1);
-   lcd.print(strcat("E-Stop: ", (digitalRead(eStopMainIn) ? "H" : "L")));
+   lcd.print("E-stop: ");
+   delay(50);
+   lcd.print("N/A");
+   //lcd.print(strcat("E-Stop: ", (digitalRead(eStopMainIn) ? "H" : "L")));
+   
    lcd.setCursor(0, 2);
-   lcd.print(strcat("Draw: ", (digitalRead(drawIn) ? "H" : "L")));
+   lcd.print("Draw: ");
+   delay(50);
+   lcd.print((digitalRead(drawIn) ? "H" : "L"));
+   delay(50);
+   //lcd.print(strcat("Draw: ", (digitalRead(drawIn) ? "H" : "L")));
+   
    lcd.setCursor(0, 3);
-   lcd.print(strcat("letDown: ", (digitalRead(letDownIn) ? "H" : "L")));
+   lcd.print("letDown: ");
+   delay(50);
+   lcd.print((digitalRead(resetInput) ? "H" : "L"));
+   //lcd.print(strcat("letDown: ", (digitalRead(letDownIn) ? "H" : "L")));
 }

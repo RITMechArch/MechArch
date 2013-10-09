@@ -1,5 +1,9 @@
-unnamed_net24	D3-1 R3-1 
-unnamed_net23	D2-1 R2-1 
+unnamed_net28	R6-1 M2-1 D2-2 
+unnamed_net27	R5-2 M1-1 D1-2 
+unnamed_net26	R7-1 M3-1 R3-2 
+unnamed_net25	D3-1 R3-1 
+unnamed_net24	D2-1 R2-1 
+unnamed_net23	R8-1 M4-1 R4-2 
 unnamed_net22	D4-1 R4-1 
 unnamed_net21	D1-1 R1-1 
 unnamed_net20	TB4-1 C3-1 VR1-1 IC3-8 
@@ -11,10 +15,10 @@ unnamed_net15	C2-1 VR1-3 IC2-8
 GND	TB4-2 C3-2 C2-2 VR1-2 IC3-4 IC2-4 
 unnamed_net14	R9-1 IC2-3 
 unnamed_net13	R10-1 IC2-2 
-unnamed_net12	D1-2 M1-1 IC1-13 
-unnamed_net11	R3-2 M3-1 IC1-12 
-unnamed_net10	R4-2 M4-1 IC1-11 
-unnamed_net9	D2-2 M2-1 IC1-10 
+unnamed_net12	R6-2 IC1-13 
+unnamed_net11	R8-2 IC1-12 
+unnamed_net10	R7-2 IC1-11 
+unnamed_net9	R5-1 IC1-10 
 unnamed_net8	IC1-9 IC1-8 
 PGND	M4-3 M3-3 C1-1 TB5-2 D4-2 D3-2 IC1-7 
 unnamed_net7	IC1-6 IC1-5 

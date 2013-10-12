@@ -16,10 +16,6 @@ ChangePinName(C3, 1, 1)
 ChangePinName(C4, 2, 2)
 ChangePinName(C4, 1, 1)
 
-# Start of element TB6
-ChangePinName(TB6, 2, 2)
-ChangePinName(TB6, 1, 1)
-
 # Start of element R12
 ChangePinName(R12, 2, 2)
 ChangePinName(R12, 1, 1)

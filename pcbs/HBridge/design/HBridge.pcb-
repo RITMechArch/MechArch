@@ -6,7 +6,7 @@ FileVersion[20070407]
 PCB["" 800000 800000]
 
 Grid[1000.0 0 0 1]
-Cursor[298000 224000 0.000000]
+Cursor[0 0 0.000000]
 PolyArea[3100.006200]
 Thermal[0.500000]
 DRC[600 1500 600 1000 1300 700]
@@ -1718,8 +1718,9 @@ Layer(10 "silk")
 	Text[27000 287000 3 98 "PGND" "clearline"]
 	Text[27000 252000 3 98 "+12V(P)" "clearline"]
 	Text[487000 340000 0 98 "PGND" "clearline"]
-	Text[304000 203000 0 98 "Bryan Blakeslee" "clearline"]
-	Text[302000 216000 0 98 "Mechanical Archer" "clearline"]
+	Text[280000 194000 0 98 "Bryan Blakeslee" "clearline"]
+	Text[280000 202000 0 98 "Mechanical Archer" "clearline"]
+	Text[280000 209000 0 98 "H-Bridge Controller" "clearline"]
 )
 NetList()
 (

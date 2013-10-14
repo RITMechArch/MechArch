@@ -1,52 +1,56 @@
 # Inputs
 #--------
-# FWD
-# REV
+# FWD (GPIO)
+# REV (GPIO)
 
 # Outputs
 #---------
-# LLEG
-# RLEG
-# EN (PWM)
+# M1 -- PMOS (GPIO)
+# M2 -- PMOS (GPIO)
+# M3 -- NMOS (PWM)
+# M4 -- NMOS (PWM)
 
-pwmRamp()
+pwmRamp(int pinNum)
 {
   while(dutyCycle < 1){
-    pwm_reg += interval;
+    pwm_reg[pinNum] += interval;
     delay_us(qty);
   }
+}
+
+busy_wait()
+{
+  while(FWD != REV);
 }
 
 main()
 {
   if(FWD == REV)
   {
-    EN = 0;
+    M1 = 1;	// Shut off both PMOS
+    M2 = 1;
     delay_us(qty);
-    LLEG = 1;
-    RLEG = 1;
-    delay_us(qty);
-    EN = 1;
-    busy_wait();
+    M3 = 255;	// Turn on both NMOS
+    M4 = 255;
   }
   else if (FWD)
   {
-    EN = 0;
+    M3 = 0;	// Shut off both NMOS
+    M4 = 0;
     delay_us(qty);
-    LLEG = 0;
-    RLEG = 1;
+    M2 = 0;	// Turn on M2 PMOS
     delay_us(qty);
-    pwmRamp();
+    pwmRamp(M3);
     busy_wait();
   }
   else if (REV)
   {
-    EN = 0;
+    M3 = 0;	// Shut off both NMOS
+    M4 = 0;
     delay_us(qty);
-    LLEG = 1;
-    RLEG = 0;
+    M1 = 0;	// Turn on M1 PMOS
     delay_us(qty);
-    pwmRamp();
+    pwmRamp(M4);
     busy_wait();
   }
 }

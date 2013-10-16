@@ -5,8 +5,8 @@ FileVersion[20070407]
 
 PCB["" 800000 800000]
 
-Grid[1000.0 0 0 1]
-Cursor[583000 133000 0.000000]
+Grid[1000.0 0 0 0]
+Cursor[529000 220000 0.000000]
 PolyArea[3100.006200]
 Thermal[0.500000]
 DRC[600 1500 600 1000 1300 700]
@@ -1368,6 +1368,21 @@ Element["" "TO220R.fp" "R6" "12" 236000 273000 -20000 8000 0 100 ""]
 	ElementLine [-20000 -12000 20000 -12000 2000]
 
 	)
+
+Element["" "ACY100" "C7" "10n" 539000 242000 -3000 5000 0 100 ""]
+(
+	Pin[0 0 5500 3000 6100 3000 "1" "1" "square,edge2"]
+	Pin[-10000 0 5500 3000 6100 3000 "2" "2" "edge2"]
+	ElementLine [-2500 0 0 0 1000]
+	ElementLine [-10000 0 -7500 0 1000]
+	ElementLine [-7500 800 -2500 800 1000]
+	ElementLine [-7500 -800 -7500 800 1000]
+	ElementLine [-7500 -800 -2500 -800 1000]
+	ElementLine [-2500 -800 -2500 800 1000]
+
+	)
+Rat[539000 242000 1 194000 91000 1  "via"]
+Rat[529000 242000 1 529000 219000 0  ""]
 Layer(1 "trace")
 (
 	Line[136000 273000 130000 273000 8000 2000 ""]
@@ -1711,7 +1726,6 @@ Layer(9 "silk")
 Layer(10 "silk")
 (
 	Text[501000 123000 0 98 "FWD" "clearline"]
-	Text[540000 123000 0 98 "REV" "clearline"]
 	Text[516000 340000 0 98 "+12V(S)" "clearline"]
 	Text[265000 228000 1 98 "RED" "clearline"]
 	Text[265000 194000 1 98 "BLK" "clearline"]
@@ -1721,6 +1735,9 @@ Layer(10 "silk")
 	Text[280000 202000 0 98 "Mechanical Archer" "clearline"]
 	Text[280000 209000 0 98 "H-Bridge Controller" "clearline"]
 	Text[486000 340000 0 98 "SGND" "clearline"]
+	Text[513000 123000 0 98 "(POS)" "clearline"]
+	Text[534000 123000 0 98 "REV" "clearline"]
+	Text[545000 123000 0 98 "(EN)" "clearline"]
 )
 NetList()
 (
@@ -1728,6 +1745,7 @@ NetList()
 	(
 		Connect("C5-2")
 		Connect("C6-2")
+		Connect("C7-1")
 		Connect("IC1-4")
 		Connect("IC2-4")
 		Connect("IC3-3")
@@ -1793,6 +1811,7 @@ NetList()
 	)
 	Net("unnamed_net6" "(unknown)")
 	(
+		Connect("C7-2")
 		Connect("IC1-2")
 		Connect("R14-1")
 	)

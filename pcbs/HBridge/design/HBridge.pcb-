@@ -6,7 +6,7 @@ FileVersion[20070407]
 PCB["" 800000 800000]
 
 Grid[1000.0 0 0 1]
-Cursor[0 0 0.000000]
+Cursor[583000 133000 0.000000]
 PolyArea[3100.006200]
 Thermal[0.500000]
 DRC[600 1500 600 1000 1300 700]
@@ -1710,17 +1710,17 @@ Layer(9 "silk")
 )
 Layer(10 "silk")
 (
-	Text[507000 123000 0 98 "FWD" "clearline"]
+	Text[501000 123000 0 98 "FWD" "clearline"]
 	Text[540000 123000 0 98 "REV" "clearline"]
 	Text[516000 340000 0 98 "+12V(S)" "clearline"]
 	Text[265000 228000 1 98 "RED" "clearline"]
 	Text[265000 194000 1 98 "BLK" "clearline"]
 	Text[27000 287000 3 98 "PGND" "clearline"]
 	Text[27000 252000 3 98 "+12V(P)" "clearline"]
-	Text[487000 340000 0 98 "PGND" "clearline"]
 	Text[280000 194000 0 98 "Bryan Blakeslee" "clearline"]
 	Text[280000 202000 0 98 "Mechanical Archer" "clearline"]
 	Text[280000 209000 0 98 "H-Bridge Controller" "clearline"]
+	Text[486000 340000 0 98 "SGND" "clearline"]
 )
 NetList()
 (

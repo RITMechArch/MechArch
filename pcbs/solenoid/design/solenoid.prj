@@ -1,3 +1,3 @@
 elements-dir /home/tyrian/MechArch/pcbs/footprints
-schematics HBridge.sch
-output-name HBridge
+schematics solenoid.sch
+output-name solenoid

@@ -449,7 +449,7 @@ device=r
 T 50400 47300 5 10 0 0 0 0 1
 footprint=AXIAL_LAY 300
 T 50600 47200 5 10 1 1 0 0 1
-value=250
+value=300
 }
 C 50400 45100 1 0 0 r.sym
 {
@@ -460,7 +460,7 @@ device=r
 T 50400 45100 5 10 0 0 0 0 1
 footprint=AXIAL_LAY 300
 T 50600 45000 5 10 1 1 0 0 1
-value=250
+value=300
 }
 C 50400 42900 1 0 0 r.sym
 {
@@ -471,7 +471,7 @@ device=r
 T 50400 42900 5 10 0 0 0 0 1
 footprint=AXIAL_LAY 300
 T 50600 42800 5 10 1 1 0 0 1
-value=250
+value=300
 }
 C 50400 40700 1 0 0 r.sym
 {
@@ -482,7 +482,7 @@ device=r
 T 50400 40700 5 10 0 0 0 0 1
 footprint=AXIAL_LAY 300
 T 50600 40600 5 10 1 1 0 0 1
-value=250
+value=300
 }
 N 50300 40800 50400 40800 4
 N 50300 43000 50400 43000 4

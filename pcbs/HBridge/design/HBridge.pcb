@@ -6,7 +6,7 @@ FileVersion[20070407]
 PCB["" 800000 800000]
 
 Grid[1000.0 0 0 0]
-Cursor[800000 0 0.000000]
+Cursor[497000 109000 0.000000]
 PolyArea[3100.006200]
 Thermal[0.500000]
 DRC[600 1500 600 1000 1300 700]
@@ -1736,9 +1736,9 @@ Layer(10 "silk")
 	Text[280000 202000 0 98 "Mechanical Archer" "clearline"]
 	Text[280000 209000 0 98 "H-Bridge Controller" "clearline"]
 	Text[486000 340000 0 98 "SGND" "clearline"]
-	Text[513000 123000 0 98 "(POS)" "clearline"]
 	Text[534000 123000 0 98 "REV" "clearline"]
 	Text[545000 123000 0 98 "(EN)" "clearline"]
+	Text[513000 123000 0 98 "(D/S)" "clearline"]
 )
 NetList()
 (

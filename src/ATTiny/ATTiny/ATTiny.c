@@ -16,26 +16,40 @@
 #define REV_MASK  0b00010000
 #define REV       PINB4
 
-// Outputs
-#define LLEG_MASK 0b00000100
-#define LLEG      PORTB2
-#define RLEG_MASK 0b00000001
-#define RLEG      PORTB0
-#define EN_MASK   0b00000010 // TODO: PWM
-#define EN        PORTB1
+// - GPIO
+#define M1        PORTB5
+#define M1_MASK   0b00100000
+#define M2        PORTB2
+#define M2_MASK   0b00000100
+// - TODO: PWM
+#define M3        PORTB0
+#define M3_MASK   0b00000001
+#define M4        PORTB1
+#define M4_MASK   0b00000010
 
 // Other
 #define DELAY 50 // us TODO: Reasonable delay?
 
-// Macros
-#define CLEAR(byte, bit) (_SFR_BYTE(byte) &= ~_BV(bit))
-#define SET(byte, bit) (_SFR_BYTE(byte) |= _BV(bit))
+void pwmRamp(int pin)
+{
+		// TODO: PWM RAMP
+}
 
+void busy_wait()
+{
+	char pinb;
+	
+	do 
+	{
+		 pinb = PORTB;
+	} while (bit_is_set(pinb, FWD) == bit_is_set(pinb, REV));
+	
+}
 
 int main(void)
 {
 	// Set DDRBx to 1 for output, 0 for input
-	DDRB = LLEG_MASK | RLEG_MASK | EN_MASK;
+	DDRB = M1_MASK | M2_MASK | M3_MASK | M4_MASK;
 	
     while(1)
     {
@@ -44,39 +58,41 @@ int main(void)
 		
 		if(bit_is_set(pinb, FWD) == bit_is_set(pinb, REV))
 		{
-			CLEAR(PORTB, EN);
+			// Set M1 & M2 (Shut off both PMOS)
+			PORTB |= (M1_MASK | M2_MASK);
 			_delay_us(DELAY);
 			
-			// Set LLEG and RLLEG
-			PORTB |= LLEG_MASK | RLEG_MASK;
-			_delay_us(DELAY);
-			
-			SET(PORTB, EN);
+			// TODO: PWM (Turn on both NMOS)
+			// M3 = 255
+			// M4 = 255
 		}
 		else if (bit_is_set(pinb, FWD))	
 		{
-			CLEAR(PORTB, EN);
+			// TODO: PWM (Turn off both NMOS)
+			// M3 = 0
+			// M4 = 0
 			_delay_us(DELAY);
 			
-			CLEAR(PORTB, LLEG);
-			SET(PORTB, RLEG);
+			// Clear M2 (Turn on M2 PMOS)
+			PORTB &= ~(M2_MASK);
 			_delay_us(DELAY);
 			
-			// TODO: pwmRamp();
+			pwmRamp(M3);
+			busy_wait();
 		}
 		else if (bit_is_set(pinb, REV))
 		{
-			CLEAR(PORTB, EN);
+			// TODO: PWM (Turn off both NMOS)
+			// M3 = 0
+			// M4 = 0
 			_delay_us(DELAY);
 			
-			SET(PORTB, LLEG);
-			CLEAR(PORTB, RLEG);
+			// Clear M1 (Turn on M1 PMOS)
+			PORTB &= ~(M3_MASK);
 			_delay_us(DELAY);
 			
-			// TODO: pwmRamp();
+			pwmRamp(M4);
+			busy_wait();
 		}
-		
-		// TODO: busy_wait();
-		_delay_us(DELAY);
     }
 }

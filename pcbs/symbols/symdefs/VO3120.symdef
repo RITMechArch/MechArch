@@ -1,0 +1,13 @@
+[labels]
+VO3120
+refdes=IC?
+
+[left]
+2 A
+3 C
+
+[right]
+8 VCC
+7 Vo1
+6 Vo2
+5 VEE

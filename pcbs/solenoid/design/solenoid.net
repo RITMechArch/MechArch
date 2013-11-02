@@ -1,0 +1,12 @@
+unnamed_net10	D3-1 R3-1 
+unnamed_net9	D1-2 D2-2 TB4-1 
+unnamed_net8	TB4-2 D2-1 D2-3 M1-2 
+unnamed_net7	R3-2 M1-1 R2-2 
+unnamed_net6	C2-2 D1-3 D1-1 TB3-1 IC2-8 
+unnamed_net5	R2-1 IC2-7 IC2-6 
+PGND	C2-1 D3-2 TB3-2 M1-3 IC2-5 
+unnamed_net4	IC2-2 R1-2 
+unnamed_net3	C1-1 TB1-1 IC1-8 
+GND	C1-2 TB1-2 TB2-2 IC2-3 IC1-6 IC1-5 IC1-4 
+unnamed_net2	TB2-1 IC1-3 
+unnamed_net1	IC1-2 R1-1 IC1-1 

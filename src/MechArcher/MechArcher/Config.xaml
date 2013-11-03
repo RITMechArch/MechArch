@@ -1,0 +1,35 @@
+﻿<Window x:Class="MechArcher.Config"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cam="clr-namespace:WebcamControl;assembly=WebcamControl"
+        Title="Config" Height="210" Width="300">
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" FlowDirection="RightToLeft">
+      <Button Margin="5" Click="OK_click" FontSize="18">Ok</Button>
+      <Button Margin="5" Click="Cancel_click" FontSize="18">Cancel</Button>
+    </StackPanel>
+    <Grid DockPanel.Dock="Left" Width="125" Margin="5,0,0,0">
+      <Grid.RowDefinitions>
+        <RowDefinition></RowDefinition>
+        <RowDefinition></RowDefinition>
+        <RowDefinition></RowDefinition>
+        <RowDefinition></RowDefinition>
+        <RowDefinition></RowDefinition>
+      </Grid.RowDefinitions>
+
+      <Label Grid.Row="0" VerticalAlignment="Center">Webcam</Label>
+    </Grid>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition></RowDefinition>
+        <RowDefinition></RowDefinition>
+        <RowDefinition></RowDefinition>
+        <RowDefinition></RowDefinition>
+        <RowDefinition></RowDefinition>
+      </Grid.RowDefinitions>
+
+      <ComboBox x:Name="VidDvcsComboBox"/>
+
+    </Grid>
+  </DockPanel>
+</Window>

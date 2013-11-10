@@ -29,11 +29,10 @@ LiquidCrystal lcd( LCDRegSelect, LCDEnable, LCDData4, LCDData5, LCDData6, LCDDat
 
 #define drawIn              (44)
 #define fireIn              (46)
+#define resetIn          (48)
 
 #define fBump               (20)
 #define rBump               (21)
-
-#define resetInput          (48)
 
 /* 
  * Performs first time setup on MCU. 
@@ -43,7 +42,7 @@ void setup(){
    pinMode(eStopMainIn, INPUT);
    pinMode(armingChain, INPUT);
    pinMode(drawIn, INPUT);
-   pinMode(letDownIn, INPUT);
+   pinMode(resetIn, INPUT);
    pinMode(fireIn, INPUT);
    
    /* Set LCD screen dimensions as width, height. */
@@ -82,8 +81,7 @@ void loop(){
    //lcd.print(strcat("Draw: ", (digitalRead(drawIn) ? "H" : "L")));
    
    lcd.setCursor(0, 3);
-   lcd.print("letDown: ");
+   lcd.print("Reset: ");
    delay(50);
-   lcd.print((digitalRead(resetInput) ? "H" : "L"));
-   //lcd.print(strcat("letDown: ", (digitalRead(letDownIn) ? "H" : "L")));
+   lcd.print((digitalRead(resetIn) ? "H" : "L"));
 }

@@ -19,7 +19,7 @@
 // Constants
 #define delayFactor (100)
 
-setup(){
+void setup(){
   // Configure serial communications
   Serial.begin(9600);
   
@@ -30,9 +30,19 @@ setup(){
   pinMode(M2, OUTPUT);
   pinMode(M3, OUTPUT);
   pinMode(M4, OUTPUT);
+  
+  // Set initial state of bridge without crowbaring
+  digitalWrite(M1, LOW);
+  digitalWrite(M2, LOW);
+  delayMicroseconds(delayFactor);
+  digitalWrite(M1, HIGH);
+  digitalWrite(M2, HIGH);
+  delayMicroseconds(delayFactor);
+  digitalWrite(M3, HIGH);
+  digitalWrite(M4, HIGH);
 }
 
-loop(){
+void loop(){
   if(digitalRead(FWD) == digitalRead(REV)){
     // Do braking
     // Turn off both PMOS
@@ -55,7 +65,7 @@ loop(){
     // Delay
     delayMicroseconds(delayFactor);
     // Turn on opposite NMOS
-    digitalWrite();
+    digitalWrite(M3, HIGH);
     busyWait();
   }else if(digitalRead(REV) == HIGH){
     // Go reverse on binary switching
@@ -65,11 +75,11 @@ loop(){
     // Delay
     delayMicroseconds(delayFactor);
     // Turn on M1 PMOS
-    digitalWrite(M1);
+    digitalWrite(M1, LOW);
     // Delay
     delayMicroseconds(delayFactor);
     // Turn on opposite NMOS
-    digitalWrite();
+    digitalWrite(M4, HIGH);
     busyWait();
   }
 }

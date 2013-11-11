@@ -21,7 +21,7 @@
 #define M1_MASK   0b00100000
 #define M2        PORTB2
 #define M2_MASK   0b00000100
-// - TODO: PWM
+// - PWM
 #define M3        PORTB0
 #define M3_MASK   0b00000001
 #define M4        PORTB1
@@ -41,8 +41,8 @@ void busy_wait()
 	
 	do 
 	{
-		 pinb = PORTB;
-	} while (bit_is_set(pinb, FWD) == bit_is_set(pinb, REV));
+		 pinb = PINB;
+	} while ( (bit_is_set(pinb, FWD) == 0) != (bit_is_set(pinb, REV) == 0));
 	
 }
 
@@ -51,26 +51,36 @@ int main(void)
 	// Set DDRBx to 1 for output, 0 for input
 	DDRB = M1_MASK | M2_MASK | M3_MASK | M4_MASK;
 	
+	// Setup the PWMs
+	// - OC0x: Clear on match, set at TOP
+	// - Phase correct PWM
+	// - CLK to internal, no prescaling
+	// - Initial duty cycle: 0%
+	TCCR0A =  1 << COM0A1 | 1 << COM0B1 | 1 << WGM00;
+	OCR0A = 0;
+	OCR0B = 0;
+	TCCR0B = 1 << CS00;
+	
     while(1)
     {
 		// Read & store current state
-		char pinb = PORTB;
+		char pinb = PINB;
 		
-		if(bit_is_set(pinb, FWD) == bit_is_set(pinb, REV))
+		if((bit_is_set(pinb, FWD) == 0) == (bit_is_set(pinb, REV) == 0))
 		{
 			// Set M1 & M2 (Shut off both PMOS)
 			PORTB |= (M1_MASK | M2_MASK);
 			_delay_us(DELAY);
 			
-			// TODO: PWM (Turn on both NMOS)
-			// M3 = 255
-			// M4 = 255
+			// PWM (Turn on both NMOS)
+			OCR0A = 255;
+			OCR0B = 255;
 		}
 		else if (bit_is_set(pinb, FWD))	
 		{
-			// TODO: PWM (Turn off both NMOS)
-			// M3 = 0
-			// M4 = 0
+			// PWM (Turn off both NMOS)
+			OCR0A = 0;
+			OCR0B = 0;
 			_delay_us(DELAY);
 			
 			// Clear M2 (Turn on M2 PMOS)
@@ -82,9 +92,9 @@ int main(void)
 		}
 		else if (bit_is_set(pinb, REV))
 		{
-			// TODO: PWM (Turn off both NMOS)
-			// M3 = 0
-			// M4 = 0
+			// PWM (Turn off both NMOS)
+			OCR0A = 0;
+			OCR0B = 0;
 			_delay_us(DELAY);
 			
 			// Clear M1 (Turn on M1 PMOS)

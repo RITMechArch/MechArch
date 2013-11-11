@@ -6,6 +6,21 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+      
+      <Label FontSize="32" Grid.Row="0" Grid.Column="0">Target 1</Label>
+      <Label FontSize="32" Grid.Row="0" Grid.Column="1">Target 2</Label>
+      <Label FontSize="32" Grid.Row="1" Grid.Column="0">Target 3</Label>
+      <Label FontSize="32" Grid.Row="1" Grid.Column="1">Target 4</Label>
+      <Label FontSize="32" Grid.Row="2" Grid.Column="0">Target 5</Label>
+      <Label FontSize="32" Grid.Row="2" Grid.Column="1">Target 6</Label>
     </Grid>
 </UserControl>

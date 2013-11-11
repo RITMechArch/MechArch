@@ -5,10 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-      <Label x:Name="LCDLine1" Grid.Row="0" Content="LCD Message LCD MESSAGE"/>
-      <Label x:Name="LCDLine2" Grid.Row="1"/>
-      <Label x:Name="LCDLine3" Grid.Row="2"/>
-      <Label x:Name="LCDLine4" Grid.Row="3"/>
-    </Grid>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition />
+      <RowDefinition />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    
+    <Label x:Name="LCDLine1" Grid.Row="0" FontSize="20" FontWeight="Bold" Content="LCD Message LCD MESSAGE"/>
+    <Label x:Name="LCDLine2" Grid.Row="1" FontSize="20" FontWeight="Bold" Content="hi"/>
+    <Label x:Name="LCDLine3" Grid.Row="2" FontSize="20" FontWeight="Bold" Content=" "/>
+    <Label x:Name="LCDLine4" Grid.Row="3" FontSize="20" FontWeight="Bold" Content=" "/>
+  </Grid>
 </UserControl>

@@ -41,8 +41,11 @@ namespace MechArcher
 
             WebCamCtrl.ImageDirectory = imgPath;
             WebCamCtrl.PictureFormat = ImageFormat.Bmp;
-            WebCamCtrl.FrameRate = 30;
-            WebCamCtrl.FrameSize = new System.Drawing.Size(800,600);
+            WebCamCtrl.FrameRate = 24;
+            WebCamCtrl.FrameSize = new System.Drawing.Size(1024,768);
+            WebCamCtrl.VidFormat = VideoFormat.mp4;
+
+            WebCamCtrl.StartCapture();
         }
 
         public void show(Binding bndg_1)

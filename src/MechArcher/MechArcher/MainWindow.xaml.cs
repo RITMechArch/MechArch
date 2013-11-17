@@ -39,11 +39,15 @@ namespace MechArcher
                 Directory.CreateDirectory(imgPath);
             }
 
+            WebCamCtrl.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            WebCamCtrl.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            WebCamCtrl.Height = 600;
+            WebCamCtrl.Width = 800;
+
             WebCamCtrl.ImageDirectory = imgPath;
             WebCamCtrl.PictureFormat = ImageFormat.Bmp;
             WebCamCtrl.FrameRate = 24;
-            WebCamCtrl.FrameSize = new System.Drawing.Size(1024,768);
-            WebCamCtrl.VidFormat = VideoFormat.mp4;
+            WebCamCtrl.FrameSize = new System.Drawing.Size(800,600);
 
             WebCamCtrl.StartCapture();
         }

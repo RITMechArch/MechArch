@@ -28,8 +28,8 @@
         <local:QueuePanel Grid.Column="0" Margin="10" />
         <local:LCDPanel Grid.Column="1" Margin="10" />
       </Grid>
-      <Grid DockPanel.Dock="Top">
+      <Canvas DockPanel.Dock="Top">
         <cam:Webcam x:Name="WebCamCtrl"/>
-      </Grid>
+      </Canvas>
     </DockPanel>
 </Window>

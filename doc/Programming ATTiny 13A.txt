@@ -1,0 +1,103 @@
+### Programming the ATTiny 13A
+
+## Prerequisites
+Windows:
+	- WinAVR: http://winavr.sourceforge.net/
+	- Arduino IDE v1.0+: http://arduino.cc/
+	
+Linux:
+	- avr-libc
+	- avrdude
+	- binutils-avr
+	- gcc-avr
+	
+## Setup
+# Determine fuse bits
+See http://www.engbedded.com/fusecalc for a fuse calculator to determine the 
+correct values.
+
+These instructions will use the fuse values:
+	Low:  0x7A
+	High: 0xFB
+
+This corresponds to 9.6 MHz internal clock speed with no divider, brown out 
+detection at 2.7V, and SPI programming enabled.
+	
+The default values, according to http://www.engbedded.com/fusecalc, are:
+	Low:  0x6A
+	High: 0xFF
+	
+This corresponds to 9.6 MHz internal clock speed with a divider of 8, no brown 
+out detection , and SPI programming enabled.
+
+# Configure Arduino as an ISP
+	- In the Arduino IDE, open File -> Examples -> ArduinoISP
+	- Select the correct board and serial port. Make a note of the serial port
+		used, it will be needed later in section: ## Programming
+	- Program the Arduino. The Arduino IDE will no longer be needed.
+	
+# Wiring
+Wire up the Arduino and ATTiny according to the following pin table
+------------------------------------------------------
+| Signal | Arduino Mega | Other Arduino | ATTiny 13A |
+------------------------------------------------------
+| reset  | 53           | 10            | 1          |
+| MOSI   | 51           | 11            | 5          |
+| MISO   | 50           | 12            | 6          |
+| SCK    | 52           | 13            | 7          |
+| GND    | GND          | GND           | 4          |
+| VCC    | 5V           | 5V            | 8          |
+------------------------------------------------------
+
+If using an Arduino Uno, it is also highly recommended to connect a 10 uF 
+capacitor between reset and ground AFTER uploading the Arduino ISP sketch. This
+was not necessary when using an Arduino Mega.
+
+LEDs can also be placed on the following pins of the Arduino for help in 
+debugging the programming process.
+Pin 9: Heartbeat: indicates programming is running
+Pin 8: Error
+Pin 7: Programming: ISP is in communication with the slave (ATTiny 13A)
+
+## Compiling
+Run the following commands to compile your program:
+avr-gcc -g -DF_CPU=<clock speed in Hz> -Wall -Os -mmcu=attiny13a -c -o tmp.o <source filename>
+avr-gcc -g -DF_CPU=<clock speed in Hz> -Wall -Os -mmcu=attiny13a -o tmp.elf tmp.o
+avr-size tmp.elf
+avr-objcopy -j .text -j .data -O ihex tmp.elf <program name>.hex
+
+The ATTiny-HLS program, using the fuse bits mentioned in ## Setup,
+would be compiled with:
+avr-gcc -g -DF_CPU=9600000 -Wall -Os -mmcu=attiny13a -c -o tmp.o ATTiny-HLS.c
+avr-gcc -g -DF_CPU=9600000 -Wall -Os -mmcu=attiny13a -o tmp.elf tmp.o
+avr-size tmp.elf
+avr-objcopy -j .text -j .data -O ihex tmp.elf ATTiny-HLS.hex
+
+## Programming
+# Fuse bits
+The first step is to set the correct fuse bits with the following command:
+avrdude -p attiny13 -P <com port> -c stk500v1  -b 19200 -q -U lfuse:w:<low fuse value>:m -U hfuse:w:<high fuse value>:m
+
+For the fuse bits indicated in ## Setup, this command would be:
+avrdude -p attiny13 -P <com port> -c stk500v1  -b 19200 -q -U lfuse:w:0x7A:m -U hfuse:w:0xFB:m
+
+# Uploading program
+Now we can upload our program with:
+avrdude -p attiny13 -c stk500v1 -P <com port> -b 19200 -q -U flash:w:<binary name>.hex
+
+For the ATTiny-HLS program:
+avrdude -p attiny13 -c stk500v1 -P <com port> -b 19200 -q -U flash:w:ATTiny-HLS.hex
+
+
+## Additional notes
+# Programming from locked down (i.e. EE lab) machines
+The programming steps above, at least, are possible in machines where you don't
+have permissions to install WinAVR.
+
+ - Download the pre-built Windows binaries of avrdude: 
+	http://download.savannah.gnu.org/releases/avrdude/avrdude-6.0.1-mingw32.zip
+ - Download the pre-build Windows binary of libusb:
+	http://sourceforge.net/projects/libusb-win32/
+ - Extract both archives.
+ - Copy libusb-win32.dll into the avrdude directory as libusb0.dll
+ - The above instructions for ## Programming should now be possible as written

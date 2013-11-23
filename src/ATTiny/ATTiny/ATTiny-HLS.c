@@ -5,35 +5,37 @@
  *  Author: Dustin Stroup
  */ 
 
+#ifdef DEBUG
 #define F_CPU 20000000UL /* Clock Frequency = 20Mhz */
+#endif
 
 #include <avr/io.h>
 #include <util/delay.h>
 
 // Inputs
-#define FWD_MASK  0b00001000
-#define FWD       PINB3
-#define REV_MASK  0b00010000
-#define REV       PINB4
+#define FWD      PINB3
+#define FWD_MASK 0b00001000
+#define REV      PINB4
+#define REV_MASK 0b00010000
 
-// - GPIO
-#define M1        PORTB5
-#define M1_MASK   0b00100000
-#define M2        PORTB2
-#define M2_MASK   0b00000100
-// - PWM
-#define M3        PORTB0
-#define M3_MASK   0b00000001
-#define M4        PORTB1
-#define M4_MASK   0b00000010
+#define INPUTS  (FWD_MASK | REV_MASK)
+
+// Output
+#define M1      PORTB5
+#define M1_MASK 0b00100000
+#define M2      PORTB2
+#define M2_MASK 0b00000100
+#define M3      PORTB0
+#define M3_MASK 0b00000001
+#define M4      PORTB1
+#define M4_MASK 0b00000010
+
+#define PMOS    (M1_MASK | M2_MASK)
+#define NMOS    (M3_MASK | M4_MASK)
 
 // Other
-#define DELAY 50 // us TODO: Reasonable delay?
-
-void pwmRamp(int pin)
-{
-		// TODO: PWM RAMP
-}
+#define DELAY 100 // us
+#define BIT_SET(BYTE, BIT) (bit_is_set(BYTE, BIT) != 0)
 
 void busy_wait()
 {
@@ -41,8 +43,9 @@ void busy_wait()
 	
 	do 
 	{
-		 pinb = PINB;
-	} while ( (bit_is_set(pinb, FWD) == 0) != (bit_is_set(pinb, REV) == 0));
+		pinb = PINB;
+	//} while ( (bit_is_set(pinb, FWD) == 0) != (bit_is_set(pinb, REV) == 0));
+	}while ( BIT_SET(pinb, FWD) != BIT_SET(pinb, REV));
 	
 }
 
@@ -51,58 +54,61 @@ int main(void)
 	// Set DDRBx to 1 for output, 0 for input
 	DDRB = M1_MASK | M2_MASK | M3_MASK | M4_MASK;
 	
-	// Setup the PWMs
-	// - OC0x: Clear on match, set at TOP
-	// - Phase correct PWM
-	// - CLK to internal, no prescaling
-	// - Initial duty cycle: 0%
-	TCCR0A =  1 << COM0A1 | 1 << COM0B1 | 1 << WGM00;
-	OCR0A = 0;
-	OCR0B = 0;
-	TCCR0B = 1 << CS00;
+	// Set initial state of the bridge, without crowbaring
+	PORTB &= ~(PMOS);
+	_delay_us(DELAY);
+	PORTB |= (PMOS);
+	_delay_us(DELAY);
+	PORTB |= (NMOS);
 	
-    while(1)
-    {
+	while(1)
+	{
 		// Read & store current state
 		char pinb = PINB;
 		
-		if((bit_is_set(pinb, FWD) == 0) == (bit_is_set(pinb, REV) == 0))
+		//if((bit_is_set(pinb, FWD) == 0) == (bit_is_set(pinb, REV) == 0))
+		if(BIT_SET(pinb, FWD) == BIT_SET(pinb, REV))
 		{
-			// Set M1 & M2 (Shut off both PMOS)
-			PORTB |= (M1_MASK | M2_MASK);
+			// Do braking 
+			
+			// Shut off both PMOS
+			PORTB |= (PMOS);
 			_delay_us(DELAY);
 			
-			// PWM (Turn on both NMOS)
-			OCR0A = 255;
-			OCR0B = 255;
+			// Turn on both NMOS
+			PORTB |= (NMOS);
 		}
-		else if (bit_is_set(pinb, FWD))	
+		else if (BIT_SET(pinb, FWD))	
 		{
-			// PWM (Turn off both NMOS)
-			OCR0A = 0;
-			OCR0B = 0;
+			// Go forward 
+			
+			// Turn off both NMOS
+			PORTB &= ~(NMOS);
 			_delay_us(DELAY);
 			
-			// Clear M2 (Turn on M2 PMOS)
+			// Turn on M2 PMOS
 			PORTB &= ~(M2_MASK);
 			_delay_us(DELAY);
 			
-			pwmRamp(M3);
+			// Turn on opposite NMOS
+			PORTB |= (M3_MASK);
 			busy_wait();
 		}
-		else if (bit_is_set(pinb, REV))
+		else if (BIT_SET(pinb, REV))
 		{
-			// PWM (Turn off both NMOS)
-			OCR0A = 0;
-			OCR0B = 0;
+			// Go reverse
+			
+			// Turn off both NMOS
+			PORTB &= ~(NMOS);
 			_delay_us(DELAY);
 			
-			// Clear M1 (Turn on M1 PMOS)
-			PORTB &= ~(M3_MASK);
+			// Turn on M1 PMOS
+			PORTB &= ~(M1_MASK);
 			_delay_us(DELAY);
 			
-			pwmRamp(M4);
+			// Turn on opposite NMOS
+			PORTB |= (M4_MASK);
 			busy_wait();
 		}
-    }
+	}
 }

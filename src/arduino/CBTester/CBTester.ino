@@ -70,7 +70,8 @@ void loop(){
    lcd.setCursor(0, 1);
    lcd.print("E-stop: ");
    delay(50);
-   lcd.print("N/A");
+   lcd.print((digitalRead(eStopMainIn) ? "H" : "L"));
+   delay(50);
    //lcd.print(strcat("E-Stop: ", (digitalRead(eStopMainIn) ? "H" : "L")));
    
    lcd.setCursor(0, 2);

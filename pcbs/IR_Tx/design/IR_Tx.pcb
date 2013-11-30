@@ -6,10 +6,10 @@ FileVersion[20070407]
 PCB["" 600000 500000]
 
 Grid[1000.0 0 0 1]
-Cursor[198000 105000 0.000000]
+Cursor[166000 58000 0.000000]
 PolyArea[3100.006200]
 Thermal[0.500000]
-DRC[1000 1000 1000 1000 1500 1000]
+DRC[600 1500 600 1000 1300 700]
 Flags("nameonpcb,uniquename,clearnew,snappin")
 Groups("1,c:2,s:3:4:5:6:7:8")
 Styles["Signal,1000,3600,2000,1000:Power,2500,22000,12000,1000:Fat,4000,6000,3500,1000:Skinny,600,2402,1181,600"]
@@ -804,7 +804,7 @@ Element["" "OPV310.fp" "D1" "unknown" 165000 184000 -19000 -3000 0 100 ""]
 
 	)
 
-Element["" "TE-Barrier-2Pos.fp" "TB1" "unknown" 210984 165000 -5677 33977 0 160 ""]
+Element["" "TE-Barrier-2Pos.fp" "TB1" "unknown" 210984 165000 -25677 33977 0 160 ""]
 (
 	Pin[0 -16142 15748 2000 16348 7874 "1" "1" ""]
 	Pin[0 16339 15748 2000 16348 7874 "2" "2" ""]
@@ -931,6 +931,8 @@ Layer(9 "silk")
 )
 Layer(10 "silk")
 (
+	Text[194000 124000 0 100 "+5V(S)" "clearline"]
+	Text[204000 200000 0 100 "SGND" "clearline"]
 )
 NetList()
 (

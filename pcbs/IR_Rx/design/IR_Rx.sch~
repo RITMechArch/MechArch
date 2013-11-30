@@ -5,18 +5,26 @@ T 41900 46100 5 10 0 0 0 0 1
 device=photodiode
 T 42500 45500 5 10 1 1 180 0 1
 refdes=PD1
+T 41400 45000 5 10 0 0 0 0 1
+footprint=LED 100
 }
 C 42000 47400 1 90 0 resistor-1.sym
 {
 T 41600 47700 5 10 0 0 90 0 1
 device=RESISTOR
-T 41700 47900 5 10 1 1 180 0 1
+T 41700 48100 5 10 1 1 180 0 1
 refdes=R1
+T 41300 47700 5 10 1 1 0 0 1
+value=200k
+T 42000 47400 5 10 0 0 0 0 1
+footprint=AXIAL_LAY 200
 }
 C 45100 45500 1 0 0 NJM12904D.sym
 {
 T 46700 46800 5 10 1 1 0 3 1
 refdes=U1
+T 45100 45500 5 10 0 0 0 0 1
+footprint=DIP8
 }
 C 43000 48300 1 270 0 pot-1.sym
 {
@@ -25,7 +33,7 @@ device=VARIABLE_RESISTOR
 T 42600 47900 5 10 1 1 0 0 1
 refdes=R2
 T 44500 47500 5 10 0 0 270 0 1
-footprint=none
+footprint=Vishay_Pot_T73YU.fp
 T 42600 47700 5 10 1 1 0 0 1
 value=10k
 }
@@ -37,6 +45,8 @@ T 50600 47300 5 10 1 1 180 0 1
 refdes=R3
 T 51000 47200 5 10 1 1 0 0 1
 value=200
+T 50900 46800 5 10 0 0 0 0 1
+footprint=AXIAL_LAY 300
 }
 C 50600 45700 1 270 1 led-3.sym
 {
@@ -44,6 +54,8 @@ T 51250 46650 5 10 0 0 90 2 1
 device=LED
 T 50550 46050 5 10 1 1 180 2 1
 refdes=D2
+T 50600 45700 5 10 0 0 0 0 1
+footprint=LED 100
 }
 C 47000 49100 1 90 0 connector2-2.sym
 {
@@ -52,7 +64,7 @@ refdes=TB1
 T 45750 49400 5 10 0 0 90 0 1
 device=CONNECTOR_2
 T 45550 49400 5 10 0 0 90 0 1
-footprint=SIP2N
+footprint=TE-Barrier-2Pos.fp
 }
 C 52100 46000 1 0 0 connector2-2.sym
 {
@@ -61,7 +73,7 @@ refdes=TB2
 T 52400 47250 5 10 0 0 0 0 1
 device=CONNECTOR_2
 T 52400 47450 5 10 0 0 0 0 1
-footprint=SIP2N
+footprint=TE-Barrier-2Pos.fp
 }
 T 45700 49900 9 10 1 0 0 0 1
 +5V(S)
@@ -144,6 +156,8 @@ T 48800 47100 5 10 0 0 90 0 1
 symversion=0.1
 T 49800 47300 5 10 1 1 0 0 1
 value=1u
+T 49700 46900 5 10 0 0 0 0 1
+footprint=ACY100
 }
 C 49400 46400 1 0 0 gnd-1.sym
 {

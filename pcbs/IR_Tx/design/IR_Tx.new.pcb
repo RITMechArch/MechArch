@@ -12,52 +12,34 @@ Groups("1,c:2,s:3:4:5:6:7:8")
 Styles["Signal,1000,3600,2000,1000:Power,2500,6000,3500,1000:Fat,4000,6000,3500,1000:Skinny,600,2402,1181,600"]
 
 	
-Element(0x00 "LED-100" "D2" "unknown" 100 70 0 100 0x00)
+
+	
+	
+	
+	
+	
+	
+	
+	
+Element(0x00 "AXIAL_LAY-400" "R2" "200" 320 86 0 100 0x00)
 (
-# typical LED is 0.5 mm or 0.020" square pin.  See for example
-# http://www.lumex.com and part number SSL-LX3054LGD.
-# 0.020" square is 0.0288" diagonal.  A number 57 drill is 
-# 0.043" which should be enough.  a 65 mil pad gives 11 mils
-# of annular ring.
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
 
-	Pin(-50 0 65 43 "1" 0x101)
-	Pin(50 0 65 43 "2" 0x01)
-   ElementArc(0 0 50 50    45  90 10)
-	ElementArc(0 0 50 50   225  90 10)
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
 
-   ElementArc(0 0 70 70    45  90 10)
-	ElementArc(0 0 70 70   225  90 10)
-
-	Mark(0 0)
-)
-
-	
-	
-	
-	
-	
-	
-	
-	
-Element(0x00 "AXIAL_LAY-300" "R2" "200" 245 70 0 100 0x00)
-(
-	Pin(0 25 55 30 "1" 0x101)
-	Pin(300 25 55 30 "2" 0x01)
-
-	ElementLine(0 25 75 25 10)
-	ElementLine(225 25 300 25 10)
-
-	ElementLine(75 0 225 0 10)
-	ElementLine(225 0 225 50 10)
-	ElementLine(225 50 75 50 10)
-	ElementLine(75 50 75 0 10)
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
 
 	
 
 #	ElementArc(X1 Y 50 50 270 180 10)
 #	ElementArc(X2 Y 50 50 90 180 10)
 
-	Mark(0 25)
+	Mark(0 33)
 )
 
 	
@@ -68,6 +50,26 @@ Element(0x00 "AXIAL_LAY-300" "R2" "200" 245 70 0 100 0x00)
 	
 	
 	
+Element(0x00 "AXIAL_LAY-400" "R1" "400" 320 86 0 100 0x00)
+(
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
+
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
+
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
+
+	
+
+#	ElementArc(X1 Y 50 50 270 180 10)
+#	ElementArc(X2 Y 50 50 90 180 10)
+
+	Mark(0 33)
+)
 Layer(1 "component")
 (
 )

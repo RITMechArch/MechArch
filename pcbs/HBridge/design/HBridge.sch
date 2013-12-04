@@ -74,7 +74,7 @@ device=r
 T 41400 46100 5 10 1 1 90 2 1
 value=500
 T 41800 46400 5 10 0 0 270 2 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 }
 C 44600 43400 1 0 1 r.sym
 {
@@ -85,7 +85,7 @@ device=r
 T 44200 43100 5 10 1 1 90 2 1
 value=500
 T 44600 43400 5 10 0 0 270 2 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 }
 C 41800 43400 1 0 1 r.sym
 {
@@ -96,7 +96,7 @@ device=r
 T 41400 43100 5 10 1 1 90 2 1
 value=500
 T 41800 43400 5 10 0 0 270 2 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 }
 C 44600 46400 1 0 1 r.sym
 {
@@ -107,7 +107,7 @@ device=r
 T 44200 46100 5 10 1 1 90 2 1
 value=500
 T 44600 46400 5 10 0 0 270 2 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 }
 C 42500 46800 1 90 1 led.sym
 {
@@ -173,7 +173,7 @@ device=r
 T 56000 45500 5 10 1 1 0 0 1
 value=250
 T 55800 45600 5 10 0 0 0 0 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 }
 C 55900 44800 1 0 0 r.sym
 {
@@ -184,7 +184,7 @@ device=r
 T 56100 44700 5 10 1 1 0 0 1
 value=250
 T 55900 44800 5 10 0 0 0 0 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 }
 C 41600 42600 1 90 1 connector2-2.sym
 {
@@ -447,7 +447,7 @@ refdes=R9
 T 50800 47400 5 10 0 1 0 0 1
 device=r
 T 50400 47300 5 10 0 0 0 0 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 T 50600 47200 5 10 1 1 0 0 1
 value=300
 }
@@ -458,7 +458,7 @@ refdes=R10
 T 50800 45200 5 10 0 1 0 0 1
 device=r
 T 50400 45100 5 10 0 0 0 0 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 T 50600 45000 5 10 1 1 0 0 1
 value=300
 }
@@ -469,7 +469,7 @@ refdes=R11
 T 50800 43000 5 10 0 1 0 0 1
 device=r
 T 50400 42900 5 10 0 0 0 0 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 T 50600 42800 5 10 1 1 0 0 1
 value=300
 }
@@ -480,7 +480,7 @@ refdes=R12
 T 50800 40800 5 10 0 1 0 0 1
 device=r
 T 50400 40700 5 10 0 0 0 0 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 T 50600 40600 5 10 1 1 0 0 1
 value=300
 }

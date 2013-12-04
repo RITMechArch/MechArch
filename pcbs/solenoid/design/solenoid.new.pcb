@@ -10,304 +10,54 @@ DRC[1000 1000 1000 1000 1500 1000]
 Flags("nameonpcb,uniquename,clearnew,snappin")
 Groups("1,c:2,s:3:4:5:6:7:8")
 Styles["Signal,1000,3600,2000,1000:Power,2500,6000,3500,1000:Fat,4000,6000,3500,1000:Skinny,600,2402,1181,600"]
-Element(0x00 "TO220W" "D1" "unknown" 0 10 0 100 0x00)
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+Element(0x00 "AXIAL_LAY-400" "R3" "500" 320 86 0 100 0x00)
 (
-	Pin(100 200 90 60 "1" 0x101)
-	Pin(200 200 90 60 "2" 0x01)
-	Pin(300 200 90 60 "3" 0x01)
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
 
-	# Gehaeuse
-	ElementLine(  0  80 400  80 20)
-	ElementLine(400  80 400 260 20)
-	ElementLine(400 260   0 260 20) 
-	ElementLine(  0 260   0  80 20) 
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
 
-	# Kuehlfahne icl. Bohrung
-	ElementLine(  0  80 400  80 20)
-	ElementLine(400  80 400 140 20)
-	ElementLine(400 140   0 140 20)
-	ElementLine(  0 140   0  80 20)
-
-	ElementLine(130 80 130 140 10)
-	ElementLine(270 80 270 140 10)
-
-	Mark(100 200)
-)
-Element(0x00 "TO220W" "D2" "unknown" 0 10 0 100 0x00)
-(
-	Pin(100 200 90 60 "1" 0x101)
-	Pin(200 200 90 60 "2" 0x01)
-	Pin(300 200 90 60 "3" 0x01)
-
-	# Gehaeuse
-	ElementLine(  0  80 400  80 20)
-	ElementLine(400  80 400 260 20)
-	ElementLine(400 260   0 260 20) 
-	ElementLine(  0 260   0  80 20) 
-
-	# Kuehlfahne icl. Bohrung
-	ElementLine(  0  80 400  80 20)
-	ElementLine(400  80 400 140 20)
-	ElementLine(400 140   0 140 20)
-	ElementLine(  0 140   0  80 20)
-
-	ElementLine(130 80 130 140 10)
-	ElementLine(270 80 270 140 10)
-
-	Mark(100 200)
-)
-
-	
-	
-	
-	
-	
-	
-	
-	
-Element(0x00 "ACY100" "C2" "1u" 95 36 0 100 0x00)
-(
-	Pin(0 8 55 30 "1" 0x101)
-	Pin(100 8 55 30 "2" 0x01)
-
-	ElementLine(0 8 25 8 10)
-	ElementLine(75 8 100 8 10)
-
-	ElementLine(25 0 75 0 10)
-	ElementLine(75 0 75 16 10)
-	ElementLine(75 16 25 16 10)
-	ElementLine(25 16 25 0 10)
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
 
 	
 
 #	ElementArc(X1 Y 50 50 270 180 10)
 #	ElementArc(X2 Y 50 50 90 180 10)
 
-	Mark(0 8)
-)
-
-	
-	
-	
-	
-	
-	
-	
-	
-Element(0x00 "ACY100" "C1" "1u" 95 36 0 100 0x00)
-(
-	Pin(0 8 55 30 "1" 0x101)
-	Pin(100 8 55 30 "2" 0x01)
-
-	ElementLine(0 8 25 8 10)
-	ElementLine(75 8 100 8 10)
-
-	ElementLine(25 0 75 0 10)
-	ElementLine(75 0 75 16 10)
-	ElementLine(75 16 25 16 10)
-	ElementLine(25 16 25 0 10)
-
-	
-
-#	ElementArc(X1 Y 50 50 270 180 10)
-#	ElementArc(X2 Y 50 50 90 180 10)
-
-	Mark(0 8)
-)
-
-	
-Element(0x00 "LED-100" "D3" "unknown" 100 70 0 100 0x00)
-(
-# typical LED is 0.5 mm or 0.020" square pin.  See for example
-# http://www.lumex.com and part number SSL-LX3054LGD.
-# 0.020" square is 0.0288" diagonal.  A number 57 drill is 
-# 0.043" which should be enough.  a 65 mil pad gives 11 mils
-# of annular ring.
-
-	Pin(-50 0 65 43 "1" 0x101)
-	Pin(50 0 65 43 "2" 0x01)
-   ElementArc(0 0 50 50    45  90 10)
-	ElementArc(0 0 50 50   225  90 10)
-
-   ElementArc(0 0 70 70    45  90 10)
-	ElementArc(0 0 70 70   225  90 10)
-
-	Mark(0 0)
-)
-
-	
-	
-	
-	
-	
-	
-	
-	
-Element(0x00 "AXIAL_LAY-300" "R3" "500" 245 70 0 100 0x00)
-(
-	Pin(0 25 55 30 "1" 0x101)
-	Pin(300 25 55 30 "2" 0x01)
-
-	ElementLine(0 25 75 25 10)
-	ElementLine(225 25 300 25 10)
-
-	ElementLine(75 0 225 0 10)
-	ElementLine(225 0 225 50 10)
-	ElementLine(225 50 75 50 10)
-	ElementLine(75 50 75 0 10)
-
-	
-
-#	ElementArc(X1 Y 50 50 270 180 10)
-#	ElementArc(X2 Y 50 50 90 180 10)
-
-	Mark(0 25)
-)
-
-Element["" "TE-Barrier-2Pos.fp" "TB3" "unknown" 50000 74016 -6693 14961 0 160 ""]
-(
-	Pin[-16142 0 15748 2000 16348 7874 "" "1" "edge2"]
-	Pin[16339 0 15748 2000 16348 7874 "" "2" "edge2"]
-	ElementLine [-32283 -26772 -32283 27165 1000]
-	ElementLine [32677 -26772 32677 27165 1000]
-	ElementLine [-32283 27165 32677 27165 1000]
-	ElementLine [-32283 -26772 32677 -26772 1000]
-
-	)
-
-Element["" "TE-Barrier-2Pos.fp" "TB4" "unknown" 50000 74016 -6693 14961 0 160 ""]
-(
-	Pin[-16142 0 15748 2000 16348 7874 "" "1" "edge2"]
-	Pin[16339 0 15748 2000 16348 7874 "" "2" "edge2"]
-	ElementLine [-32283 -26772 -32283 27165 1000]
-	ElementLine [32677 -26772 32677 27165 1000]
-	ElementLine [-32283 27165 32677 27165 1000]
-	ElementLine [-32283 -26772 32677 -26772 1000]
-
-	)
-
-Element["" "TE-Barrier-2Pos.fp" "TB1" "unknown" 50000 74016 -6693 14961 0 160 ""]
-(
-	Pin[-16142 0 15748 2000 16348 7874 "" "1" "edge2"]
-	Pin[16339 0 15748 2000 16348 7874 "" "2" "edge2"]
-	ElementLine [-32283 -26772 -32283 27165 1000]
-	ElementLine [32677 -26772 32677 27165 1000]
-	ElementLine [-32283 27165 32677 27165 1000]
-	ElementLine [-32283 -26772 32677 -26772 1000]
-
-	)
-
-Element["" "TE-Barrier-2Pos.fp" "TB2" "unknown" 50000 74016 -6693 14961 0 160 ""]
-(
-	Pin[-16142 0 15748 2000 16348 7874 "" "1" "edge2"]
-	Pin[16339 0 15748 2000 16348 7874 "" "2" "edge2"]
-	ElementLine [-32283 -26772 -32283 27165 1000]
-	ElementLine [32677 -26772 32677 27165 1000]
-	ElementLine [-32283 27165 32677 27165 1000]
-	ElementLine [-32283 -26772 32677 -26772 1000]
-
-	)
-Element(0x00 "TO220W" "M1" "unknown" 0 10 0 100 0x00)
-(
-	Pin(100 200 90 60 "1" 0x101)
-	Pin(200 200 90 60 "2" 0x01)
-	Pin(300 200 90 60 "3" 0x01)
-
-	# Gehaeuse
-	ElementLine(  0  80 400  80 20)
-	ElementLine(400  80 400 260 20)
-	ElementLine(400 260   0 260 20) 
-	ElementLine(  0 260   0  80 20) 
-
-	# Kuehlfahne icl. Bohrung
-	ElementLine(  0  80 400  80 20)
-	ElementLine(400  80 400 140 20)
-	ElementLine(400 140   0 140 20)
-	ElementLine(  0 140   0  80 20)
-
-	ElementLine(130 80 130 140 10)
-	ElementLine(270 80 270 140 10)
-
-	Mark(100 200)
-)
-
-Element["" "TO220R.fp" "R2" "12" 21000 13000 0 0 0 100 ""]
-(
-	Pin[10000 0 9000 3000 9600 6000 "" "2" "edge2"]
-	Pin[-10000 0 9000 3000 9600 6000 "" "1" "edge2"]
-	ElementLine [7000 -12000 7000 -6000 1000]
-	ElementLine [-7000 -12000 -7000 -6000 1000]
-	ElementLine [-20000 -6000 -20000 -12000 2000]
-	ElementLine [20000 -6000 -20000 -6000 2000]
-	ElementLine [20000 -12000 20000 -6000 2000]
-	ElementLine [-20000 6000 -20000 -12000 2000]
-	ElementLine [20000 6000 -20000 6000 2000]
-	ElementLine [20000 -12000 20000 6000 2000]
-	ElementLine [-20000 -12000 20000 -12000 2000]
-
-	)
-
-# retain backwards compatibility to older versions of PKG_DIL 
-# which did not have 100,60,28 args
-
-        
-              
-        
-              
-        
-              
-	
-	
-	
-	
-Element(0x00 "DIP8" "IC2" "unknown" 220 100 3 100 0x00)
-(
-	Pin(50 50 60 28 "1" 0x101)
-	Pin(50 150 60 28 "2" 0x01)
-	Pin(50 250 60 28 "3" 0x01)
-	Pin(50 350 60 28 "4" 0x01)
-	
-	Pin(350 350 60 28 "5" 0x01)
-	Pin(350 250 60 28 "6" 0x01)
-	Pin(350 150 60 28 "7" 0x01)
-	Pin(350 50 60 28 "8" 0x01)
-	
-	ElementLine(0 0 0 400 10)
-	ElementLine(0 400 400 400 10)
-	ElementLine(400 400 400 0 10)
-	ElementLine(0 0 150 0 10)
-	ElementLine(250 0 400 0 10)
-	ElementArc(200 0 50 50 0 180 10)
-	Mark(50 50)
-)
-
-	
-	
-	
-	
-	
-	
-	
-	
-Element(0x00 "AXIAL_LAY-300" "R1" "300" 245 70 0 100 0x00)
-(
-	Pin(0 25 55 30 "1" 0x101)
-	Pin(300 25 55 30 "2" 0x01)
-
-	ElementLine(0 25 75 25 10)
-	ElementLine(225 25 300 25 10)
-
-	ElementLine(75 0 225 0 10)
-	ElementLine(225 0 225 50 10)
-	ElementLine(225 50 75 50 10)
-	ElementLine(75 50 75 0 10)
-
-	
-
-#	ElementArc(X1 Y 50 50 270 180 10)
-#	ElementArc(X2 Y 50 50 90 180 10)
-
-	Mark(0 25)
+	Mark(0 33)
 )
 
 # retain backwards compatibility to older versions of PKG_DIL 
@@ -323,26 +73,49 @@ Element(0x00 "AXIAL_LAY-300" "R1" "300" 245 70 0 100 0x00)
 	
 	
 	
-Element(0x00 "DIP8" "IC1" "unknown" 220 100 3 100 0x00)
+
+	
+	
+	
+	
+	
+	
+	
+	
+Element(0x00 "AXIAL_LAY-400" "R1" "300" 320 86 0 100 0x00)
 (
-	Pin(50 50 60 28 "1" 0x101)
-	Pin(50 150 60 28 "2" 0x01)
-	Pin(50 250 60 28 "3" 0x01)
-	Pin(50 350 60 28 "4" 0x01)
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
+
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
+
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
+
 	
-	Pin(350 350 60 28 "5" 0x01)
-	Pin(350 250 60 28 "6" 0x01)
-	Pin(350 150 60 28 "7" 0x01)
-	Pin(350 50 60 28 "8" 0x01)
-	
-	ElementLine(0 0 0 400 10)
-	ElementLine(0 400 400 400 10)
-	ElementLine(400 400 400 0 10)
-	ElementLine(0 0 150 0 10)
-	ElementLine(250 0 400 0 10)
-	ElementArc(200 0 50 50 0 180 10)
-	Mark(50 50)
+
+#	ElementArc(X1 Y 50 50 270 180 10)
+#	ElementArc(X2 Y 50 50 90 180 10)
+
+	Mark(0 33)
 )
+
+# retain backwards compatibility to older versions of PKG_DIL 
+# which did not have 100,60,28 args
+
+        
+              
+        
+              
+        
+              
+	
+	
+	
+	
 Layer(1 "component")
 (
 )

@@ -15,7 +15,7 @@ device=r
 T 48500 48300 5 10 1 1 0 0 1
 value=300
 T 48400 48400 5 10 0 0 0 0 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 }
 C 49600 46600 1 0 0 VO3120.sym
 {
@@ -180,7 +180,7 @@ device=r
 T 53500 47100 5 10 1 1 0 0 1
 value=500
 T 53500 46900 5 10 0 0 0 0 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 }
 C 53100 46100 1 0 0 led.sym
 {

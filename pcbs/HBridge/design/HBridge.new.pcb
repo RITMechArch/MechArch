@@ -19,25 +19,70 @@ Styles["Signal,1000,3600,2000,1000:Power,2500,6000,3500,1000:Fat,4000,6000,3500,
 	
 	
 	
-Element(0x00 "ACY100" "C7" "10n" 95 36 0 100 0x00)
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+Element(0x00 "AXIAL_LAY-400" "R12" "300" 320 86 0 100 0x00)
 (
-	Pin(0 8 55 30 "1" 0x101)
-	Pin(100 8 55 30 "2" 0x01)
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
 
-	ElementLine(0 8 25 8 10)
-	ElementLine(75 8 100 8 10)
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
 
-	ElementLine(25 0 75 0 10)
-	ElementLine(75 0 75 16 10)
-	ElementLine(75 16 25 16 10)
-	ElementLine(25 16 25 0 10)
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
 
 	
 
 #	ElementArc(X1 Y 50 50 270 180 10)
 #	ElementArc(X2 Y 50 50 90 180 10)
 
-	Mark(0 8)
+	Mark(0 33)
 )
 
 	
@@ -48,6 +93,26 @@ Element(0x00 "ACY100" "C7" "10n" 95 36 0 100 0x00)
 	
 	
 	
+Element(0x00 "AXIAL_LAY-400" "R11" "300" 320 86 0 100 0x00)
+(
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
+
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
+
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
+
+	
+
+#	ElementArc(X1 Y 50 50 270 180 10)
+#	ElementArc(X2 Y 50 50 90 180 10)
+
+	Mark(0 33)
+)
 
 	
 	
@@ -57,6 +122,26 @@ Element(0x00 "ACY100" "C7" "10n" 95 36 0 100 0x00)
 	
 	
 	
+Element(0x00 "AXIAL_LAY-400" "R10" "300" 320 86 0 100 0x00)
+(
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
+
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
+
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
+
+	
+
+#	ElementArc(X1 Y 50 50 270 180 10)
+#	ElementArc(X2 Y 50 50 90 180 10)
+
+	Mark(0 33)
+)
 
 	
 	
@@ -66,47 +151,50 @@ Element(0x00 "ACY100" "C7" "10n" 95 36 0 100 0x00)
 	
 	
 	
+Element(0x00 "AXIAL_LAY-400" "R9" "300" 320 86 0 100 0x00)
+(
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
+
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
+
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
 
 	
-	
-	
-	
-	
-	
-	
-	
 
-	
-	
-	
-	
-	
-	
-	
-	
+#	ElementArc(X1 Y 50 50 270 180 10)
+#	ElementArc(X2 Y 50 50 90 180 10)
 
-	
-	
-	
-	
-	
-	
-	
-	
+	Mark(0 33)
+)
 
-	
-	
-	
-	
+# retain backwards compatibility to older versions of PKG_DIL 
+# which did not have 100,60,28 args
+
+        
+              
+        
+              
+        
+              
 	
 	
 	
 	
 
-	
-	
-	
-	
+# retain backwards compatibility to older versions of PKG_DIL 
+# which did not have 100,60,28 args
+
+        
+              
+        
+              
+        
+              
 	
 	
 	
@@ -140,34 +228,6 @@ Element(0x00 "ACY100" "C7" "10n" 95 36 0 100 0x00)
 	
 	
 
-# retain backwards compatibility to older versions of PKG_DIL 
-# which did not have 100,60,28 args
-
-        
-              
-        
-              
-        
-              
-	
-	
-	
-	
-
-# retain backwards compatibility to older versions of PKG_DIL 
-# which did not have 100,60,28 args
-
-        
-              
-        
-              
-        
-              
-	
-	
-	
-	
-
 	
 	
 	
@@ -194,6 +254,26 @@ Element(0x00 "ACY100" "C7" "10n" 95 36 0 100 0x00)
 	
 	
 	
+Element(0x00 "AXIAL_LAY-400" "R14" "250" 320 86 0 100 0x00)
+(
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
+
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
+
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
+
+	
+
+#	ElementArc(X1 Y 50 50 270 180 10)
+#	ElementArc(X2 Y 50 50 90 180 10)
+
+	Mark(0 33)
+)
 
 	
 	
@@ -203,6 +283,26 @@ Element(0x00 "ACY100" "C7" "10n" 95 36 0 100 0x00)
 	
 	
 	
+Element(0x00 "AXIAL_LAY-400" "R13" "250" 320 86 0 100 0x00)
+(
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
+
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
+
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
+
+	
+
+#	ElementArc(X1 Y 50 50 270 180 10)
+#	ElementArc(X2 Y 50 50 90 180 10)
+
+	Mark(0 33)
+)
 
 	
 
@@ -220,6 +320,26 @@ Element(0x00 "ACY100" "C7" "10n" 95 36 0 100 0x00)
 	
 	
 	
+Element(0x00 "AXIAL_LAY-400" "R3" "500" 320 86 0 100 0x00)
+(
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
+
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
+
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
+
+	
+
+#	ElementArc(X1 Y 50 50 270 180 10)
+#	ElementArc(X2 Y 50 50 90 180 10)
+
+	Mark(0 33)
+)
 
 	
 	
@@ -229,6 +349,26 @@ Element(0x00 "ACY100" "C7" "10n" 95 36 0 100 0x00)
 	
 	
 	
+Element(0x00 "AXIAL_LAY-400" "R2" "500" 320 86 0 100 0x00)
+(
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
+
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
+
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
+
+	
+
+#	ElementArc(X1 Y 50 50 270 180 10)
+#	ElementArc(X2 Y 50 50 90 180 10)
+
+	Mark(0 33)
+)
 
 	
 	
@@ -238,6 +378,26 @@ Element(0x00 "ACY100" "C7" "10n" 95 36 0 100 0x00)
 	
 	
 	
+Element(0x00 "AXIAL_LAY-400" "R4" "500" 320 86 0 100 0x00)
+(
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
+
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
+
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
+
+	
+
+#	ElementArc(X1 Y 50 50 270 180 10)
+#	ElementArc(X2 Y 50 50 90 180 10)
+
+	Mark(0 33)
+)
 
 	
 	
@@ -247,6 +407,26 @@ Element(0x00 "ACY100" "C7" "10n" 95 36 0 100 0x00)
 	
 	
 	
+Element(0x00 "AXIAL_LAY-400" "R1" "500" 320 86 0 100 0x00)
+(
+	Pin(0 33 55 30 "1" 0x101)
+	Pin(400 33 55 30 "2" 0x01)
+
+	ElementLine(0 33 100 33 10)
+	ElementLine(300 33 400 33 10)
+
+	ElementLine(100 0 300 0 10)
+	ElementLine(300 0 300 66 10)
+	ElementLine(300 66 100 66 10)
+	ElementLine(100 66 100 0 10)
+
+	
+
+#	ElementArc(X1 Y 50 50 270 180 10)
+#	ElementArc(X2 Y 50 50 90 180 10)
+
+	Mark(0 33)
+)
 
 # retain backwards compatibility to older versions of PKG_DIL 
 # which did not have 100,60,28 args

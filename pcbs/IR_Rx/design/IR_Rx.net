@@ -1,6 +1,7 @@
+unnamed_net6	U2-1 TB1-1 
 unnamed_net5	D2-2 R3-1 
 unnamed_net4	R2-2 U1-2 
 unnamed_net3	TB2-1 R3-2 U1-1 
-unnamed_net2	R2-1 C1-2 U1-8 TB1-1 R1-2 
+unnamed_net2	U2-3 C1-2 U1-8 R2-1 R1-2 
 unnamed_net1	U1-3 R1-1 PD1-2 
-SGND	C1-1 TB2-2 TB1-2 D2-1 R2-3 U1-6 U1-5 U1-4 PD1-1 
+SGND	U2-2 C1-1 TB2-2 TB1-2 D2-1 R2-3 U1-6 U1-5 U1-4 PD1-1 

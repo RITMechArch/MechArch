@@ -17,7 +17,7 @@ refdes=R1
 T 41300 47700 5 10 1 1 0 0 1
 value=200k
 T 42000 47400 5 10 0 0 0 0 1
-footprint=AXIAL_LAY 200
+footprint=AXIAL_LAY 400
 }
 C 45100 45500 1 0 0 NJM12904D.sym
 {
@@ -46,7 +46,7 @@ refdes=R3
 T 51000 47200 5 10 1 1 0 0 1
 value=200
 T 50900 46800 5 10 0 0 0 0 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 }
 C 50600 45700 1 270 1 led-3.sym
 {

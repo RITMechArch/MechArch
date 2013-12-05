@@ -8,7 +8,7 @@ refdes=R1
 T 46100 47200 5 10 1 1 0 0 1
 value=400
 T 46000 46800 5 10 0 0 0 0 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 }
 C 47300 46000 1 0 0 connector2-2.sym
 {
@@ -47,7 +47,7 @@ refdes=R2
 T 44400 47200 5 10 1 1 0 0 1
 value=200
 T 44300 46800 5 10 0 0 0 0 1
-footprint=AXIAL_LAY 300
+footprint=AXIAL_LAY 400
 }
 C 44000 44700 1 270 1 led-3.sym
 {

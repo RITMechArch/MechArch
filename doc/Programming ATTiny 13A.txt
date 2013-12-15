@@ -89,6 +89,21 @@ For the ATTiny-HLS program:
 avrdude -p attiny13 -c stk500v1 -P <com port> -b 19200 -q -U flash:w:ATTiny-HLS.hex
 
 
+## Burning the Reset Fuse
+To burn the reset fuse, use these fuse values from http://www.engbedded.com/fusecalc :
+	Low:  0x7A
+	High: 0xFA
+
+This corresponds to 9.6 MHz internal clock speed with no divider, brown out 
+detection at 2.7V, SPI programming enabled, and a disabled external reset.
+
+When programming, first run the following command to set the fuse bits:
+avrdude -p attiny13 -P <com port> -c stk500v1  -b 19200 -q -U lfuse:w:0x7A:m -U hfuse:w:0xFA:m
+
+Follow the instructions in #Uploading Program under ##Programming
+
+
+
 ## Additional notes
 # Programming from locked down (i.e. EE lab) machines
 The programming steps above, at least, are possible in machines where you don't

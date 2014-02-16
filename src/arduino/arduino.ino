@@ -45,8 +45,8 @@ LiquidCrystal lcd( LCDRegSelect, LCDEnable, LCDData4, LCDData5, LCDData6, LCDDat
 
 //--------- OUTPUT PIN settings -----------
 
-#define drawRelay           (34)
-#define resetRelay          (36)
+#define motorEnable         (34)
+#define motorDirection      (36)
 #define fireSolenoid        (38)
 
 //-------- STATE const declarations -------------
@@ -61,6 +61,13 @@ int currentState;
 #define STATE_HALT          (7)
 
 #define STATE_retracting    (8)
+
+//-------- Motor Controller const declarations -------------
+
+#define MOTOR_ENABLED       (0)
+#define MOTOR_DISABLED      (1)
+#define DIRECTION_BACK      (0)
+#define DIRECTION_FWD       (1)
 
 
 //=========================================
@@ -97,8 +104,8 @@ void setup()
     pinMode(fOptic, INPUT);
     pinMode(rOptic, INPUT);
 
-    pinMode(drawRelay, OUTPUT);
-    pinMode(resetRelay, OUTPUT);
+    pinMode(motorEnable, OUTPUT);
+    pinMode(motorDirection, OUTPUT);
     pinMode(fireSolenoid, OUTPUT);
 
     attachInterrupt(2, fBumpInterrupt, RISING);
@@ -268,8 +275,8 @@ void loop()
 void set_halt_outputs()
 //=========================================
 {
-    digitalWrite(drawRelay, LOW);
-    digitalWrite(resetRelay, LOW);
+    digitalWrite(motorDirection, DIRECTION_FWD);
+    digitalWrite(motorEnable, MOTOR_DISABLED);
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -277,8 +284,8 @@ void set_halt_outputs()
 void set_idle_outputs()
 //=========================================
 {
-    digitalWrite(drawRelay, LOW);
-    digitalWrite(resetRelay, LOW);
+    digitalWrite(motorDirection, DIRECTION_FWD);
+    digitalWrite(motorEnable, MOTOR_DISABLED);
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -286,8 +293,8 @@ void set_idle_outputs()
 void set_ready_outputs()
 //=========================================
 {
-    digitalWrite(drawRelay, LOW);
-    digitalWrite(resetRelay, LOW);
+    digitalWrite(motorDirection, DIRECTION_FWD);
+    digitalWrite(motorEnable, MOTOR_DISABLED);
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -297,8 +304,8 @@ void set_drawing_outputs()
 {
     if(digitalRead(fBump) == HIGH )
     {
-        digitalWrite(drawRelay, HIGH);
-        digitalWrite(resetRelay, LOW);
+        digitalWrite(motorDirection, DIRECTION_BACK);
+        digitalWrite(motorEnable, MOTOR_ENABLED);
         digitalWrite(fireSolenoid, LOW);
     }
 }
@@ -307,8 +314,8 @@ void set_drawing_outputs()
 void set_drawn_outputs()
 //=========================================
 {
-    digitalWrite(drawRelay, LOW);
-    digitalWrite(resetRelay, LOW);
+    digitalWrite(motorDirection, DIRECTION_FWD);
+    digitalWrite(motorEnable, MOTOR_DISABLED);
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -316,8 +323,8 @@ void set_drawn_outputs()
 void set_firing_outputs()
 //=========================================
 {
-    digitalWrite(drawRelay, LOW);
-    digitalWrite(resetRelay, LOW);
+    digitalWrite(motorDirection, DIRECTION_FWD);
+    digitalWrite(motorEnable, MOTOR_DISABLED);
     digitalWrite(fireSolenoid, HIGH);
 }
 
@@ -325,21 +332,21 @@ void set_firing_outputs()
 void set_fired_outputs()
 //=========================================
 {
-    if(digitalRead(rBump) == HIGH)
-    {
-        digitalWrite(drawRelay, LOW);
-        digitalWrite(resetRelay, HIGH);
-        digitalWrite(fireSolenoid, LOW);
-    }
+    digitalWrite(motorDirection, DIRECTION_FWD);
+    digitalWrite(motorEnable, MOTOR_DISABLED);
+    digitalWrite(fireSolenoid, LOW);
 }
 
 //=========================================
 void set_retracting_outputs()
 //=========================================
 {
-    digitalWrite(drawRelay, LOW);
-    digitalWrite(resetRelay, HIGH);
-    digitalWrite(fireSolenoid, LOW);
+    if(digitalRead(rBump) == HIGH)
+    {
+        digitalWrite(motorDirection, DIRECTION_FWD);
+        digitalWrite(motorEnable, MOTOR_ENABLED);
+        digitalWrite(fireSolenoid, LOW);
+    }
 }
 
 //=========================================
@@ -475,8 +482,8 @@ void eStopInterrupt()
     double d;
     for (d = 1.0; sqrt(d) < 121.1; d = d + 1)
     {
-    	digitalWrite(drawRelay, LOW);
-    	digitalWrite(resetRelay, LOW);
+    	digitalWrite(motorDirection, DIRECTION_FWD);
+        digitalWrite(motorEnable, MOTOR_DISABLED);
     	digitalWrite(fireSolenoid, LOW);
     }
   
@@ -484,14 +491,14 @@ void eStopInterrupt()
     {
         if(digitalRead(fBump) == LOW)
         {
-            digitalWrite(drawRelay, LOW);
-            digitalWrite(resetRelay, HIGH);
+            digitalWrite(motorDirection, DIRECTION_FWD);
+            digitalWrite(motorEnable, MOTOR_ENABLED);
             digitalWrite(fireSolenoid, LOW);
         }
         else 
         {
-            digitalWrite(drawRelay, LOW);
-            digitalWrite(resetRelay, LOW);
+            digitalWrite(motorDirection, DIRECTION_FWD);
+            digitalWrite(motorEnable, MOTOR_DISABLED);
             digitalWrite(fireSolenoid, LOW);
         }
     }
@@ -501,13 +508,13 @@ void eStopInterrupt()
 void fBumpInterrupt()
 //=========================================
 {
-    digitalWrite(resetRelay, LOW);
+    digitalWrite(motorEnable, MOTOR_DISABLED);
 }
 
 //=========================================
 void rBumpInterrupt()
 //=========================================
 {
-    digitalWrite(drawRelay, LOW);
+    digitalWrite(motorEnable, MOTOR_DISABLED);
 }
 

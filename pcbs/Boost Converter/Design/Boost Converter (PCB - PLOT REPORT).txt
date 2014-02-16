@@ -1,0 +1,197 @@
+PLOT REPORT
+-----------
+
+Report File    : C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter (PCB - PLOT REPORT).txt
+Report Written : Sunday, February 16, 2014
+Design Path    : C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter.pcb
+Design Title   : 
+Created        : 2/16/2014 10:12:48 AM
+Last Saved     : 2/16/2014 1:43:57 PM
+Editing Time   : 222 min
+Units          : thou (precision 0)
+
+
+Device Settings
+===============
+
+
+Gerber Settings
+===============
+
+    Leading zero suppression.
+    G01 assumed throughout.
+    Line termination <*> <CR> <LF>.
+    2.3 format absolute inches.
+    Format commands defined in Gerber file.
+    Aperture table defined in Gerber file.
+    Hardware arcs allowed.
+
+
+Drill Settings
+==============
+
+    Excellon Format 1    Format 2.3 absolute in mm.
+    No zero suppression.
+
+
+Plots Output
+============
+
+    Plot Job: "C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter.mop"
+
+
+Gerber Output
+=============
+
+C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter - Top Silkscreen.gbr
+
+    Layers:
+    ----------------
+    Top Silkscreen
+
+    D-Code  Shape  (thou)
+    ---------------------
+    D10     Round 5.00
+
+Gerber Output
+=============
+
+C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter - Top Copper.gbr
+
+    Layers:
+    ------------
+    Top Copper
+
+    D-Code  Shape  (thou)
+    ---------------------
+    D11     Round 150.00
+    D12     Round 80.00
+    D13     Round 70.00
+    D14     Round 60.00
+    D15     Round 110.00
+    D16     Round 75.00
+    D17     Round 15.00
+    D18     Round 100.00
+
+Gerber Output
+=============
+
+C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter - Top Copper (Resist).gbr
+
+    Layers:
+    ------------
+    Top Copper
+
+    D-Code  Shape  (thou)
+    ---------------------
+    D19     Round 160.00
+    D70     Round 90.00
+    D71     Round 80.00
+    D20     Round 70.00
+
+Gerber Output
+=============
+
+C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter - Bottom Copper.gbr
+
+    Layers:
+    ---------------
+    Bottom Copper
+
+    D-Code  Shape  (thou)
+    ---------------------
+    D11     Round 150.00
+    D12     Round 80.00
+    D13     Round 70.00
+    D14     Round 60.00
+    D15     Round 110.00
+    D17     Round 15.00
+
+Gerber Output
+=============
+
+C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter - Bottom Copper (Resist).gbr
+
+    Layers:
+    ---------------
+    Bottom Copper
+
+    D-Code  Shape  (thou)
+    ---------------------
+    D19     Round 160.00
+    D70     Round 90.00
+    D71     Round 80.00
+    D20     Round 70.00
+
+NC Drill Output
+===============
+
+C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter - Drill Data - Through Hole.drl
+
+    Output:
+    --------------------------
+    Plated Round Drill Holes
+    Plated Slots
+    Plated Board Outlines
+
+    Tool   Size       Count    ID
+    -----------------------------
+    T001   00.032 in  12     G
+    T002   00.040 in  21     D
+    T003   00.042 in  3      F
+    T004   00.060 in  2      C
+    T005   00.070 in  6      A
+    T006   00.080 in  2      B
+    -----------------------------
+    Total             46
+    -----------------------------
+    Tool   Size       Count    ID
+    -----------------------------
+    T001   00.025 in  1
+    T002   00.120 in  2      E
+    -----------------------------
+    Total             3
+    -----------------------------
+
+Gerber Output
+=============
+
+C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter - Drill Ident Drawing - Through Hole.gbr
+
+    Layers:
+    ----------------
+    [Through Hole]
+
+
+Drill Ident Drawing
+===================
+
+    Drill  Plated  Size  Shape  ID
+    ------------------------------
+    70     Y       100   Round  A
+    80     Y       100   Round  B
+    60     Y       100   Round  C
+    40     Y       100   Round  D
+    120            100   Round  E
+    42     Y       100   Round  F
+    32     Y       100   Round  G
+
+    D-Code  Shape  (thou)
+    ---------------------
+    D10     Round 5.00
+    D18     Round 100.00
+
+Gerber Output
+=============
+
+C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter - Board Outline.gbr
+
+    Layers:
+    ----------------
+    Board Outlines
+
+    D-Code  Shape  (thou)
+    ---------------------
+    D10     Round 5.00
+
+End Of Report.

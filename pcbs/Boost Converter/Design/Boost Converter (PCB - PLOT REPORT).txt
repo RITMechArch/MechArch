@@ -2,12 +2,12 @@ PLOT REPORT
 -----------
 
 Report File    : C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter (PCB - PLOT REPORT).txt
-Report Written : Sunday, February 16, 2014
+Report Written : Wednesday, February 19, 2014
 Design Path    : C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter.pcb
 Design Title   : 
 Created        : 2/16/2014 10:12:48 AM
-Last Saved     : 2/16/2014 1:43:57 PM
-Editing Time   : 222 min
+Last Saved     : 2/19/2014 9:53:41 AM
+Editing Time   : 257 min
 Units          : thou (precision 0)
 
 
@@ -37,8 +37,6 @@ Drill Settings
 Plots Output
 ============
 
-    Plot Job: "C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter.mop"
-
 
 Gerber Output
 =============
@@ -52,6 +50,7 @@ C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Conver
     D-Code  Shape  (thou)
     ---------------------
     D10     Round 5.00
+    D21     Round 2.00
 
 Gerber Output
 =============
@@ -72,6 +71,8 @@ C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Conver
     D16     Round 75.00
     D17     Round 15.00
     D18     Round 100.00
+    D22     Round 70.00
+    D23     Round 90.00
 
 Gerber Output
 =============
@@ -88,6 +89,9 @@ C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Conver
     D70     Round 90.00
     D71     Round 80.00
     D20     Round 70.00
+    D24     Round 120.00
+    D25     Round 80.00
+    D26     Round 100.00
 
 Gerber Output
 =============
@@ -106,6 +110,8 @@ C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Conver
     D14     Round 60.00
     D15     Round 110.00
     D17     Round 15.00
+    D22     Round 70.00
+    D23     Round 90.00
 
 Gerber Output
 =============
@@ -122,6 +128,9 @@ C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Conver
     D70     Round 90.00
     D71     Round 80.00
     D20     Round 70.00
+    D24     Round 120.00
+    D25     Round 80.00
+    D26     Round 100.00
 
 NC Drill Output
 ===============
@@ -136,12 +145,14 @@ C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Conver
 
     Tool   Size       Count    ID
     -----------------------------
-    T001   00.032 in  12     G
-    T002   00.040 in  21     D
-    T003   00.042 in  3      F
-    T004   00.060 in  2      C
-    T005   00.070 in  6      A
-    T006   00.080 in  2      B
+    T001   00.030 in  2      K
+    T002   00.032 in  12     G
+    T003   00.034 in  2      J
+    T004   00.040 in  16     D
+    T005   00.042 in  5      F
+    T006   00.050 in  3      L
+    T007   00.057 in  4      H
+    T008   00.074 in  2      I
     -----------------------------
     Total             46
     -----------------------------
@@ -168,13 +179,15 @@ Drill Ident Drawing
 
     Drill  Plated  Size  Shape  ID
     ------------------------------
-    70     Y       100   Round  A
-    80     Y       100   Round  B
-    60     Y       100   Round  C
     40     Y       100   Round  D
     120            100   Round  E
     42     Y       100   Round  F
     32     Y       100   Round  G
+    57     Y       100   Round  H
+    74     Y       100   Round  I
+    34     Y       100   Round  J
+    30     Y       100   Round  K
+    50     Y       100   Round  L
 
     D-Code  Shape  (thou)
     ---------------------

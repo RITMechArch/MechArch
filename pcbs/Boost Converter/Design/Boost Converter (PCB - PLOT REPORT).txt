@@ -2,12 +2,12 @@ PLOT REPORT
 -----------
 
 Report File    : C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter (PCB - PLOT REPORT).txt
-Report Written : Wednesday, February 19, 2014
+Report Written : Friday, February 21, 2014
 Design Path    : C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter.pcb
 Design Title   : 
 Created        : 2/16/2014 10:12:48 AM
-Last Saved     : 2/19/2014 9:53:41 AM
-Editing Time   : 257 min
+Last Saved     : 2/21/2014 10:04:47 AM
+Editing Time   : 261 min
 Units          : thou (precision 0)
 
 
@@ -37,6 +37,8 @@ Drill Settings
 Plots Output
 ============
 
+    Plot Job: "C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter.mop"
+
 
 Gerber Output
 =============
@@ -50,7 +52,7 @@ C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Conver
     D-Code  Shape  (thou)
     ---------------------
     D10     Round 5.00
-    D21     Round 2.00
+    D27     Round 7.00
 
 Gerber Output
 =============
@@ -153,15 +155,15 @@ C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Conver
     T006   00.050 in  3      L
     T007   00.057 in  4      H
     T008   00.074 in  2      I
+    T009   00.120 in  5      M
     -----------------------------
-    Total             46
+    Total             51
     -----------------------------
     Tool   Size       Count    ID
     -----------------------------
     T001   00.025 in  1
-    T002   00.120 in  2      E
     -----------------------------
-    Total             3
+    Total             1
     -----------------------------
 
 Gerber Output
@@ -180,7 +182,6 @@ Drill Ident Drawing
     Drill  Plated  Size  Shape  ID
     ------------------------------
     40     Y       100   Round  D
-    120            100   Round  E
     42     Y       100   Round  F
     32     Y       100   Round  G
     57     Y       100   Round  H
@@ -188,6 +189,7 @@ Drill Ident Drawing
     34     Y       100   Round  J
     30     Y       100   Round  K
     50     Y       100   Round  L
+    120    Y       100   Round  M
 
     D-Code  Shape  (thou)
     ---------------------

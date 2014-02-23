@@ -1,0 +1,64 @@
+Design Rule Check Report
+------------------------
+
+Report File    : C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter (PCB - Design Rule Check Report).txt
+Report Written : Wednesday, February 19, 2014
+Design Path    : C:\Users\Alex\Documents\GitHub\MechArch\pcbs\Boost Converter\Design\Boost Converter.pcb
+Design Title   : 
+Created        : 2/16/2014 10:12:48 AM
+Last Saved     : 2/19/2014 9:50:11 AM
+Editing Time   : 251 min
+Units          : thou (precision 0)
+
+
+Results
+=======
+
+
+No errors found
+
+
+Settings
+========
+
+
+Spacings
+
+=========
+
+Tracks         Yes
+Pads and Vias  Yes
+Shapes         Yes
+Text           Yes
+Board          Yes
+Drills         Yes
+Components     No
+
+
+Manufacturing
+
+==============
+
+Drill Breakout                   No
+Drill Backoff                    No
+Silkscreen Overlap               No
+Copper Text In Board             No
+Min Track Width                  No
+Min Annular Ring                 No
+Min Paste Size                   No
+Vias In Pads                     No
+Unplated Vias                    No
+Unplated Pads With Inner Tracks  No
+
+
+Nets
+
+=====
+
+Net Completion                Yes
+Dangling Tracks               Yes
+Net Track Length Differences  No
+
+
+
+End Of Report.

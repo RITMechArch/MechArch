@@ -333,7 +333,7 @@ void set_fired_outputs()
 //=========================================
 {
     digitalWrite(motorDirection, DIRECTION_FWD);
-    digitalWrite(motorEnable, MOTOR_DISABLED);
+    digitalWrite(motorEnable, MOTOR_ENABLED);
     digitalWrite(fireSolenoid, LOW);
 }
 

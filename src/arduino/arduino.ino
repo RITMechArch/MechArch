@@ -64,6 +64,7 @@ int currentState;
 
 //-------- Motor Controller const declarations -------------
 
+unsigned long startMovementTime = 0;
 #define MOTOR_ENABLED       (0)
 #define MOTOR_DISABLED      (1)
 #define DIRECTION_BACK      (0)
@@ -204,6 +205,8 @@ void loop()
             test_ready_transitions();
             break;
         case STATE_drawing:
+            check_movement_time();
+        
             lcd.setCursor(8, 0);
             lcd.print( "Drawing   ");
 			DEBUG_PRINT("State: STATE_drawing");
@@ -237,6 +240,9 @@ void loop()
             test_firing_transitions();
             break;
         case STATE_fired:
+            // Fired causes the machine to retract, so make sure the movement doesn't take too long
+            check_movement_time();
+            
             lcd.setCursor( 8, 0 );
             lcd.print( "Fired     ");
 			DEBUG_PRINT("State: STATE_fired");
@@ -244,6 +250,8 @@ void loop()
             test_fired_transitions();
             break;
         case STATE_retracting:
+            check_movement_time();
+        
             lcd.setCursor( 8, 0 );
             lcd.print( "Retracting");
 			DEBUG_PRINT("State: STATE_retracting");
@@ -398,6 +406,7 @@ void test_drawing_transitions()
      if ( digitalRead(fBump) == LOW &&
            digitalRead(rBump) == HIGH)
      {
+         startMovementTime = 0;
          currentState = STATE_drawn;
      }
 }
@@ -443,6 +452,7 @@ void test_fired_transitions()
     if ( digitalRead(fBump) == HIGH &&
          digitalRead(rBump) == LOW)
     {
+        startMovementTime = 0;
         currentState = STATE_idle;
     }
 }
@@ -454,7 +464,26 @@ void test_retracting_transitions()
     if ( digitalRead(fBump) == HIGH &&
          digitalRead(rBump) == LOW)
     {
+        startMovementTime = 0;
         currentState = STATE_ready;
+    }
+}
+
+//=========================================
+void check_movement_time()
+//=========================================
+{
+    if ( startMovementTime == 0 )
+    {
+        startMovementTime = millis();
+    } 
+    else
+    {
+        currentTime = millis();
+        if ( ( currentTime - startMovementTime ) > 11000 )
+        {
+            eStopInterrupt();
+        }
     }
 }
 

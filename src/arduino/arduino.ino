@@ -283,8 +283,8 @@ void loop()
 void set_halt_outputs()
 //=========================================
 {
-    digitalWrite(motorDirection, DIRECTION_FWD);
     digitalWrite(motorEnable, MOTOR_DISABLED);
+    digitalWrite(motorDirection, DIRECTION_FWD);
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -292,8 +292,8 @@ void set_halt_outputs()
 void set_idle_outputs()
 //=========================================
 {
-    digitalWrite(motorDirection, DIRECTION_FWD);
     digitalWrite(motorEnable, MOTOR_DISABLED);
+    digitalWrite(motorDirection, DIRECTION_FWD);
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -301,8 +301,8 @@ void set_idle_outputs()
 void set_ready_outputs()
 //=========================================
 {
-    digitalWrite(motorDirection, DIRECTION_FWD);
     digitalWrite(motorEnable, MOTOR_DISABLED);
+    digitalWrite(motorDirection, DIRECTION_FWD);
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -310,20 +310,19 @@ void set_ready_outputs()
 void set_drawing_outputs()
 //=========================================
 {
-    if(digitalRead(fBump) == HIGH )
-    {
-        digitalWrite(motorDirection, DIRECTION_BACK);
-        digitalWrite(motorEnable, MOTOR_ENABLED);
-        digitalWrite(fireSolenoid, LOW);
-    }
+    // Always set direction BEFORE enabling the motor (electrical constraint)
+    digitalWrite(motorDirection, DIRECTION_BACK);
+    digitalWrite(motorEnable, MOTOR_ENABLED);
+    digitalWrite(fireSolenoid, LOW);
 }
 
 //=========================================
 void set_drawn_outputs()
 //=========================================
 {
-    digitalWrite(motorDirection, DIRECTION_FWD);
+    // If disabling the motor, do so before setting direction
     digitalWrite(motorEnable, MOTOR_DISABLED);
+    digitalWrite(motorDirection, DIRECTION_FWD);
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -331,8 +330,9 @@ void set_drawn_outputs()
 void set_firing_outputs()
 //=========================================
 {
-    digitalWrite(motorDirection, DIRECTION_FWD);
+    // If disabling the motor, do so before setting direction
     digitalWrite(motorEnable, MOTOR_DISABLED);
+    digitalWrite(motorDirection, DIRECTION_FWD);
     digitalWrite(fireSolenoid, HIGH);
 }
 
@@ -340,6 +340,7 @@ void set_firing_outputs()
 void set_fired_outputs()
 //=========================================
 {
+    // Always set direction BEFORE enabling the motor (electrical constraint)
     digitalWrite(motorDirection, DIRECTION_FWD);
     digitalWrite(motorEnable, MOTOR_ENABLED);
     digitalWrite(fireSolenoid, LOW);
@@ -349,12 +350,10 @@ void set_fired_outputs()
 void set_retracting_outputs()
 //=========================================
 {
-    if(digitalRead(rBump) == HIGH)
-    {
-        digitalWrite(motorDirection, DIRECTION_FWD);
-        digitalWrite(motorEnable, MOTOR_ENABLED);
-        digitalWrite(fireSolenoid, LOW);
-    }
+    // Always set direction BEFORE enabling the motor (electrical constraint)
+    digitalWrite(motorDirection, DIRECTION_FWD);
+    digitalWrite(motorEnable, MOTOR_ENABLED);
+    digitalWrite(fireSolenoid, LOW);
 }
 
 //=========================================
@@ -450,7 +449,7 @@ void test_fired_transitions()
 //=========================================
 {
     if ( digitalRead(fBump) == HIGH &&
-         digitalRead(rBump) == LOW)
+         digitalRead(rBump) == LOW )
     {
         startMovementTime = 0;
         currentState = STATE_idle;

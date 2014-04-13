@@ -510,8 +510,8 @@ void eStopInterrupt()
     double d;
     for (d = 1.0; sqrt(d) < 121.1; d = d + 1)
     {
-    	digitalWrite(motorDirection, DIRECTION_FWD);
         digitalWrite(motorEnable, MOTOR_DISABLED);
+    	digitalWrite(motorDirection, DIRECTION_FWD);
     	digitalWrite(fireSolenoid, LOW);
     }
   
@@ -525,8 +525,8 @@ void eStopInterrupt()
         }
         else 
         {
-            digitalWrite(motorDirection, DIRECTION_FWD);
             digitalWrite(motorEnable, MOTOR_DISABLED);
+            digitalWrite(motorDirection, DIRECTION_FWD);
             digitalWrite(fireSolenoid, LOW);
         }
     }

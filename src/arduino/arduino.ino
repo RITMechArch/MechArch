@@ -478,7 +478,7 @@ void check_movement_time()
     } 
     else
     {
-        currentTime = millis();
+        unsigned long currentTime = millis();
         if ( ( currentTime - startMovementTime ) > 11000 )
         {
             eStopInterrupt();

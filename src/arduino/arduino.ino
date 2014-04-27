@@ -133,7 +133,7 @@ void loop()
     
     //Set the second line on the LCD
     lcd.setCursor( 0, 1 );
-    if ( digitalRead(fOptic) == HIGH && digitalRead(rOptic) == HIGH )
+    if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == LOW )
     {
         lcd.print( "SAFE  " );
     }
@@ -144,23 +144,23 @@ void loop()
     
     //Set the third line on the LCD
     lcd.setCursor( 0, 2 );
-    if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == HIGH )
+    if ( digitalRead(fOptic) == HIGH && digitalRead(rOptic) == LOW )
     {
         lcd.print("Arrow Front");
     }
-    else if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == LOW )
+    else if ( digitalRead(fOptic) == HIGH && digitalRead(rOptic) == HIGH )
     {
         lcd.print("Arrow Drawn");
     }
-    else if ( digitalRead(fOptic) == HIGH && digitalRead(rOptic) == LOW )
+    else if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == HIGH )
     {
         lcd.print("ERROR: CHCK F SENSOR");
     }
-    else if ( digitalRead(rOptic) == LOW && digitalRead(fBump) == HIGH )
+    else if ( digitalRead(rOptic) == HIGH && digitalRead(fBump) == HIGH )
     {
         lcd.print("ERROR: CHCK R SENSOR");
     }
-    else if ( digitalRead(fOptic) == HIGH && digitalRead(rOptic) == HIGH )
+    else if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == LOW )
     {
         lcd.print("           ");
     }
@@ -191,7 +191,7 @@ void loop()
 			DEBUG_PRINT("State: STATE_ready");
             set_ready_outputs();
             
-            if ( digitalRead(fOptic) == HIGH )
+            if ( digitalRead(fOptic) == LOW )
             {
                 lcd.setCursor(0, 3);
                 lcd.print("ERROR: UNLOADED");
@@ -224,7 +224,7 @@ void loop()
                 lcd.setCursor(0, 3);
                 lcd.print("ERROR: INCOMPLT DRAW");
             } 
-            else if ( (digitalRead(rOptic) == HIGH ) && ( digitalRead(fOptic) == LOW ) )
+            else if ( (digitalRead(rOptic) == LOW ) && ( digitalRead(fOptic) == HIGH ) )
             {
                 lcd.setCursor(0, 3);
                 lcd.print("ERROR: ARROW NOT BCK");
@@ -387,8 +387,8 @@ void test_ready_transitions()
           digitalRead(drawIn) == HIGH &&
           digitalRead(fBump) == HIGH &&
           digitalRead(rBump) == LOW &&
-       	  digitalRead(fOptic) == LOW &&
-          digitalRead(rOptic) == HIGH )
+       	  digitalRead(fOptic) == HIGH &&
+          digitalRead(rOptic) == LOW )
     {
 		currentState = STATE_drawing;
     }
@@ -419,8 +419,8 @@ void test_drawn_transitions()
         if( digitalRead(fireIn) == HIGH &&
             digitalRead(fBump) == LOW &&
             digitalRead(rBump) == HIGH &&
-            digitalRead(fOptic) == LOW &&
-            digitalRead(rOptic) == LOW )
+            digitalRead(fOptic) == HIGH &&
+            digitalRead(rOptic) == HIGH )
         {
             currentState = STATE_firing;
         }
@@ -437,8 +437,8 @@ void test_firing_transitions()
 {
     if (digitalRead(fBump) == LOW &&
         digitalRead(rBump) == HIGH &&
-        digitalRead(fOptic) == HIGH &&
-        digitalRead(rOptic) == HIGH )
+        digitalRead(fOptic) == LOW &&
+        digitalRead(rOptic) == LOW )
     {
         currentState = STATE_fired;
     }

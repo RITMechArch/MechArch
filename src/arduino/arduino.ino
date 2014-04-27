@@ -310,10 +310,19 @@ void set_ready_outputs()
 void set_drawing_outputs()
 //=========================================
 {
-    // Always set direction BEFORE enabling the motor (electrical constraint)
-    digitalWrite(motorDirection, DIRECTION_BACK);
-    digitalWrite(motorEnable, MOTOR_ENABLED);
-    digitalWrite(fireSolenoid, LOW);
+    // If the rear bump is not tripped, it is safe to move the motor. Otherwise disable
+    //   the motor and wait for the state to change.
+    if ( digitalRead(rBump) == LOW )
+    {
+        // Always set direction BEFORE enabling the motor (electrical constraint)
+        digitalWrite(motorDirection, DIRECTION_BACK);
+        digitalWrite(motorEnable, MOTOR_ENABLED);
+        digitalWrite(fireSolenoid, LOW);
+    }
+    else
+    {
+        digitalWrite(motorEnable, MOTOR_DISABLED);
+    }
 }
 
 //=========================================
@@ -340,20 +349,38 @@ void set_firing_outputs()
 void set_fired_outputs()
 //=========================================
 {
-    // Always set direction BEFORE enabling the motor (electrical constraint)
-    digitalWrite(motorDirection, DIRECTION_FWD);
-    digitalWrite(motorEnable, MOTOR_ENABLED);
-    digitalWrite(fireSolenoid, LOW);
+    // If the rear bump is not tripped, it is safe to move the motor. Otherwise disable
+    //   the motor and wait for the state to change.
+    if ( digitalRead(fBump) == LOW )
+    {
+        // Always set direction BEFORE enabling the motor (electrical constraint)
+        digitalWrite(motorDirection, DIRECTION_FWD);
+        digitalWrite(motorEnable, MOTOR_ENABLED);
+        digitalWrite(fireSolenoid, LOW);
+    }
+    else
+    {
+        digitalWrite(motorEnable, MOTOR_DISABLED);
+    }
 }
 
 //=========================================
 void set_retracting_outputs()
 //=========================================
 {
-    // Always set direction BEFORE enabling the motor (electrical constraint)
-    digitalWrite(motorDirection, DIRECTION_FWD);
-    digitalWrite(motorEnable, MOTOR_ENABLED);
-    digitalWrite(fireSolenoid, LOW);
+    // If the rear bump is not tripped, it is safe to move the motor. Otherwise disable
+    //   the motor and wait for the state to change.
+    if ( digitalRead(fBump) == LOW )
+    {
+        // Always set direction BEFORE enabling the motor (electrical constraint)
+        digitalWrite(motorDirection, DIRECTION_FWD);
+        digitalWrite(motorEnable, MOTOR_ENABLED);
+        digitalWrite(fireSolenoid, LOW);
+    }
+    else
+    {
+        digitalWrite(motorEnable, MOTOR_DISABLED);
+    }
 }
 
 //=========================================

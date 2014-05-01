@@ -131,6 +131,10 @@ void loop()
     lcd.clear();
     lcd.print( "Status: " );
     
+    /**********************************************************************
+     * NOTE: LCD outputs for the second and third lines rely on the optics.
+     *       This code will be restored when optical sensors are working.
+     **********************************************************************
     //Set the second line on the LCD
     lcd.setCursor( 0, 1 );
     if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == LOW )
@@ -141,6 +145,7 @@ void loop()
     {
         lcd.print( "LOADED" );
     }
+    
     
     //Set the third line on the LCD
     lcd.setCursor( 0, 2 );
@@ -167,7 +172,7 @@ void loop()
     else
     {
       lcd.print("ERROR      ");
-    }
+    } */
     //END LCD setup
        
        
@@ -191,12 +196,17 @@ void loop()
 			DEBUG_PRINT("State: STATE_ready");
             set_ready_outputs();
             
+            /***************************************
+             * TODO Restore when optics are working
+             ***************************************
             if ( digitalRead(fOptic) == LOW )
             {
                 lcd.setCursor(0, 3);
                 lcd.print("ERROR: UNLOADED");
             }
-            else if ( fBump == LOW || rBump == HIGH )
+            else */
+            
+            if ( fBump == LOW || rBump == HIGH )
             {
                 lcd.setCursor(0, 3);
                 lcd.print("ERROR: BOW NOT FWD");
@@ -223,12 +233,17 @@ void loop()
             {
                 lcd.setCursor(0, 3);
                 lcd.print("ERROR: INCOMPLT DRAW");
-            } 
+            }
+           
+           /***************************************
+            * TODO Restore when optics are working
+            ***************************************
             else if ( (digitalRead(rOptic) == LOW ) && ( digitalRead(fOptic) == HIGH ) )
             {
                 lcd.setCursor(0, 3);
                 lcd.print("ERROR: ARROW NOT BCK");
             }
+            */
             
             test_drawn_transitions();
             break;
@@ -264,13 +279,14 @@ void loop()
 			DEBUG_PRINT("State: Invalid state!");
             break;
     }
-	
+	/*
         #ifdef DEBUG
 	  Serial.print("Front Optic: ");
           Serial.println(digitalRead(fOptic));
 	  Serial.print("Rear Optic: ");
           Serial.println(digitalRead(rOptic));
         #endif
+        */
 }
 
 //=========================================
@@ -413,9 +429,9 @@ void test_ready_transitions()
     if ( digitalRead(armingChain) == HIGH &&
           digitalRead(drawIn) == HIGH &&
           digitalRead(fBump) == HIGH &&
-          digitalRead(rBump) == LOW &&
-       	  digitalRead(fOptic) == HIGH &&
-          digitalRead(rOptic) == LOW )
+          digitalRead(rBump) == LOW )//&&
+       	  //digitalRead(fOptic) == HIGH &&
+          //digitalRead(rOptic) == LOW )
     {
 		currentState = STATE_drawing;
     }
@@ -445,9 +461,9 @@ void test_drawn_transitions()
     {
         if( digitalRead(fireIn) == HIGH &&
             digitalRead(fBump) == LOW &&
-            digitalRead(rBump) == HIGH &&
-            digitalRead(fOptic) == HIGH &&
-            digitalRead(rOptic) == HIGH )
+            digitalRead(rBump) == HIGH )//&&
+            //digitalRead(fOptic) == HIGH &&
+            //digitalRead(rOptic) == HIGH )
         {
             currentState = STATE_firing;
         }
@@ -463,9 +479,9 @@ void test_firing_transitions()
 //=========================================
 {
     if (digitalRead(fBump) == LOW &&
-        digitalRead(rBump) == HIGH &&
-        digitalRead(fOptic) == LOW &&
-        digitalRead(rOptic) == LOW )
+        digitalRead(rBump) == HIGH )//&&
+        //digitalRead(fOptic) == LOW &&
+        //digitalRead(rOptic) == LOW )
     {
         currentState = STATE_fired;
     }

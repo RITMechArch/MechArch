@@ -465,7 +465,8 @@ void test_drawn_transitions()
             //digitalRead(fOptic) == HIGH &&
             //digitalRead(rOptic) == HIGH )
         {
-            currentState = STATE_firing;
+            currentState = STATE_firing;        
+            startMovementTime = millis();
         }
         else if( digitalRead(resetInput) == HIGH )
         {
@@ -483,7 +484,11 @@ void test_firing_transitions()
         //digitalRead(fOptic) == LOW &&
         //digitalRead(rOptic) == LOW )
     {
-        currentState = STATE_fired;
+        unsigned long currentTime = millis();
+        if ( ( currentTime - startMovementTime ) > 1000 )
+        {
+           currentState = STATE_fired;
+        } 
     }
 }
 
@@ -550,14 +555,15 @@ void eStopInterrupt()
     lcd.setCursor(0,3);
     lcd.print("RESET H/W TO PROCEED");
     
-    double d;
-    for (d = 1.0; sqrt(d) < 121.1; d = d + 1)
+    unsigned long currentTime = millis();
+    unsigned long startWaitTime = millis();  
+    do
     {
-        digitalWrite(motorEnable, MOTOR_DISABLED);
-    	digitalWrite(motorDirection, DIRECTION_FWD);
-    	digitalWrite(fireSolenoid, LOW);
-    }
-  
+      currentTime = millis();
+      digitalWrite(motorEnable, MOTOR_DISABLED);
+      digitalWrite(fireSolenoid, LOW);
+    } while( ( currentTime - startMovementTime ) < 1000 );
+   
     while(true)
     {
         if(digitalRead(fBump) == LOW)
@@ -569,7 +575,6 @@ void eStopInterrupt()
         else 
         {
             digitalWrite(motorEnable, MOTOR_DISABLED);
-            digitalWrite(motorDirection, DIRECTION_FWD);
             digitalWrite(fireSolenoid, LOW);
         }
     }

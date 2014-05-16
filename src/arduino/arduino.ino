@@ -544,6 +544,8 @@ void check_movement_time()
 void eStopInterrupt()
 //=========================================
 {
+    // Nothing should ever interrupt an eStop
+    noInterrupts();
     Serial.println("eSTOP");
     currentState = STATE_HALT;
     lcd.setCursor(0,0);
@@ -562,7 +564,7 @@ void eStopInterrupt()
       currentTime = millis();
       digitalWrite(motorEnable, MOTOR_DISABLED);
       digitalWrite(fireSolenoid, LOW);
-    } while( ( currentTime - startMovementTime ) < 1000 );
+    } while( ( currentTime - startWaitTime ) < 1000 );
    
     while(true)
     {

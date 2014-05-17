@@ -111,8 +111,8 @@ void setup()
 
     attachInterrupt(2, fBumpInterrupt, RISING);
     attachInterrupt(3, rBumpInterrupt, RISING);
-    attachInterrupt(4, eStopInterrupt, LOW);
-    attachInterrupt(5, eStopInterrupt, LOW);
+    //attachInterrupt(4, eStopInterrupt, LOW);
+    //attachInterrupt(5, eStopInterrupt, LOW);
 
     currentState = STATE_idle;
     lcd.begin( 20, 4 );
@@ -122,6 +122,11 @@ void setup()
 void loop()
 //=========================================
 {
+    if(digitalRead(eStopRemoteIn) == LOW || digitalRead(eStopMainIn) == LOW)
+    {
+      eStopInterrupt();
+    }
+  
     //LCD Setup
     Serial.print("Drawn: ");
     Serial.println(digitalRead(rBump));
@@ -545,7 +550,9 @@ void eStopInterrupt()
 //=========================================
 {
     // Nothing should ever interrupt an eStop
-    noInterrupts();
+    //noInterrupts();
+    //detachInterrupt(2);
+    //detachInterrupt(3);
     Serial.println("eSTOP");
     currentState = STATE_HALT;
     lcd.setCursor(0,0);

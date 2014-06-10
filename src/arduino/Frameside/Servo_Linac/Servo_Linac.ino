@@ -9,15 +9,14 @@ int target = -1;                                        //Position that the syst
                                                         //-1 disables position based control
 int pos;                                                //Linear actuator position averaged over one period
 long val = 0;                                           //Variable used in the averaging of samples
-int stopval;                                            //the pos value at which the motor was turned off; mostly for debug
-int proportional = 100;
-int maxpower = 255;
-int minpower = 64;
+int stopval;                                            //The pos value at which the motor was turned off; mostly for debug
+int proportional = 100;                                 //Distance at which proportional control is enabled
+int maxpower = 255;                                     //Maximum duty cycle for the analogWrite funciton
+int minpower = 64;                                      //Minimum duty cycle for the analogWrite function
 int power = 255;                                        //PWM duty cycle, where 255 is all on and 0 is all off
 int backlash = 1;                                       //Amount by which the motor will stop early to account for momentum
 int error = 5;                                          //Any position closer than this to the current position
                                                         //won't trigger a move
-int loopcount = 0;
 unsigned long sample1;                                  //Time at which the last sample was taken
 unsigned long serial1;                                  //Time at which the position was last written to the Serial port
 boolean direc;                                          //Flag to indicate the state of pin 'dir'
@@ -48,7 +47,6 @@ void setup() {
 }
 
 void loop() {
-  loopcount++;
   /*
   This if statement performs the rapid sampling and averaging of the positional feedback, outputting
   the value to pos every time a sufficient number of samples have been taken.
@@ -130,12 +128,11 @@ void loop() {
   Sends the current position out to the serial port every 500 ms
   */
   if(millis()-serial1 >= 500 && serial) {
-    Serial.print("Loops per second: ");
-    Serial.println(loopcount*2);
+    
     Serial.print("Position: ");
     Serial.println(pos);
     serial1 = millis();
-    loopcount = 0;
+    
   }
 }
 
@@ -147,19 +144,20 @@ void serialEvent() {
     s        Sets the number of samples to average in order to smooth the analog input.
     c        Controls whether the arduino constantly reports position over the serial port.  1 enables, 0 disables
     d        Sets the maximum duty cycle of the PWM output.  Valid values are from 0 to 255 inclusive.
+    l        Sets the minimum duty cycle of the PWM output.  Same valid values as above.
     p        Sets the target position of the linear actuator.  Valid values are approximately from 5 to 995.
     e        Sets the minimum difference between the target and the current position needed to trigger a move.
     b        Sets the distance by which the motor will be stopped early to account for momentum in the motor.
     
-  For example, to move to position 400 at a duty cycle of 50%, acceptable commands would be:
-    p400 d128
-    d128 p400
-    p400d128
-    d128p400
+  For example, to set the number of samples to 100 and max duty cycle to 50%, acceptable commands would be:
+    s100 d128
+    d128 s100
+    s100d128
+    d128s100
   
   Any number of different commands can be given in a single line.
   Sending the same command twice in the same line will have the effect of only the second.  For example: "p400 p300"
-  is identical to "p300".  Superfluous commands and spaces only slow down the arduino interpreting the commands.
+  is identical to "p300".  Superfluous commands and spaces only increase the time it takes to process inputs.
   */
   while(Serial.available()) {
     int in0;

@@ -1,7 +1,7 @@
 int dir = 2;                                            //Direction control pin
 int enable = 3;                                         //Motor on/off and PWM control
 int feedback = 0;                                       //Linear actuator potentiometer input
-long samples = 90;                                     //Number of analog samples to average to reduce noise
+long samples = 150;                                     //Number of analog samples to average to reduce noise
 long taken = 0;                                         //Variable to track the number of samples taken so far
 long frequency = 100; //hz                              //Frequency with which the position is updated
 long del = 1000000L/(samples*frequency);                //Time between individual samples based on above
@@ -15,7 +15,7 @@ int maxpower = 255;                                     //Maximum duty cycle for
 int minpower = 64;                                      //Minimum duty cycle for the analogWrite function
 int power = 255;                                        //PWM duty cycle, where 255 is all on and 0 is all off
 int backlash = 1;                                       //Amount by which the motor will stop early to account for momentum
-int error = 5;                                          //Any position closer than this to the current position
+int error = 2;                                          //Any position closer than this to the current position
                                                         //won't trigger a move
 unsigned long sample1;                                  //Time at which the last sample was taken
 unsigned long serial1;                                  //Time at which the position was last written to the Serial port
@@ -53,16 +53,17 @@ void loop() {
   The else if is in place to handle the overflow of micros(), which occurs about 70 minutes after 
   the arduino powers on.
   */
-  if(micros()-sample1 >= del) {
+  if(micros() >= sample1 + del*taken) {
     
     val += analogRead(feedback);
     taken++;
-    sample1 = micros();
+
     
     if(taken >= samples) {
       taken = 0;
       pos = val/samples;
       val = 0;
+      sample1 = micros();
     }
     
   } else if(micros()-sample1 < 0) {
@@ -102,7 +103,7 @@ void loop() {
       analogWrite(enable, 255-power);
       on = true;
       
-    } else if (on && abs(target-pos) < backlash) {
+    } else if (on && abs(target-pos) <= backlash) {
       
       stopval = pos;
       analogWrite(enable, 255);
@@ -145,7 +146,8 @@ void serialEvent() {
     c        Controls whether the arduino constantly reports position over the serial port.  1 enables, 0 disables
     d        Sets the maximum duty cycle of the PWM output.  Valid values are from 0 to 255 inclusive.
     l        Sets the minimum duty cycle of the PWM output.  Same valid values as above.
-    p        Sets the target position of the linear actuator.  Valid values are approximately from 5 to 995.
+    p        Sets the target position of the linear actuator.  Valid values are approximately from 8 to 995.
+             p-1 disables servo control.
     e        Sets the minimum difference between the target and the current position needed to trigger a move.
     b        Sets the distance by which the motor will be stopped early to account for momentum in the motor.
     

@@ -1,3 +1,5 @@
+#include <LinkedList.h>
+
 int dir = 2;                                            //Direction control pin
 int enable = 3;                                         //Motor on/off and PWM control
 int feedback = 0;                                       //Linear actuator potentiometer input
@@ -8,7 +10,7 @@ long del = 1000000L/(samples*frequency);                //Time between individua
 int target = -1;                                        //Position that the system is trying to achieve
                                                         //-1 disables position based control
 int pos;                                                //Linear actuator position averaged over one period
-long val = 0;                                           //Variable used in the averaging of samples
+LinkedList list = LinkedList();
 int stopval;                                            //The pos value at which the motor was turned off; mostly for debug
 int proportional = 100;                                 //Distance at which proportional control is enabled
 int maxpower = 255;                                     //Maximum duty cycle for the analogWrite funciton
@@ -49,20 +51,27 @@ void setup() {
 void loop() {
   /*
   This if statement performs the rapid sampling and averaging of the positional feedback, outputting
-  the value to pos every time a sufficient number of samples have been taken.
+  the value to pos every time a sufficient number of samples have  been taken.
   The else if is in place to handle the overflow of micros(), which occurs about 70 minutes after 
   the arduino powers on.
   */
   if(micros() >= sample1 + del*taken) {
+    int feedbackVal = analogRead(feedback);
+    list.add( feedbackVal );
+    //taken++;
     
-    val += analogRead(feedback);
-    taken++;
-
-    
-    if(taken >= samples) {
-      taken = 0;
-      pos = val/samples;
-      val = 0;
+    if(list.getSize() >= samples) {
+      //taken = 0;
+      // Get the average of the twenty middle values of the list
+      int modeSum   = 0;
+      int medianPos = list.getSize() / 2;
+      for ( int i = medianPos - 10; i < medianPos + 10; i++ )
+      {
+        modeSum += list.getValue( i );
+      }
+      
+      pos = ( modeSum / 20 );
+      list.clearList();
       sample1 = micros();
     }
     
@@ -237,6 +246,17 @@ void serialEvent() {
       Serial.println("%");
     }
     
+    int in7;
+    if(Serial.peek() == 'f') {
+      Serial.read();
+      in7 = Serial.parseInt();
+      frequency = in7;
+      del = 1000000L/(samples*frequency);
+      Serial.print("Frequency changed to ");
+      Serial.print(frequency);
+      Serial.println("hz");
+    }
+    
     if(Serial.peek() == ' ') {
       Serial.read();
     }
@@ -251,4 +271,9 @@ int Power(int duty) {
   } else {
     return 0;
   }
+}
+
+void logDatapoint( int time )
+{
+  
 }

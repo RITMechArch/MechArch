@@ -71,7 +71,31 @@ namespace MechArcher
             }
         }
 
-        private void SnapshotButton_Click(object sender, RoutedEventArgs e)
+        private void EStopButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Take snapshot of webcam image.
+            WebCamCtrl.TakeSnapshot();
+        }
+		
+		private void DrawButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Take snapshot of webcam image.
+            WebCamCtrl.TakeSnapshot();
+        }
+		
+		private void RetractButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Take snapshot of webcam image.
+            WebCamCtrl.TakeSnapshot();
+        }
+		
+		private void FireManualButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Take snapshot of webcam image.
+            WebCamCtrl.TakeSnapshot();
+        }
+		
+		private void FireAutoButton_Click(object sender, RoutedEventArgs e)
         {
             // Take snapshot of webcam image.
             WebCamCtrl.TakeSnapshot();

@@ -3,24 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             mc:Ignorable="d" >
     <Grid>
-      <Grid.RowDefinitions>
-        <RowDefinition />
-        <RowDefinition />
-        <RowDefinition />
-      </Grid.RowDefinitions>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition />
-        <ColumnDefinition />
-      </Grid.ColumnDefinitions>
-      
-      <Label FontSize="32" Grid.Row="0" Grid.Column="0">Target 1</Label>
-      <Label FontSize="32" Grid.Row="0" Grid.Column="1">Target 2</Label>
-      <Label FontSize="32" Grid.Row="1" Grid.Column="0">Target 3</Label>
-      <Label FontSize="32" Grid.Row="1" Grid.Column="1">Target 4</Label>
-      <Label FontSize="32" Grid.Row="2" Grid.Column="0">Target 5</Label>
-      <Label FontSize="32" Grid.Row="2" Grid.Column="1">Target 6</Label>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Label FontSize="24" Grid.Row="0" Grid.Column="0">Target 1</Label>
+        <Label FontSize="24" Grid.Row="0" Grid.Column="1">Target 2</Label>
+        <Label FontSize="24" Grid.Row="1" Grid.Column="0">Target 3</Label>
+        <Label FontSize="24" Grid.Row="1" Grid.Column="1">Target 4</Label>
+        <Label FontSize="24" Grid.Row="2" Grid.Column="0">Target 5</Label>
+        <Label FontSize="24" Grid.Row="2" Grid.Column="1">Target 6</Label>
     </Grid>
 </UserControl>

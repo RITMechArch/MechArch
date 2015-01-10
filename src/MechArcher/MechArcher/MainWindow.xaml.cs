@@ -23,6 +23,10 @@ namespace MechArcher
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const string ImgPath = @"C:\WebcamSnapshots";
+        private const int MinCamFeedHeight = 600;
+        private const int MinCamFeedWidth = 800;
+
         Config config = new Config();
         public MainWindow()
         {
@@ -32,30 +36,63 @@ namespace MechArcher
 
             InitializeComponent();
 
-            string imgPath = @"C:\WebcamSnapshots";
-
-            if (Directory.Exists(imgPath) == false)
+            if (!Directory.Exists(ImgPath))
             {
-                Directory.CreateDirectory(imgPath);
+                Directory.CreateDirectory(ImgPath);
             }
 
-            WebCamCtrl.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-            WebCamCtrl.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            WebCamCtrl.Height = 600;
-            WebCamCtrl.Width = 800;
-
-            WebCamCtrl.ImageDirectory = imgPath;
-            WebCamCtrl.PictureFormat = ImageFormat.Bmp;
-            WebCamCtrl.FrameRate = 24;
-            WebCamCtrl.FrameSize = new System.Drawing.Size(800,600);
-
-            WebCamCtrl.StartCapture();
+            InitializeWebcam();
         }
 
         public void show(Binding bndg_1)
         {
             WebCamCtrl.SetBinding(Webcam.VideoDeviceProperty, bndg_1);
             base.Show();
+        }
+
+        private void InitializeWebcam()
+        {
+            Rect webcamDimensions = GetWebcamDimensions();
+            int webcamHeight = Convert.ToInt16(webcamDimensions.Height);
+            int webcamWidth = Convert.ToInt16(webcamDimensions.Width);
+
+            WebCamCtrl.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            WebCamCtrl.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            WebCamCtrl.Height = webcamHeight;
+            WebCamCtrl.Width = webcamWidth;
+
+            WebCamCtrl.ImageDirectory = ImgPath;
+            WebCamCtrl.PictureFormat = ImageFormat.Bmp;
+            WebCamCtrl.FrameRate = 24;
+            WebCamCtrl.FrameSize = new System.Drawing.Size(webcamWidth, webcamHeight);
+
+            WebCamCtrl.StartCapture();
+        }
+
+        private Rect GetWebcamDimensions()
+        {
+            Rect workArea = SystemParameters.WorkArea;
+            Rect dimensions = new Rect();
+
+            if ( workArea.Height <= (2*MinCamFeedHeight) )
+            {
+                dimensions.Height = MinCamFeedHeight;
+            }
+            else
+            {
+                dimensions.Height = workArea.Height / 2;
+            }
+
+            if ( workArea.Width <=  MinCamFeedWidth )
+            {
+                dimensions.Width = MinCamFeedWidth;
+            }
+            else
+            {
+                dimensions.Width = workArea.Width;
+            }
+
+            return dimensions;
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
@@ -111,6 +148,11 @@ namespace MechArcher
             { }
 
             base.OnClosing(e);
+        }
+
+        private void QueuePanel_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

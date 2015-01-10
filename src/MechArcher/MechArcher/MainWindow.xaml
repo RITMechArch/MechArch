@@ -4,7 +4,7 @@
         xmlns:cam="clr-namespace:WebcamControl;assembly=WebcamControl"
         xmlns:local="clr-namespace:MechArcher"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        Title="MainWindow" Height="1080" Width="1920" WindowState="Maximized" WindowStyle="None">
+        Title="MainWindow" WindowState="Maximized" WindowStyle="None">
     <DockPanel>
       <Grid DockPanel.Dock="Bottom">
         <Grid.ColumnDefinitions>
@@ -14,22 +14,27 @@
           <ColumnDefinition />
           <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="0" Margin="10" FontSize="32" Height="200" Background="Red" Click="EStopButton_Click">E-Stop</Button>
-        <Button Grid.Column="1" Margin="10" FontSize="32" Height="200" Background="Black" Foreground ="White" Click="DrawButton_Click">Draw</Button>
-        <Button Grid.Column="2" Margin="10" FontSize="32" Height="200" Background="Blue" Foreground ="White" Click="RetractButton_Click">Retract</Button>
-        <Button Grid.Column="3" Margin="10" FontSize="32" Height="200" Background="Green" Foreground ="White" Click="FireManualButton_Click">Fire Manual</Button>
-        <Button Grid.Column="4" Margin="10" FontSize="32" Height="200" Background="Aqua" Click="FireAutoButton_Click">Fire Auto</Button>
+        <Button Grid.Column="0" Margin="5" FontSize="24" Background="Red" Click="EStopButton_Click">E-Stop</Button>
+        <Button Grid.Column="1" Margin="5" FontSize="24" Background="Black" Foreground ="White" Click="DrawButton_Click">Draw</Button>
+        <Button Grid.Column="2" Margin="5" FontSize="24" Background="Blue" Foreground ="White" Click="RetractButton_Click">Retract</Button>
+        <Button Grid.Column="3" Margin="5" FontSize="24" Background="Green" Foreground ="White" Click="FireManualButton_Click">Fire Manual</Button>
+        <Button Grid.Column="4" Margin="5" FontSize="24" Background="Aqua" Click="FireAutoButton_Click">Fire Auto</Button>
       </Grid>
       <Grid DockPanel.Dock="Bottom">
         <Grid.ColumnDefinitions>
           <ColumnDefinition />
           <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <local:QueuePanel Grid.Column="0" Margin="10" />
-        <local:LCDPanel Grid.Column="1" Margin="10" />
+        <local:QueuePanel Grid.Column="0" Margin="5,10,5,0" Loaded="QueuePanel_Loaded" />
+        <local:LCDPanel Grid.Column="1" Margin="5,10,5,0" />
       </Grid>
-      <Canvas DockPanel.Dock="Top">
-        <cam:Webcam x:Name="WebCamCtrl"/>
-      </Canvas>
+      <Grid DockPanel.Dock="Top">
+        <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+        <cam:Webcam Grid.Column="1"  x:Name="WebCamCtrl"/>
+      </Grid>
     </DockPanel>
 </Window>

@@ -24,8 +24,8 @@ namespace MechArcher
     public partial class MainWindow : Window
     {
         private const string ImgPath = @"C:\WebcamSnapshots";
-        private const int MinCamFeedHeight = 600;
-        private const int MinCamFeedWidth = 800;
+        private const int MinCamFeedHeight = 1080;
+        private const int MinCamFeedWidth = 1920;
 
         Config config = new Config();
         public MainWindow()
@@ -63,7 +63,7 @@ namespace MechArcher
 
             WebCamCtrl.ImageDirectory = ImgPath;
             WebCamCtrl.PictureFormat = ImageFormat.Bmp;
-            WebCamCtrl.FrameRate = 24;
+            WebCamCtrl.FrameRate = 1;
             WebCamCtrl.FrameSize = new System.Drawing.Size(webcamWidth, webcamHeight);
 
             WebCamCtrl.StartCapture();

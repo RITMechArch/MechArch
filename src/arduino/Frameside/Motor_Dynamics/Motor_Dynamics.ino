@@ -10,9 +10,9 @@ int ADCSS = 5;
 
 volatile unsigned int pos;
 unsigned long t1 = millis();
-int dir = 2;
-int enable = 3;
-int del = 4;
+int drdy = 2;
+int dir = 4;
+int enable = 5;
 int data[250];
 int output = 0;
 boolean direc;
@@ -20,6 +20,7 @@ boolean on;
 boolean serial = true;
 int error1 = 0;
 int error2 = 0;
+int index = 0;
 
 int DL_MinPower = 64;
 int DL_MaxPower = 255;
@@ -33,6 +34,7 @@ int DL_ProportionalConst = 1;
 
 void setup() {
   Serial.begin(115200);
+  pinMode(drdy, INPUT);
   pinMode(10, OUTPUT);
   pinMode(ADCSS, OUTPUT);
   pinMode(dir, OUTPUT);
@@ -52,28 +54,35 @@ void readData() {
   byte in2 = SPI.transfer(0);
   pos = (in1 << 4) ^ (in2 >> 4);
   digitalWrite(ADCSS, HIGH);
-}
-
-void control(int target, int prev) {
-  error1 = abs(pos-target);
-  int change = DL_ProportionalConst*(error1-error2);
-  output += change;
-  
-  error2 = error1;
-}
-
-void serialEvent() {
-    Serial.println("Serial recieved, starting SPI bus");
-    setupSPI();
-  while(Serial.available()) {
-    Serial.read();
+  if(index < 250) {
+    data[index] = pos;
+    index++;
+  } else {
+    detachInterrupt(0);
+    for(int i = 0; i < 250; i++) {
+      Serial.println(data[i]);
+    }
   }
 }
 
-int power(int in) {
-  int out = 0;
-  out = in;
-  return out; 
+void serialEvent() {
+  if(Serial.peek() == 's') {
+    Serial.println("Serial recieved, starting SPI bus");
+    setupSPI();
+  }
+  if(Serial.peek() == '1') {
+    attachInterrupt(0, readData, FALLING);
+    digitalWrite(dir, HIGH);
+    digitalWrite(enable, LOW);
+  }
+  if(Serial.peek() == '0') {
+    attachInterrupt(0, readData, FALLING);
+    digitalWrite(dir, LOW);
+    digitalWrite(enable, LOW);
+  }
+  while(Serial.available()) {
+    Serial.read();
+  }
 }
 
 void setupSPI() {
@@ -95,7 +104,6 @@ void setupSPI() {
   delay(10);
   digitalWrite(ADCSS, HIGH);
   delay(10);
-  attachInterrupt(0, readData, FALLING);
-  delay(10);
-  Serial.println("SPI is ready")
+
+  Serial.println("SPI is ready");
 }

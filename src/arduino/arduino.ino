@@ -15,60 +15,57 @@
 #endif
 #include <LiquidCrystal.h>
 //-------- LCD Output Pins ---------------
-#define LCDRegSelect        (37)
-#define LCDEnable           (39)
-#define LCDData4            (41)
-#define LCDData5            (43)
-#define LCDData6            (45)
-#define LCDData7            (47)
+const int LCDRegSelect      = 37;
+const int LCDEnable         = 39;
+const int LCDData4          = 41;
+const int LCDData5          = 43;
+const int LCDData6          = 45;
+const int LCDData7          = 47;
 LiquidCrystal lcd( LCDRegSelect, LCDEnable, LCDData4, LCDData5, LCDData6, LCDData7 );
 
 //-------- INPUT PIN settings -------------
 
-#define eStopRemoteIn       (18)
-#define eStopMainIn         (19)
+const int eStopRemoteIn     = 18;
+const int eStopMainIn       = 19;
 
-#define armingChain         (40)
+const int armingChain       = 40;
 
-#define laptopModeIn        (42)
+const int laptopModeIn      = 42;
 
-#define drawIn              (44)
-#define fireIn              (46)
+const int drawIn            = 44;
+const int fireIn            = 46;
 
-#define fBump               (20)
-#define rBump               (21)
+const int fOptic            = 24;
+const int rOptic            = 26;
 
-#define fOptic              (24)
-#define rOptic              (26)
-
-#define resetInput          (48)
+const int resetInput        = 48;
 
 //--------- OUTPUT PIN settings -----------
 
-#define motorEnable         (34)
-#define motorDirection      (36)
-#define fireSolenoid        (38)
+const int motorEnable       = 34;
+const int motorDirection    = 36;
+const int fireSolenoid      = 38;
 
 //-------- STATE const declarations -------------
 
 int currentState;
-#define STATE_idle          (1)
-#define STATE_ready         (2)
-#define STATE_drawing       (3)
-#define STATE_drawn         (4)
-#define STATE_firing        (5)
-#define STATE_fired         (6)
-#define STATE_HALT          (7)
+const int STATE_idle        = 1;
+const int STATE_ready       = 2;
+const int STATE_drawing     = 3;
+const int STATE_drawn       = 4;
+const int STATE_firing      = 5;
+const int STATE_fired       = 6;
+const int STATE_HALT        = 7;
 
-#define STATE_retracting    (8)
+const int STATE_retracting  = 8;
 
 //-------- Motor Controller const declarations -------------
 
 unsigned long startMovementTime = 0;
-#define MOTOR_ENABLED       (0)
-#define MOTOR_DISABLED      (1)
-#define DIRECTION_BACK      (0)
-#define DIRECTION_FWD       (1)
+const int MOTOR_ENABLED      = 0;
+const int MOTOR_DISABLED     = 1;
+const int DIRECTION_BACK     = 0;
+const int DIRECTION_FWD      = 1;
 
 
 //=========================================
@@ -100,8 +97,6 @@ void setup()
     pinMode(drawIn, INPUT);
     pinMode(fireIn, INPUT);
 
-    pinMode(fBump, INPUT);
-    pinMode(rBump, INPUT);
     pinMode(fOptic, INPUT);
     pinMode(rOptic, INPUT);
 
@@ -109,8 +104,6 @@ void setup()
     pinMode(motorDirection, OUTPUT);
     pinMode(fireSolenoid, OUTPUT);
 
-    attachInterrupt(2, fBumpInterrupt, RISING);
-    attachInterrupt(3, rBumpInterrupt, RISING);
     //attachInterrupt(4, eStopInterrupt, LOW);
     //attachInterrupt(5, eStopInterrupt, LOW);
 
@@ -126,61 +119,7 @@ void loop()
     {
       eStopInterrupt();
     }
-  
-    //LCD Setup
-    Serial.print("Drawn: ");
-    Serial.println(digitalRead(rBump));
-    Serial.print("Retract: ");
-    Serial.println(digitalRead(fBump));
-    
-    lcd.clear();
-    lcd.print( "Status: " );
-    
-    /**********************************************************************
-     * NOTE: LCD outputs for the second and third lines rely on the optics.
-     *       This code will be restored when optical sensors are working.
-     **********************************************************************
-    //Set the second line on the LCD
-    lcd.setCursor( 0, 1 );
-    if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == LOW )
-    {
-        lcd.print( "SAFE  " );
-    }
-    else
-    {
-        lcd.print( "LOADED" );
-    }
-    
-    
-    //Set the third line on the LCD
-    lcd.setCursor( 0, 2 );
-    if ( digitalRead(fOptic) == HIGH && digitalRead(rOptic) == LOW )
-    {
-        lcd.print("Arrow Front");
-    }
-    else if ( digitalRead(fOptic) == HIGH && digitalRead(rOptic) == HIGH )
-    {
-        lcd.print("Arrow Drawn");
-    }
-    else if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == HIGH )
-    {
-        lcd.print("ERROR: CHCK F SENSOR");
-    }
-    else if ( digitalRead(rOptic) == HIGH && digitalRead(fBump) == HIGH )
-    {
-        lcd.print("ERROR: CHCK R SENSOR");
-    }
-    else if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == LOW )
-    {
-        lcd.print("           ");
-    }
-    else
-    {
-      lcd.print("ERROR      ");
-    } */
-    //END LCD setup
-       
-       
+
     switch(currentState)
     {
         case STATE_HALT:
@@ -200,23 +139,7 @@ void loop()
             lcd.print( "Ready     ");
 			DEBUG_PRINT("State: STATE_ready");
             set_ready_outputs();
-            
-            /***************************************
-             * TODO Restore when optics are working
-             ***************************************
-            if ( digitalRead(fOptic) == LOW )
-            {
-                lcd.setCursor(0, 3);
-                lcd.print("ERROR: UNLOADED");
-            }
-            else */
-            
-            if ( fBump == LOW || rBump == HIGH )
-            {
-                lcd.setCursor(0, 3);
-                lcd.print("ERROR: BOW NOT FWD");
-            }
-            
+        
             test_ready_transitions();
             break;
         case STATE_drawing:
@@ -233,22 +156,6 @@ void loop()
             lcd.print( "Drawn     ");
 			DEBUG_PRINT("State: STATE_drawn");
             set_drawn_outputs();
-            
-            if ( digitalRead(rBump) == LOW ) 
-            {
-                lcd.setCursor(0, 3);
-                lcd.print("ERROR: INCOMPLT DRAW");
-            }
-           
-           /***************************************
-            * TODO Restore when optics are working
-            ***************************************
-            else if ( (digitalRead(rOptic) == LOW ) && ( digitalRead(fOptic) == HIGH ) )
-            {
-                lcd.setCursor(0, 3);
-                lcd.print("ERROR: ARROW NOT BCK");
-            }
-            */
             
             test_drawn_transitions();
             break;
@@ -284,14 +191,6 @@ void loop()
 			DEBUG_PRINT("State: Invalid state!");
             break;
     }
-	/*
-        #ifdef DEBUG
-	  Serial.print("Front Optic: ");
-          Serial.println(digitalRead(fOptic));
-	  Serial.print("Rear Optic: ");
-          Serial.println(digitalRead(rOptic));
-        #endif
-        */
 }
 
 //=========================================
@@ -331,19 +230,8 @@ void set_ready_outputs()
 void set_drawing_outputs()
 //=========================================
 {
-    // If the rear bump is not tripped, it is safe to move the motor. Otherwise disable
-    //   the motor and wait for the state to change.
-    if ( digitalRead(rBump) == LOW )
-    {
-        // Always set direction BEFORE enabling the motor (electrical constraint)
-        digitalWrite(motorDirection, DIRECTION_BACK);
-        digitalWrite(motorEnable, MOTOR_ENABLED);
-        digitalWrite(fireSolenoid, LOW);
-    }
-    else
-    {
-        digitalWrite(motorEnable, MOTOR_DISABLED);
-    }
+
+
 }
 
 //=========================================
@@ -370,38 +258,15 @@ void set_firing_outputs()
 void set_fired_outputs()
 //=========================================
 {
-    // If the rear bump is not tripped, it is safe to move the motor. Otherwise disable
-    //   the motor and wait for the state to change.
-    if ( digitalRead(fBump) == LOW )
-    {
-        // Always set direction BEFORE enabling the motor (electrical constraint)
-        digitalWrite(motorDirection, DIRECTION_FWD);
-        digitalWrite(motorEnable, MOTOR_ENABLED);
-        digitalWrite(fireSolenoid, LOW);
-    }
-    else
-    {
-        digitalWrite(motorEnable, MOTOR_DISABLED);
-    }
+
+ 
 }
 
 //=========================================
 void set_retracting_outputs()
 //=========================================
 {
-    // If the rear bump is not tripped, it is safe to move the motor. Otherwise disable
-    //   the motor and wait for the state to change.
-    if ( digitalRead(fBump) == LOW )
-    {
-        // Always set direction BEFORE enabling the motor (electrical constraint)
-        digitalWrite(motorDirection, DIRECTION_FWD);
-        digitalWrite(motorEnable, MOTOR_ENABLED);
-        digitalWrite(fireSolenoid, LOW);
-    }
-    else
-    {
-        digitalWrite(motorEnable, MOTOR_DISABLED);
-    }
+
 }
 
 //=========================================
@@ -432,11 +297,7 @@ void test_ready_transitions()
 //=========================================
 {
     if ( digitalRead(armingChain) == HIGH &&
-          digitalRead(drawIn) == HIGH &&
-          digitalRead(fBump) == HIGH &&
-          digitalRead(rBump) == LOW )//&&
-       	  //digitalRead(fOptic) == HIGH &&
-          //digitalRead(rOptic) == LOW )
+          digitalRead(drawIn) == HIGH
     {
 		currentState = STATE_drawing;
     }
@@ -450,14 +311,8 @@ void test_ready_transitions()
 void test_drawing_transitions()
 //=========================================
 {
-     if ( digitalRead(fBump) == LOW &&
-           digitalRead(rBump) == HIGH)
-     {
-         startMovementTime = 0;
-         currentState = STATE_drawn;
-     }
-}
 
+}
 //=========================================
 void test_drawn_transitions()
 //=========================================
@@ -465,10 +320,7 @@ void test_drawn_transitions()
     if ( digitalRead(armingChain) == HIGH )
     {
         if( digitalRead(fireIn) == HIGH &&
-            digitalRead(fBump) == LOW &&
-            digitalRead(rBump) == HIGH )//&&
-            //digitalRead(fOptic) == HIGH &&
-            //digitalRead(rOptic) == HIGH )
+
         {
             currentState = STATE_firing;        
             startMovementTime = millis();
@@ -484,41 +336,21 @@ void test_drawn_transitions()
 void test_firing_transitions()
 //=========================================
 {
-    if (digitalRead(fBump) == LOW &&
-        digitalRead(rBump) == HIGH )//&&
-        //digitalRead(fOptic) == LOW &&
-        //digitalRead(rOptic) == LOW )
-    {
-        unsigned long currentTime = millis();
-        if ( ( currentTime - startMovementTime ) > 1000 )
-        {
-           currentState = STATE_fired;
-        } 
-    }
+    
 }
 
 //=========================================
 void test_fired_transitions()
 //=========================================
 {
-    if ( digitalRead(fBump) == HIGH &&
-         digitalRead(rBump) == LOW )
-    {
-        startMovementTime = 0;
-        currentState = STATE_idle;
-    }
+   
 }
 
 //=========================================
 void test_retracting_transitions()
 //=========================================
 {
-    if ( digitalRead(fBump) == HIGH &&
-         digitalRead(rBump) == LOW)
-    {
-        startMovementTime = 0;
-        currentState = STATE_ready;
-    }
+
 }
 
 //=========================================
@@ -551,8 +383,6 @@ void eStopInterrupt()
 {
     // Nothing should ever interrupt an eStop
     //noInterrupts();
-    //detachInterrupt(2);
-    //detachInterrupt(3);
     Serial.println("eSTOP");
     currentState = STATE_HALT;
     lcd.setCursor(0,0);
@@ -575,17 +405,7 @@ void eStopInterrupt()
    
     while(true)
     {
-        if(digitalRead(fBump) == LOW)
-        {
-            digitalWrite(motorDirection, DIRECTION_FWD);
-            digitalWrite(motorEnable, MOTOR_ENABLED);
-            digitalWrite(fireSolenoid, LOW);
-        }
-        else 
-        {
-            digitalWrite(motorEnable, MOTOR_DISABLED);
-            digitalWrite(fireSolenoid, LOW);
-        }
+        
     }
 }
 

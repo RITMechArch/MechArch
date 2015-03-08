@@ -59,6 +59,7 @@ void readData() {
     index++;
   } else {
     detachInterrupt(0);
+    digitalWrite(enable, HIGH);
     for(int i = 0; i < 250; i++) {
       Serial.println(data[i]);
     }

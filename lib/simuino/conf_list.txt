@@ -1,3 +1,0 @@
-default.conf
-testHelloMEGA.conf
-test_uno.conf

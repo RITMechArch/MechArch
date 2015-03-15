@@ -1,7 +1,7 @@
 #define DEBUG
 
 #ifdef DEBUG
-#include <WProgram.h>
+#include <Arduino.h>
 #define DEBUG_PRINT(str)    \
     Serial.print(millis());     \
     Serial.print(": ");    \
@@ -49,15 +49,15 @@ const int fireSolenoid      = 38;
 //-------- STATE const declarations -------------
 
 int currentState;
-const int STATE_idle        = 1;
-const int STATE_ready       = 2;
-const int STATE_drawing     = 3;
-const int STATE_drawn       = 4;
-const int STATE_firing      = 5;
-const int STATE_fired       = 6;
-const int STATE_HALT        = 7;
-
-const int STATE_retracting  = 8;
+const int STATE_IDLE        = 1;
+const int STATE_ARMED       = 2;
+const int STATE_AIMING      = 3;
+const int STATE_DRAWING     = 4;
+const int STATE_DRAWN       = 5;
+const int STATE_RETRACTING  = 6;
+const int STATE_FIRING      = 7;
+const int STATE_FIRED       = 8;
+const int STATE_HALT        = 9;
 
 //-------- Motor Controller const declarations -------------
 
@@ -107,7 +107,7 @@ void setup()
     //attachInterrupt(4, eStopInterrupt, LOW);
     //attachInterrupt(5, eStopInterrupt, LOW);
 
-    currentState = STATE_idle;
+    currentState = STATE_IDLE;
     lcd.begin( 20, 4 );
 }
 
@@ -127,22 +127,25 @@ void loop()
             set_halt_outputs();
             test_halt_transitions();
             return;
-        case STATE_idle:
+        case STATE_IDLE:
             lcd.setCursor( 8, 0 );
             lcd.print( "IDLE      " );
             		DEBUG_PRINT("State: STATE_idle");
             set_idle_outputs();
             test_idle_transitions();
             break;
-        case STATE_ready:
+        case STATE_ARMED:
             lcd.setCursor( 8, 0 );
             lcd.print( "Ready     ");
 			DEBUG_PRINT("State: STATE_ready");
-            set_ready_outputs();
-        
-            test_ready_transitions();
+            set_armed_outputs();
+            test_armed_transitions();
             break;
-        case STATE_drawing:
+        case STATE_AIMING:
+            set_aiming_outputs();
+            test_aiming_transitions();
+            break;
+        case STATE_DRAWING:
             check_movement_time();
         
             lcd.setCursor(8, 0);
@@ -151,7 +154,7 @@ void loop()
             set_drawing_outputs();
             test_drawing_transitions();
             break;
-        case STATE_drawn:
+        case STATE_DRAWN:
             lcd.setCursor(8, 0);
             lcd.print( "Drawn     ");
 			DEBUG_PRINT("State: STATE_drawn");
@@ -159,14 +162,23 @@ void loop()
             
             test_drawn_transitions();
             break;
-        case STATE_firing:
+        case STATE_RETRACTING:
+            check_movement_time();
+        
+            lcd.setCursor( 8, 0 );
+            lcd.print( "Retracting");
+			DEBUG_PRINT("State: STATE_retracting");
+            set_retracting_outputs();
+            test_retracting_transitions();
+            break;
+        case STATE_FIRING:
             lcd.setCursor( 8, 0 );
             lcd.print( "Firing    ");
 			DEBUG_PRINT("State: STATE_firing");
             set_firing_outputs();
             test_firing_transitions();
             break;
-        case STATE_fired:
+        case STATE_FIRED:
             // Fired causes the machine to retract, so make sure the movement doesn't take too long
             check_movement_time();
             
@@ -175,15 +187,6 @@ void loop()
 			DEBUG_PRINT("State: STATE_fired");
             set_fired_outputs();
             test_fired_transitions();
-            break;
-        case STATE_retracting:
-            check_movement_time();
-        
-            lcd.setCursor( 8, 0 );
-            lcd.print( "Retracting");
-			DEBUG_PRINT("State: STATE_retracting");
-            set_retracting_outputs();
-            test_retracting_transitions();
             break;
         default:
             lcd.setCursor( 8, 0 );
@@ -218,13 +221,22 @@ void set_idle_outputs()
 }
 
 //=========================================
-void set_ready_outputs()
+void set_armed_outputs()
 //=========================================
 {
     digitalWrite(motorEnable, MOTOR_DISABLED);
     digitalWrite(motorDirection, DIRECTION_FWD);
     digitalWrite(fireSolenoid, LOW);
 }
+
+//=========================================
+void set_aiming_outputs()
+//=========================================
+{
+
+
+}
+
 
 //=========================================
 void set_drawing_outputs()
@@ -242,6 +254,13 @@ void set_drawn_outputs()
     digitalWrite(motorEnable, MOTOR_DISABLED);
     digitalWrite(motorDirection, DIRECTION_FWD);
     digitalWrite(fireSolenoid, LOW);
+}
+
+//=========================================
+void set_retracting_outputs()
+//=========================================
+{
+
 }
 
 //=========================================
@@ -263,13 +282,6 @@ void set_fired_outputs()
 }
 
 //=========================================
-void set_retracting_outputs()
-//=========================================
-{
-
-}
-
-//=========================================
 //=========================================
 // Transition Tests
 //=========================================
@@ -288,23 +300,30 @@ void test_idle_transitions()
 {
     if ( digitalRead(armingChain) == HIGH)
     {
-        currentState = STATE_ready;
+        currentState = STATE_ARMED;
     }
 }
 
 //=========================================
-void test_ready_transitions()
+void test_armed_transitions()
 //=========================================
 {
     if ( digitalRead(armingChain) == HIGH &&
-          digitalRead(drawIn) == HIGH
+          digitalRead(drawIn) == HIGH )
     {
-		currentState = STATE_drawing;
+		currentState = STATE_DRAWING;
     }
     else if ( digitalRead(armingChain) == LOW )
     {
-        currentState = STATE_idle;
+        currentState = STATE_IDLE;
     }
+}
+
+//=========================================
+void test_aiming_transitions()
+//=========================================
+{
+
 }
 
 //=========================================
@@ -313,23 +332,31 @@ void test_drawing_transitions()
 {
 
 }
+
 //=========================================
 void test_drawn_transitions()
 //=========================================
 {
     if ( digitalRead(armingChain) == HIGH )
     {
-        if( digitalRead(fireIn) == HIGH &&
+        if( digitalRead(fireIn) == HIGH  )
 
         {
-            currentState = STATE_firing;        
+            currentState = STATE_FIRING;        
             startMovementTime = millis();
         }
         else if( digitalRead(resetInput) == HIGH )
         {
-            currentState = STATE_retracting;
+            currentState = STATE_RETRACTING;
         }
     }
+}
+
+//=========================================
+void test_retracting_transitions()
+//=========================================
+{
+
 }
 
 //=========================================
@@ -344,13 +371,6 @@ void test_fired_transitions()
 //=========================================
 {
    
-}
-
-//=========================================
-void test_retracting_transitions()
-//=========================================
-{
-
 }
 
 //=========================================
@@ -408,18 +428,3 @@ void eStopInterrupt()
         
     }
 }
-
-//=========================================
-void fBumpInterrupt()
-//=========================================
-{
-    digitalWrite(motorEnable, MOTOR_DISABLED);
-}
-
-//=========================================
-void rBumpInterrupt()
-//=========================================
-{
-    digitalWrite(motorEnable, MOTOR_DISABLED);
-}
-

@@ -1,6 +1,7 @@
-#include <iostream>
-using namespace std;
-
+// #include <iostream>
+// using namespace std;
+#ifndef LinkedList_H
+#define LinkedList_H
 typedef struct Node
 {
     int number;
@@ -68,6 +69,7 @@ typedef struct LinkedList
         size++;
     }
 
+    /*
     void print()
     {
         Node* cur = head;
@@ -77,7 +79,7 @@ typedef struct LinkedList
             cur = cur->next;
         }
         cout << endl;
-    }
+    } */
 
     int getSize()
     {
@@ -103,3 +105,4 @@ typedef struct LinkedList
         size = 0;
     }
 } LinkedList;
+#endif

@@ -38,7 +38,7 @@ const int fireIn            = 46;
 const int fOptic            = 24;
 const int rOptic            = 26;
 
-const int resetInput        = 48;
+const int retractInput      = 48;
 
 //--------- OUTPUT PIN settings -----------
 
@@ -291,14 +291,14 @@ void set_fired_outputs()
 void test_halt_transitions()
 //=========================================
 {
-
+    // Never transition from halt.
 }
 
 //=========================================
 void test_idle_transitions()
 //=========================================
 {
-    if ( digitalRead(armingChain) == HIGH)
+    if ( digitalRead(armingChain) == HIGH )
     {
         currentState = STATE_ARMED;
     }
@@ -308,8 +308,10 @@ void test_idle_transitions()
 void test_armed_transitions()
 //=========================================
 {
-    if ( digitalRead(armingChain) == HIGH &&
-          digitalRead(drawIn) == HIGH )
+    if ( digitalRead(armingChain) == HIGH 
+         && digitalRead(drawIn) == HIGH
+         && digitalRead(fOptic) == LOW
+         && digitalRead(rOptic) == HIGH )
     {
 		currentState = STATE_DRAWING;
     }
@@ -323,14 +325,18 @@ void test_armed_transitions()
 void test_aiming_transitions()
 //=========================================
 {
-
+    // Done when movement stops.
 }
 
 //=========================================
 void test_drawing_transitions()
 //=========================================
 {
-
+    if ( digitalRead(fOptic) == LOW 
+         && digitalRead(rOptic) == LOW )
+    {
+        currentState = STATE_DRAWN;
+    }
 }
 
 //=========================================
@@ -339,13 +345,15 @@ void test_drawn_transitions()
 {
     if ( digitalRead(armingChain) == HIGH )
     {
-        if( digitalRead(fireIn) == HIGH  )
+        if( digitalRead(fireIn) == HIGH
+            && digitalRead(fOptic) == LOW
+            && digitalRead(rOptic) == LOW )
 
         {
             currentState = STATE_FIRING;        
             startMovementTime = millis();
         }
-        else if( digitalRead(resetInput) == HIGH )
+        else if( digitalRead(retractInput) == HIGH )
         {
             currentState = STATE_RETRACTING;
         }
@@ -356,21 +364,29 @@ void test_drawn_transitions()
 void test_retracting_transitions()
 //=========================================
 {
-
+    if ( digitalRead(rOptic) == HIGH )
+    {
+        // And movement complete
+        currentState = STATE_ARMED;
+    }
 }
 
 //=========================================
 void test_firing_transitions()
 //=========================================
 {
-    
+    if ( digitalRead(fOptic) == HIGH
+         && digitalRead(rOptic) == HIGH )
+    {
+        currentState = STATE_FIRED;
+    }
 }
 
 //=========================================
 void test_fired_transitions()
 //=========================================
 {
-   
+   // TODO: Delay before retracting.
 }
 
 //=========================================

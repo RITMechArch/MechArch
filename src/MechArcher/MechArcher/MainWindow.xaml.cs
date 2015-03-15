@@ -11,10 +11,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.Expression.Encoder.Devices;
-using WebcamControl;
 using System.IO;
 using System.Drawing.Imaging;
+using Nikon;
 
 namespace MechArcher
 {
@@ -24,15 +23,17 @@ namespace MechArcher
     public partial class MainWindow : Window
     {
         private const string ImgPath = @"C:\WebcamSnapshots";
-        private const int MinCamFeedHeight = 1080;
-        private const int MinCamFeedWidth = 1920;
+        // private const int MinCamFeedHeight = 1080;
+        // private const int MinCamFeedWidth = 1920;
+        private const int MinCamFeedHeight = 540;
+        private const int MinCamFeedWidth = 860;
 
-        Config config = new Config();
+        private NikonManager manager;
+        private NikonDevice camera;
+
         public MainWindow()
         {
             this.Hide();
-            config.Tag = this;
-            config.Show();
 
             InitializeComponent();
 
@@ -42,31 +43,34 @@ namespace MechArcher
             }
 
             InitializeWebcam();
+            show();
         }
 
-        public void show(Binding bndg_1)
+        public void show(/*Binding bndg_1*/)
         {
-            WebCamCtrl.SetBinding(Webcam.VideoDeviceProperty, bndg_1);
             base.Show();
         }
 
         private void InitializeWebcam()
         {
-            Rect webcamDimensions = GetWebcamDimensions();
-            int webcamHeight = Convert.ToInt16(webcamDimensions.Height);
-            int webcamWidth = Convert.ToInt16(webcamDimensions.Width);
+            manager = new NikonManager("Type0003.md3");
+            manager.DeviceAdded += new DeviceAddedDelegate(manager_DeviceAdded);
 
-            WebCamCtrl.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-            WebCamCtrl.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            WebCamCtrl.Height = webcamHeight;
-            WebCamCtrl.Width = webcamWidth;
+            const string requiredDllFile = "NkdPTP.dll";
+            string requiredDllPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName("Type0003.md3"), requiredDllFile);
+            Console.WriteLine(requiredDllPath);
+        }
 
-            WebCamCtrl.ImageDirectory = ImgPath;
-            WebCamCtrl.PictureFormat = ImageFormat.Bmp;
-            WebCamCtrl.FrameRate = 1;
-            WebCamCtrl.FrameSize = new System.Drawing.Size(webcamWidth, webcamHeight);
+        void manager_DeviceAdded(NikonManager sender, NikonDevice device)
+        {
+            Console.WriteLine("CAMERA ADDED");
+            if (camera == null)
+            {
+                camera = device;
+                camera.ImageReady += new ImageReadyDelegate(onImageReady);
+                camera.CaptureComplete += new CaptureCompleteDelegate();
 
-            WebCamCtrl.StartCapture();
+            }
         }
 
         private Rect GetWebcamDimensions()
@@ -95,59 +99,62 @@ namespace MechArcher
             return dimensions;
         }
 
+        void onImageReady(NikonDevice sender, NikonImage image)
+        {
+            // TODO: Do something with 'image'
+            Console.WriteLine(image.GetType());
+        }
+
+        void onCaptureComplete(NikonDevice sender)
+        {
+        }
+
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                // Display webcam video on control.
-                WebCamCtrl.StartCapture();
-            }
-            catch (Microsoft.Expression.Encoder.SystemErrorException)
-            {
-                MessageBox.Show("Device is in use by another application");
-            }
         }
 
         private void EStopButton_Click(object sender, RoutedEventArgs e)
         {
-            // Take snapshot of webcam image.
-            WebCamCtrl.TakeSnapshot();
+            NkMAIDCapInfo[] capInfo = camera.GetCapabilityInfo();
+            foreach(NkMAIDCapInfo info in capInfo)
+            {
+                Console.WriteLine(info.GetDescription());
+            }
+
+            String filename = DateTime.Now.ToString();
+            Console.WriteLine(filename);
+            camera.Capture();
         }
 		
 		private void DrawButton_Click(object sender, RoutedEventArgs e)
         {
             // Take snapshot of webcam image.
-            WebCamCtrl.TakeSnapshot();
         }
 		
 		private void RetractButton_Click(object sender, RoutedEventArgs e)
         {
             // Take snapshot of webcam image.
-            WebCamCtrl.TakeSnapshot();
         }
 		
 		private void FireManualButton_Click(object sender, RoutedEventArgs e)
         {
             // Take snapshot of webcam image.
-            WebCamCtrl.TakeSnapshot();
         }
 		
 		private void FireAutoButton_Click(object sender, RoutedEventArgs e)
         {
             // Take snapshot of webcam image.
-            WebCamCtrl.TakeSnapshot();
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            try
-            {
-                config.Close();
-            }
-            catch
-            { }
-
             base.OnClosing(e);
+
+            if (manager != null)
+            {
+                manager.Shutdown();
+
+            }
         }
 
         private void QueuePanel_Loaded(object sender, RoutedEventArgs e)

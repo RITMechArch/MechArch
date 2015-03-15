@@ -1,7 +1,6 @@
 ﻿<Window x:Class="MechArcher.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:cam="clr-namespace:WebcamControl;assembly=WebcamControl"
         xmlns:local="clr-namespace:MechArcher"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         Title="MainWindow" WindowState="Maximized" WindowStyle="None">
@@ -29,12 +28,11 @@
         <local:LCDPanel Grid.Column="1" Margin="5,10,5,0" />
       </Grid>
       <Grid DockPanel.Dock="Top">
-        <Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-        <cam:Webcam Grid.Column="1"  x:Name="WebCamCtrl"/>
-      </Grid>
+        </Grid>
     </DockPanel>
 </Window>

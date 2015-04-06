@@ -1,26 +1,36 @@
 #include "LinearActuator.h"
  
-LinearActuator::LinearActuator( int dirPin, int enablePin, int feedbackPin )
-    : _dirPin(dirPin)
-    , _enablePin(enablePin)
-    , _feedbackPin(feedbackPin)
-    , position(0)
+LinearActuator::LinearActuator()
 {
-  //Write initial state values and set their associated flag
-  digitalWrite(_dirPin, LOW);
-  direction = false;
-  analogWrite(enable, 255);
-  isEnabled = false;
-  sampleList = LinkedList();
-  
-  position = analogRead( _feedbackPin );
 }
 
-void LinearActuator::moveTo( long target )
+void LinearActuator::init(int dirPin, int enablePin, int feedbackPin)
 {
+    _dirPin = dirPin;
+    _enablePin = enablePin;
+    _feedbackPin = feedbackPin;
+    digitalWrite(_dirPin, LOW);
+    direction = false;
+    analogWrite(_enablePin, 255);
+    isEnabled = false;
+    position = analogRead( _feedbackPin ) << 20;
+}
+
+void LinearActuator::moveTo( int target )
+{
+    long position = getPosition();
     samplePosition();
-    
     if(target > position && abs(target - position) > error) 
+    {
+        if(direction) 
+        {
+            digitalWrite(_dirPin, LOW);
+            direction = false;
+        }
+        analogWrite(_enablePin, 255-power);
+        isEnabled = true;
+    } 
+    else if (target < position && abs(target - position ) > error) 
     {
         if(!direction) 
         {
@@ -28,15 +38,6 @@ void LinearActuator::moveTo( long target )
             direction = true;
         }
         analogWrite(_enablePin, 255-power);
-        isEnabled = true;
-    } 
-    else if (target < position && abs(target - position ) > error) 
-    {
-        if(direction) {
-            digitalWrite(_dirPin, LOW);
-            direction = false;
-        }
-        analogWrite(enable, 255-power);
         isEnabled = true;
     } 
     else if (isEnabled && abs(target - position) <= backlash) 
@@ -49,7 +50,7 @@ void LinearActuator::moveTo( long target )
     {
       power = calculatePower(abs(target - position) * 100 / propDist);
     } 
-    else if (isEnable && abs(target - position) > propDist) 
+    else if (isEnabled && abs(target - position) > propDist) 
     {
       power = calculatePower(100);
     }   
@@ -58,48 +59,24 @@ void LinearActuator::moveTo( long target )
 void LinearActuator::samplePosition()
 {
     long curTime = micros();
-    if (curTime >= (lastSampleTime + timeBetweenSamples * samplesTaken))
-    {
-        sampleList.add( analogRead(_feedbackPin) );
-        if ( list.getSize() >= samples )
-        {
-            //taken = 0;
-            // Get the average of the twenty middle values of the list
-            int modeSum   = 0;
-            int medianPos = sampleList.getSize() / 2;
-            for ( int i = medianPos - 10; i < medianPos + 10; i++ )
-            {
-                modeSum += sampleList.getValue( i );
-            }
-            position = ( modeSum / 20 );
-            sampleList.clearList();
-            lastSampleTime = micros();
-        }
-    }
-    else if(curTime - lastSampleTime < 0) 
-    {
-        // Account for internal clock reset
-        lastSampleTime = curTime;
-    }
+    long dt = curTime - lastSampleTime;
+    long input = ((long)analogRead(_feedbackPin)) << 20;
+    long result = (((input  - (position))/10000)*dt);
+    position = position + result;
+    lastSampleTime= curTime;
 }
 
 long LinearActuator::getPosition()
 {
-    return position;
+    return position >> 18;
 }
 
 int LinearActuator::calculatePower(int duty) 
 {
-    if(duty == 0) 
+    int ret = 0;
+    if(duty > 0 && duty <= 100) 
     {
-        return 0;
+        ret = (duty * (maxPower - minPower)/100 + minPower);
     } 
-    else if(duty > 0 && duty <= 100) 
-    {
-        return (duty * (maxPower - minPower)/100 + minpower);
-    } 
-    else 
-    {
-        return 0;
-    }
+    return ret;
 }

@@ -2,7 +2,6 @@
 #define LinearActuator_h
 
 #include "Arduino.h"
-#include "LinkedList.h"
 
 class LinearActuator 
 {
@@ -16,20 +15,20 @@ class LinearActuator
         bool direction;
         bool isEnabled;
         
-        const int frequency = 100;
-        const int samples = 150;
-        long timeBetweenSamples = 1000000L/(samples*frequency); 
         long lastSampleTime;
-        int samplesTaken;
-        LinkedList sampleList;
-    
+        
+        const int backlash = 4;
+        const int error    = 10;
         const int minPower = 64;
         const int maxPower = 255;
-        const int propDist = 100;
+        const int propDist = 400;
+        
+        int power = 255;
         
     public:
-        LinearActuator( int dirPin, int enablePin, int feedbackPin );
-        void moveTo( long target );
+        LinearActuator();
+        void init(int dirPin, int enablePin, int feedbackPin);
+        void moveTo( int target );
         void samplePosition();
         long getPosition();
         int calculatePower(int duty);

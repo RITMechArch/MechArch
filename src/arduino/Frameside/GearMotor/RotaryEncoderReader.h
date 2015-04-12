@@ -9,6 +9,7 @@ class RotaryEncoderReader {
         volatile long encoderPos;
   
     public:
+        RotaryEncoderReader();
         RotaryEncoderReader( int newPinA, int newPinB );
         void doEncoderA();
         void doEncoderB();

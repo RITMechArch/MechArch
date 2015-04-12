@@ -1,28 +1,35 @@
-#include "LinearActuator.h"
+#include "GearMotor.h"
+#include "RotaryEncoderReader.h"
  
-LinearActuator::LinearActuator() {}
-
-void LinearActuator::init(int dirPin, int enablePin, int feedbackPin)
+GearMotor::GearMotor() {}
+ 
+void GearMotor::init(int dirPin, int enablePin, int pinA, int pinB)
 {
     _dirPin = dirPin;
     _enablePin = enablePin;
-    _feedbackPin = feedbackPin;
+    reader = RotaryEncoderReader(pinA, pinB);
+
     digitalWrite(_dirPin, LOW);
     direction = false;
     analogWrite(_enablePin, 255);
     isEnabled = false;
-    position = analogRead( _feedbackPin ) << 20;
+    position = reader.getPosition();
 }
 
-void LinearActuator::moveTo( int target )
+void GearMotor::moveTo( int target )
 {
-    long position = getPosition();
-    samplePosition();
+    
+    if (abs(target) > minMax) {
+        // TODO: Report back an error
+        return;
+    }
+    
+    position = reader.getPosition();
     if(target > position && abs(target - position) > error) 
     {
         if(!direction) 
         {
-            digitalWrite(_dirPin, EXTEND);
+            digitalWrite(_dirPin, HIGH);
             direction = true;
         }
         analogWrite(_enablePin, 255-power);
@@ -32,7 +39,7 @@ void LinearActuator::moveTo( int target )
     {
         if(direction) 
         {
-            digitalWrite(_dirPin, RETRACT);
+            digitalWrite(_dirPin, LOW);
             direction = false;
         }
         analogWrite(_enablePin, 255-power);
@@ -54,22 +61,12 @@ void LinearActuator::moveTo( int target )
     }   
 }
 
-void LinearActuator::samplePosition()
+long GearMotor::getPosition()
 {
-    long curTime = micros();
-    long dt = curTime - lastSampleTime;
-    long input = ((long)analogRead(_feedbackPin)) << 20;
-    long result = (((input  - (position))/10000)*dt);
-    position = position + result;
-    lastSampleTime= curTime;
+    return position;
 }
 
-long LinearActuator::getPosition()
-{
-    return position >> 18;
-}
-
-int LinearActuator::calculatePower(int duty) 
+int GearMotor::calculatePower(int duty) 
 {
     int ret = 0;
     if(duty > 0 && duty <= 100) 
@@ -77,4 +74,14 @@ int LinearActuator::calculatePower(int duty)
         ret = (duty * (maxPower - minPower)/100 + minPower);
     } 
     return ret;
+}
+
+void GearMotor::doPinA()
+{
+    reader.doEncoderA();
+}
+
+void GearMotor::doPinB()
+{
+    reader.doEncoderB();
 }

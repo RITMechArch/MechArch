@@ -1,5 +1,8 @@
 #include "RotaryEncoderReader.h"
- 
+#include "Arduino.h"
+
+RotaryEncoderReader::RotaryEncoderReader() {}
+
 RotaryEncoderReader::RotaryEncoderReader( int pinA, int pinB )
     : _pinA(pinA)
     , _pinB(pinB)

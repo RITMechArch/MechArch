@@ -25,8 +25,8 @@ const int retractInput      = 48;
 
 //--------- OUTPUT PIN settings -----------
 
-const int drawingLinacFeedback  = 1;
-const int drawingLinacEnable    = 2;
+const int drawingLinacFeedback  = 2;
+const int drawingLinacEnable    = 3;
 const int drawingLinacDir       = 4;
 
 const int verticalLinacFeedback = 5;

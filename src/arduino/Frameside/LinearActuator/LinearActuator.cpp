@@ -46,11 +46,11 @@ void LinearActuator::moveTo( int target )
     
     if (isEnabled && abs(target - position) <= propDist) 
     {
-      power = calculatePower(abs(target - position) * 100 / propDist);
+      power = calculatePower(abs(target - position) * 255 / propDist);
     } 
     else if (isEnabled && abs(target - position) > propDist) 
     {
-      power = calculatePower(100);
+      power = calculatePower(255);
     }   
 }
 
@@ -72,9 +72,9 @@ long LinearActuator::getPosition()
 int LinearActuator::calculatePower(int duty) 
 {
     int ret = 0;
-    if(duty > 0 && duty <= 100) 
+    if(duty > 0 && duty <= 255) 
     {
-        ret = (duty * (maxPower - minPower)/100 + minPower);
+        ret = (duty * (maxPower - minPower)/255 + minPower);
     } 
     return ret;
 }

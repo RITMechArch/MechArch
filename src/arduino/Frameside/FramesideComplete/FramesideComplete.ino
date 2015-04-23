@@ -18,6 +18,9 @@ const int armingChain       = 40;
 
 const int laptopModeIn      = 42;
 
+const int encoderPinA       = 21;
+const int encoderPinB       = 20;
+
 /*  Preserve for control box operation?
 const int drawIn            = 44;
 const int fireIn            = 46;
@@ -127,7 +130,13 @@ void setup()
 
     //attachInterrupt(4, eStopInterrupt, LOW);
     //attachInterrupt(5, eStopInterrupt, LOW);
+    attachInterrupt(3, doPinA, CHANGE);
+    attachInterrupt(2, doPinB, CHANGE);
 
+    drawingLinac.init(drawingLinacDir, drawingLinacEnable, drawingLinacFeedback);
+    verticalLinac.init(verticalLinacDir, verticalLinacEnable, verticalLinacFeedback);
+    horizontalMotor.init(horizontalMotorDir, horizontalMotorEnable, encoderPinA, encoderPinB);
+    
     currentState = STATE_IDLE;
 }
 
@@ -534,6 +543,22 @@ void eStopInterrupt()
         // Allow nothing to happen until hardware reset.
         noInterrupts();
     }
+}
+
+
+//=========================================
+//=========================================
+// Rotary Encoder Interrupt functions
+//=========================================
+//=========================================
+void doPinA()
+{
+    horizontalMotor.doPinA();
+}
+
+void doPinB()
+{
+    horizontalMotor.doPinB();
 }
 
 //=========================================

@@ -3,8 +3,8 @@
 
 //-------- Controllers --------------------
 LinearActuator verticalLinac = LinearActuator();
-LinearActuator drawingLinac = LinearActuator();
-GearMotor horizontalMotor = GearMotor();
+LinearActuator drawingLinac  = LinearActuator();
+GearMotor horizontalMotor    = GearMotor();
 
 //-------- INPUT PIN settings -------------
 
@@ -18,10 +18,12 @@ const int armingChain       = 40;
 
 const int laptopModeIn      = 42;
 
+/*  Preserve for control box operation?
 const int drawIn            = 44;
 const int fireIn            = 46;
-
 const int retractInput      = 48;
+*/
+
 
 //--------- OUTPUT PIN settings -----------
 
@@ -33,14 +35,12 @@ const int verticalLinacFeedback = 5;
 const int verticalLinacEnable   = 6;
 const int verticalLinacDir      = 8;
 
-const int horizontalMotorEnable  = 10;
+const int horizontalMotorEnable = 10;
 const int horizontalMotorDir    = 12;
 
 const int fireSolenoid      = 38;
 
 //-------- STATE const declarations -------------
-
-int currentState;
 const int STATE_IDLE        = 1;
 const int STATE_ARMED       = 2;
 const int STATE_AIMING      = 3;
@@ -60,16 +60,23 @@ const int DIRECTION_BACK     = 0;
 const int DIRECTION_FWD      = 1;
 
 
+// -------- Non-const globals variables --------------------
+int currentState;
 boolean movementRequested = false;
 boolean xMovementCompleted = true;
 boolean yMovementCompleted = true;
 boolean zMovementCompleted = true;
 
-long fireDelay = -1;
+
+long fireDelay = 0;
 long xTarget = 0;
 long yTarget = 0;
 const long zDrawnPosition = 0;
 const long zRetractedPosition = 4000;
+boolean drawSerialIn = false;
+boolean retractSerialIn = false;
+boolean fireSerialIn = false;
+
 
 //=========================================
 //  Function Declarations
@@ -97,8 +104,10 @@ void setup()
 
     pinMode(laptopModeIn, INPUT);
 
+/*
     pinMode(drawIn, INPUT);
     pinMode(fireIn, INPUT);
+*/
 
     pinMode(fOptic, INPUT);
     pinMode(rOptic, INPUT);
@@ -146,12 +155,12 @@ void loop()
             test_armed_transitions();
             break;
         case STATE_AIMING:
+            check_movement_time();
             set_aiming_outputs();
             test_aiming_transitions();
             break;
         case STATE_DRAWING:
             check_movement_time();
-        
             set_drawing_outputs();
             test_drawing_transitions();
             break;
@@ -169,8 +178,6 @@ void loop()
             test_firing_transitions();
             break;
         case STATE_FIRED:
-            // Fired causes the machine to retract, so make sure the movement doesn't take too long
-            check_movement_time();
             set_fired_outputs();
             test_fired_transitions();
             break;
@@ -222,20 +229,32 @@ void set_armed_outputs()
 void set_aiming_outputs()
 //=========================================
 {
+    // TODO: In Serial, set movementCompleted to false
+   
     // Move to the vertical target position first.
     if ( !yMovementCompleted )
     {
         verticalLinac.moveTo(yTarget);
-        // TODO adjust to use actual error value
-        yMovementCompleted = ( (yTarget - 10) <= verticalLinac.getPosition() <= (yTarget + 10) );
+        if( verticalLinac.isMovementComplete() )
+        {
+            yMovementCompleted = true;
+            startMovementTime = 0;
+        }
     }
     // Move to the horizontal target position when the vertical movement is done.
     else if ( !xMovementCompleted )
     {
         horizontalMotor.moveTo(xTarget);
-        // TODO adjust to use actual error value
-        xMovementCompleted = ( (xTarget - 10) <= horizontalMotor.getPosition() <= (xTarget + 10) );
+        if( horizontalMotor.isMovementComplete() )
+        {
+            xMovementCompleted = true;
+            startMovementTime = 0;
+        }
     }
+
+    // Prevent drawing drawing linac movement.
+    drawingLinac.moveTo(horizontalMotor.getPosition());
+    digitalWrite(fireSolenoid, LOW);
 }
 
 
@@ -247,9 +266,17 @@ void set_drawing_outputs()
     if (!zMovementCompleted)
     {
         drawingLinac.moveTo(zDrawnPosition);
-        // TODO adjust to use actual error value.
-        zMovementCompleted = ((zDrawnPosition-10) <= drawingLinac.getPosition() <= (zDrawnPosition+10));
+        if ( drawingLinac.isMovementComplete() )
+        {
+            zMovementCompleted = true;
+            startMovementTime = 0;
+        }
     }
+    
+    // Prevent vertical and horizontal movement
+    verticalLinac.moveTo(verticalLinac.getPosition());
+    horizontalMotor.moveTo(horizontalMotor.getPosition());
+    digitalWrite(fireSolenoid, LOW);
 }
 
 //=========================================
@@ -260,6 +287,7 @@ void set_drawn_outputs()
     drawingLinac.moveTo(drawingLinac.getPosition());
     verticalLinac.moveTo(verticalLinac.getPosition());
     horizontalMotor.moveTo(horizontalMotor.getPosition());
+    digitalWrite(fireSolenoid, LOW);
 }
 
 //=========================================
@@ -270,9 +298,17 @@ void set_retracting_outputs()
     if (!zMovementCompleted)
     {
         drawingLinac.moveTo(zRetractedPosition);
-        // TODO adjust to use actual error value.
-        zMovementCompleted = ((zRetractedPosition-10) <= drawingLinac.getPosition() <= (zDrawnPosition+10));
+        if ( drawingLinac.isMovementComplete() )
+        {
+            zMovementCompleted = true;
+            startMovementTime = 0;
+        }
     }
+    
+    // Prevent vertical and horizontal movement
+    verticalLinac.moveTo(verticalLinac.getPosition());
+    horizontalMotor.moveTo(horizontalMotor.getPosition());
+    digitalWrite(fireSolenoid, LOW);
 }
 
 //=========================================
@@ -283,6 +319,7 @@ void set_firing_outputs()
     drawingLinac.moveTo(drawingLinac.getPosition());
     verticalLinac.moveTo(verticalLinac.getPosition());
     horizontalMotor.moveTo(horizontalMotor.getPosition());
+    digitalWrite(fireSolenoid, HIGH);
 }
 
 //=========================================
@@ -293,7 +330,7 @@ void set_fired_outputs()
     drawingLinac.moveTo(drawingLinac.getPosition());
     verticalLinac.moveTo(verticalLinac.getPosition());
     horizontalMotor.moveTo(horizontalMotor.getPosition());
-
+    digitalWrite(fireSolenoid, LOW);
 }
 
 //=========================================
@@ -316,8 +353,6 @@ void test_idle_transitions()
     if (movementRequested)
     {
         currentState = STATE_AIMING;
-        xMovementCompleted = false;
-        yMovementCompleted = false;
     }
     else if ( digitalRead(armingChain) == HIGH )
     {
@@ -332,16 +367,13 @@ void test_armed_transitions()
     if (movementRequested)
     {
         currentState = STATE_AIMING;
-        xMovementCompleted = false;
-        yMovementCompleted = false;
     }
     else if ( digitalRead(armingChain) == HIGH 
-         && digitalRead(drawIn) == HIGH
+         && drawSerialIn // && digitalRead(drawIn) == HIGH
          && digitalRead(fOptic) == LOW
          && digitalRead(rOptic) == HIGH )
     {
         currentState = STATE_DRAWING;
-        zMovementCompleted = false;
     }
     else if ( digitalRead(armingChain) == LOW )
     {
@@ -364,33 +396,49 @@ void test_aiming_transitions()
 void test_drawing_transitions()
 //=========================================
 {
-    if ( digitalRead(fOptic) == LOW 
-         && digitalRead(rOptic) == LOW 
-         && zMovementCompleted )
+    if( zMovementCompleted )
     {
-        currentState = STATE_DRAWN;
+        if ( digitalRead(fOptic) == LOW 
+             && digitalRead(rOptic) == LOW )
+        {
+            currentState = STATE_DRAWN;
+        }
+        else
+        {
+            // The drawing linac reports being at the drawn position, 
+            // but there is not an arrow present in the front and back.
+            eStopInterrupt();
+        }
     }
+    
 }
 
 //=========================================
 void test_drawn_transitions()
 //=========================================
 {
-    if ( digitalRead(armingChain) == HIGH )
+    if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == LOW )
     {
-        if( digitalRead(fireIn) == HIGH
-            && digitalRead(fOptic) == LOW
-            && digitalRead(rOptic) == LOW )
-
+        if ( digitalRead(armingChain) == HIGH )
         {
-            currentState = STATE_FIRING;        
-            startMovementTime = millis();
+            if( fireSerialIn /*digitalRead(fireIn) == HIGH */)
+            {
+                currentState = STATE_FIRING; 
+                fireSerialIn = false;
+            }
+            else if( retractSerialIn /*digitalRead(retractInput) == HIGH*/ )
+            {
+                currentState = STATE_RETRACTING;
+                retractSerialIn = false;
+            }
         }
-        else if( digitalRead(retractInput) == HIGH )
-        {
-            currentState = STATE_RETRACTING;
-            zMovementCompleted = false;
-        }
+        // Do nothing if the arming chain is inactive.
+    }
+    else
+    {
+        // The machine is in the drawn position, 
+        // but an arrow isn't present in both the front and back.
+        eStopInterrupt();
     }
 }
 
@@ -398,11 +446,18 @@ void test_drawn_transitions()
 void test_retracting_transitions()
 //=========================================
 {
-    if ( digitalRead(rOptic) == HIGH 
-         && zMovementCompleted )
+    if ( zMovementCompleted )
     {
-        // And movement complete
-        currentState = STATE_ARMED;
+        if (digitalRead(rOptic) == HIGH )
+        {
+            currentState = STATE_ARMED;
+        }
+        else 
+        {
+            // The drawing linac reports being at the retracted position, 
+            // but there is something blocking the rear sensor.
+            eStopInterrupt();
+        }
     }
 }
 
@@ -421,15 +476,15 @@ void test_firing_transitions()
 void test_fired_transitions()
 //=========================================
 {
-    if ( fireDelay == -1 ) 
+    if ( fireDelay == 0 ) 
     {
         fireDelay = millis();
     }
+    // Wait one second after firing to start retracting.
     else if ((millis() - fireDelay) >= 1000)
     {
         currentState = STATE_RETRACTING;
-        fireDelay = -1;
-        zMovementCompleted = false;
+        fireDelay = 0;
     }
 }
 
@@ -441,13 +496,9 @@ void check_movement_time()
     {
         startMovementTime = millis();
     } 
-    else
+    else if ( ( millis() - startMovementTime ) > 11000 )
     {
-        unsigned long currentTime = millis();
-        if ( ( currentTime - startMovementTime ) > 11000 )
-        {
-            eStopInterrupt();
-        }
+        eStopInterrupt();
     }
 }
 
@@ -471,7 +522,7 @@ void eStopInterrupt()
     do
     {
       currentTime = millis();
-      
+      // Manually disable the linacs and motor by pin.
       digitalWrite(verticalLinacEnable, MOTOR_DISABLED);
       digitalWrite(verticalLinacEnable, MOTOR_DISABLED);
       digitalWrite(horizontalMotorEnable, MOTOR_DISABLED);
@@ -480,5 +531,25 @@ void eStopInterrupt()
    
     while(true)
     {
+        // Allow nothing to happen until hardware reset.
+        noInterrupts();
     }
+}
+
+//=========================================
+//=========================================
+// Serial Communication
+//=========================================
+//=========================================
+
+String getPaddedIntString(int i)
+{
+  String iStr = String(i);
+  String ret = "";
+  for(int i = 0; i < 4-iStr.length(); i++ )
+  {
+    ret += "0";
+  }
+  ret += iStr;
+  return ret;
 }

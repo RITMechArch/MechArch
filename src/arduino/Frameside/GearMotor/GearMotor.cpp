@@ -48,16 +48,17 @@ void GearMotor::moveTo( int target )
     else if (isEnabled && abs(target - position) <= backlash) 
     {
         analogWrite(_enablePin, 255);
-        isEnabled = false;      
+        isEnabled = false;   
+        movementComplete = true;
     }
     
     if (isEnabled && abs(target - position) <= propDist) 
     {
-      power = calculatePower(abs(target - position) * 100 / propDist);
+      power = calculatePower(abs(target - position) * 255 / propDist);
     } 
     else if (isEnabled && abs(target - position) > propDist) 
     {
-      power = calculatePower(100);
+      power = calculatePower(255);
     }   
 }
 
@@ -69,9 +70,9 @@ long GearMotor::getPosition()
 int GearMotor::calculatePower(int duty) 
 {
     int ret = 0;
-    if(duty > 0 && duty <= 100) 
+    if(duty > 0 && duty <= 255) 
     {
-        ret = (duty * (maxPower - minPower)/100 + minPower);
+        ret = (duty * (maxPower - minPower)/255 + minPower);
     } 
     return ret;
 }
@@ -84,4 +85,14 @@ void GearMotor::doPinA()
 void GearMotor::doPinB()
 {
     reader.doEncoderB();
+}
+
+bool GearMotor::isMovementComplete()
+{
+    return movementComplete;
+}
+
+void GearMotor::setMovementComplete(bool tf)
+{
+    movementComplete = tf;
 }

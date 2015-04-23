@@ -25,6 +25,8 @@ class GearMotor
         const int minMax = 4000;
         int calculatePower(int duty);
         
+        bool movementComplete = false;
+        
     public:
         GearMotor();
         void init(int dirPin, int enablePin, int pinA, int pinB);
@@ -33,5 +35,8 @@ class GearMotor
         
         void doPinA();
         void doPinB();
+        
+        bool isMovementComplete();
+        void setMovementComplete(bool tf);
 };
 #endif

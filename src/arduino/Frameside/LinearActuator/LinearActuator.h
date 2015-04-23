@@ -29,11 +29,16 @@ class LinearActuator
         int power = 255;
         int calculatePower(int duty);
 
+        bool movementComplete = true;
+        
     public:
         LinearActuator();
         void init(int dirPin, int enablePin, int feedbackPin);
         void moveTo( int target );
         void samplePosition();
         long getPosition();
+        
+        bool isMovementComplete();
+        void setMovementComplete(bool tf );
 };
 #endif

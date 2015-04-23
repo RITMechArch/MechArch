@@ -41,16 +41,17 @@ void LinearActuator::moveTo( int target )
     else if (isEnabled && abs(target - position) <= backlash) 
     {
         analogWrite(_enablePin, 255);
-        isEnabled = false;      
+        isEnabled = false;  
+        movementComplete = true;
     }
     
     if (isEnabled && abs(target - position) <= propDist) 
     {
-      power = calculatePower(abs(target - position) * 255 / propDist);
+      power = calculatePower(abs(target - position) * 100 / propDist);
     } 
     else if (isEnabled && abs(target - position) > propDist) 
     {
-      power = calculatePower(255);
+      power = calculatePower(100);
     }   
 }
 
@@ -72,9 +73,19 @@ long LinearActuator::getPosition()
 int LinearActuator::calculatePower(int duty) 
 {
     int ret = 0;
-    if(duty > 0 && duty <= 255) 
+    if(duty > 0 && duty <= 100) 
     {
-        ret = (duty * (maxPower - minPower)/255 + minPower);
+        ret = (duty * (maxPower - minPower)/100 + minPower);
     } 
     return ret;
+}
+
+bool LinearActuator::isMovementComplete()
+{
+    return movementComplete;
+}
+
+void LinearActuator::setMovementComplete(bool tf)
+{
+    movementComplete = tf;
 }

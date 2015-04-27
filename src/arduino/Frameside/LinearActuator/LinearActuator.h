@@ -8,6 +8,7 @@
 
 class LinearActuator 
 {
+    // Drawing linac max 3758
     private:
         int _dirPin;
         int _enablePin;
@@ -22,7 +23,7 @@ class LinearActuator
 
         const int backlash = 4;
         const int error    = 10;
-        const int minPower = 64;
+        const int minPower = 128;
         const int maxPower = 255;
         const int propDist = 400;
 

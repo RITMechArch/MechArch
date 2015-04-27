@@ -1,47 +1,23 @@
-#include <GearMotor.h>
 #include <LinearActuator.h>
+#include <GearMotor.h>
 
-//-------- Controllers --------------------
-LinearActuator verticalLinac = LinearActuator();
-LinearActuator drawingLinac  = LinearActuator();
-GearMotor horizontalMotor    = GearMotor();
+const int drawingLinacFeedback = 2;
+const int drawingLinacEnable   = 3;
+const int drawingLinacDir      = 4;
 
-//-------- INPUT PIN settings -------------
+const int verticalFeedback    = 5;
+const int verticalLinacEnable = 6;
+const int verticalLinacDir    = 8;
 
-const int eStopRemoteIn     = 18;
-const int eStopMainIn       = 19;
+const int motorEnablePin  = 10;
+const int motorDirPin     = 12;
+const int pinA            = 21;
+const int pinB            = 20;
 
-const int fOptic            = 30;
-const int rOptic            = 32;
+const int fOptic          = 30;
+const int rOptic          = 32;
 
-const int armingChain       = 40;
-
-const int laptopModeIn      = 42;
-
-const int encoderPinA       = 21;
-const int encoderPinB       = 20;
-
-/*  Preserve for control box operation?
-const int drawIn            = 44;
-const int fireIn            = 46;
-const int retractInput      = 48;
-*/
-
-
-//--------- OUTPUT PIN settings -----------
-
-const int drawingLinacFeedback  = 2;
-const int drawingLinacEnable    = 3;
-const int drawingLinacDir       = 4;
-
-const int verticalLinacFeedback = 5;
-const int verticalLinacEnable   = 6;
-const int verticalLinacDir      = 8;
-
-const int horizontalMotorEnable = 10;
-const int horizontalMotorDir    = 12;
-
-const int fireSolenoid      = 38;
+const int fireSolenoid    = 38;
 
 //-------- STATE const declarations -------------
 const int STATE_IDLE        = 1;
@@ -53,102 +29,90 @@ const int STATE_RETRACTING  = 6;
 const int STATE_FIRING      = 7;
 const int STATE_FIRED       = 8;
 const int STATE_HALT        = 9;
+String stateNames[10] = {"STATE_IDLE", "STATE_ARMED", "STATE_AIMING", "STATE_DRAWING", "STATE_DRAWN", "STATE_RETRACTING", "STATE_FIRING", "STATE_FIRED", "STATE_HALT"};
 
-//-------- Motor Controller const declarations -------------
-
-unsigned long startMovementTime = 0;
-const int MOTOR_ENABLED      = 0;
-const int MOTOR_DISABLED     = 1;
-const int DIRECTION_BACK     = 0;
-const int DIRECTION_FWD      = 1;
+int currentState = STATE_IDLE;
 
 
-// -------- Non-const globals variables --------------------
-int currentState;
+
+const int MOTOR_DISABLED = 1;
+
+
+
+int startMovementTime = 0;
+int fireDelay = -1;
+
+LinearActuator drawingLinac = LinearActuator();
+LinearActuator verticalLinac = LinearActuator();
+GearMotor motor = GearMotor();
+
+int drawingLinacPos = 0;
+int verticalLinacPos = 0;
+int motorPos = 0;
+
+int motorTarget = 0;
+int drawingLinacTarget = 400;
+int verticalLinacTarget = 400;
+
+
+// Serial booleans, set when valid commands are read from the Serial connection.
+
+boolean armingChainSerialIn = false;
+boolean drawSerialIn = false;
+boolean retractSerialIn = false;
+boolean fireSerialIn = false;
+
 boolean movementRequested = false;
 boolean xMovementCompleted = true;
 boolean yMovementCompleted = true;
 boolean zMovementCompleted = true;
 
+const long zDrawnPosition = 400;
+const long zRetractedPosition = 3600;
 
-long fireDelay = 0;
-long xTarget = 0;
-long yTarget = 0;
-const long zDrawnPosition = 0;
-const long zRetractedPosition = 4000;
-boolean drawSerialIn = false;
-boolean retractSerialIn = false;
-boolean fireSerialIn = false;
+void setup() {
+  Serial.begin(115200);
+  Serial1.end();
+  Serial2.end();
+  Serial3.end();
+  
+  
+  // Set up the pins for the motors
+  pinMode(drawingLinacDir, OUTPUT);
+  pinMode(drawingLinacEnable, OUTPUT);
+  
+  pinMode(verticalLinacDir, OUTPUT);
+  pinMode(verticalLinacEnable, OUTPUT);
+  
+  pinMode(motorEnablePin, OUTPUT);
+  pinMode(motorDirPin, OUTPUT);
+  pinMode(pinA, INPUT);
+  pinMode(pinB, INPUT);
+
+  // Initialize all three of the motors.
+  drawingLinac.init(drawingLinacDir, drawingLinacEnable, drawingLinacFeedback);
+  verticalLinac.init(verticalLinacDir, verticalLinacEnable, verticalFeedback);
+  motor.init(motorDirPin, motorEnablePin, pinA, pinB);
+
+  // Take position samples and run them through the filter so our starting values are accurate
+  for(int i = 0; i<100; i++)
+  {
+      drawingLinac.samplePosition();
+      verticalLinac.samplePosition();
+  }
 
 
-//=========================================
-//  Function Declarations
-//=========================================
-
-//=========================================
-//=========================================
-// Arduino methods
-//=========================================
-//=========================================
-
-//=========================================
-void setup()
-//=========================================
-{
-    Serial.begin(9600);
-    Serial1.end();
-    Serial2.end();
-    Serial3.end();
-
-    pinMode(eStopRemoteIn, INPUT);
-    pinMode(eStopMainIn, INPUT);
-
-    pinMode(armingChain, INPUT);
-
-    pinMode(laptopModeIn, INPUT);
-
-/*
-    pinMode(drawIn, INPUT);
-    pinMode(fireIn, INPUT);
-*/
-
-    pinMode(fOptic, INPUT);
-    pinMode(rOptic, INPUT);
-
-    pinMode(drawingLinacFeedback, INPUT);
-    pinMode(drawingLinacEnable, OUTPUT);
-    pinMode(drawingLinacDir, OUTPUT);
-    
-    pinMode(verticalLinacFeedback, INPUT);
-    pinMode(verticalLinacEnable, OUTPUT);
-    pinMode(verticalLinacDir, OUTPUT);
-    
-    pinMode(horizontalMotorEnable, OUTPUT);
-    pinMode(horizontalMotorDir, OUTPUT);
-    
-    pinMode(fireSolenoid, OUTPUT);
-
-    //attachInterrupt(4, eStopInterrupt, LOW);
-    //attachInterrupt(5, eStopInterrupt, LOW);
-    attachInterrupt(3, doPinA, CHANGE);
-    attachInterrupt(2, doPinB, CHANGE);
-
-    drawingLinac.init(drawingLinacDir, drawingLinacEnable, drawingLinacFeedback);
-    verticalLinac.init(verticalLinacDir, verticalLinacEnable, verticalLinacFeedback);
-    horizontalMotor.init(horizontalMotorDir, horizontalMotorEnable, encoderPinA, encoderPinB);
-    
-    currentState = STATE_IDLE;
+  pinMode(fireSolenoid, OUTPUT);
+  
+  attachInterrupt(2, doPinA, CHANGE);
+  attachInterrupt(3, doPinB, CHANGE);
 }
 
-//=========================================
-void loop()
-//=========================================
-{
-    if(digitalRead(eStopRemoteIn) == LOW || digitalRead(eStopMainIn) == LOW)
-    {
-      eStopInterrupt();
-    }
-
+void loop() { 
+    motorPos = motor.getPosition();
+    verticalLinacPos = verticalLinac.getPosition();
+    drawingLinacPos = drawingLinac.getPosition();
+  
     switch(currentState)
     {
         case STATE_HALT:
@@ -164,12 +128,12 @@ void loop()
             test_armed_transitions();
             break;
         case STATE_AIMING:
-            check_movement_time();
+            // check_movement_time();
             set_aiming_outputs();
             test_aiming_transitions();
             break;
         case STATE_DRAWING:
-            check_movement_time();
+            // check_movement_time();
             set_drawing_outputs();
             test_drawing_transitions();
             break;
@@ -178,7 +142,7 @@ void loop()
             test_drawn_transitions();
             break;
         case STATE_RETRACTING:
-            check_movement_time();        
+            // check_movement_time();        
             set_retracting_outputs();
             test_retracting_transitions();
             break;
@@ -195,6 +159,122 @@ void loop()
     }
 }
 
+void serialEvent() {
+  /*
+  This whole block interprets the serial port inputs into commands for the system.
+  Each command is a single letter followed directly by an integer argument.  Spaces between commands are optional.
+  The commands are as follows:
+    p        Sets the target position of the linear actuator.  Valid values are approximately from 8 to 995.
+  */
+  while(Serial.available()) {
+    
+    if(Serial.peek() == 'a')
+    {
+        Serial.read();
+        armingChainSerialIn = 1-armingChainSerialIn;
+    }
+    
+    int in2;
+    if(Serial.peek() == 'x') {
+      Serial.read();
+      in2 = Serial.parseInt();
+      motorTarget = in2;
+      movementRequested = true;
+      xMovementCompleted = false;
+      motor.setMovementComplete(false);
+      
+      if(motorTarget != -1) {
+        Serial.print("Motor Target position is ");
+        Serial.println(motorTarget);
+      }
+    }
+    
+    int in4;
+    if(Serial.peek() == 'y') {
+      Serial.read();
+      in4 = Serial.parseInt();
+      verticalLinacTarget = in4;
+      movementRequested = true;
+      yMovementCompleted = false;
+      verticalLinac.setMovementComplete(false);
+      if(verticalLinacTarget != -1) {
+          Serial.print("Target position is ");
+          Serial.println(verticalLinacTarget);
+      } 
+    }
+    
+    if(Serial.peek() == 'd')
+    {
+        Serial.read();
+        zMovementCompleted = false;
+        drawingLinacTarget = zDrawnPosition; 
+        drawingLinac.setMovementComplete(false);
+        drawSerialIn = true;
+    }
+    
+    if(Serial.peek() == 'f')
+    {
+        Serial.read();
+        fireSerialIn = true;
+    }
+    
+    if(Serial.peek() == 'r')
+    {
+        Serial.read();
+        drawingLinacTarget = zRetractedPosition;
+        zMovementCompleted = false;
+        drawingLinac.setMovementComplete(false);
+        retractSerialIn = true;
+    }
+    
+    if(Serial.peek() == 'p')
+    {
+        Serial.read();
+        Serial.println(stateNames[currentState-1]);
+        
+        Serial.println("Linac Z Position: ");
+        Serial.println(drawingLinacPos);
+        Serial.println("Linac Z target: ");
+        Serial.println(drawingLinacTarget);
+        Serial.println();
+    
+        Serial.println("Linac Y Position: ");
+        Serial.println(verticalLinacPos);
+        Serial.println("Linac Y target: ");
+        Serial.println(verticalLinacTarget);
+        Serial.println();
+    
+        Serial.println("Motor Position: ");
+        Serial.println(motorPos);
+        Serial.println("Motor target: ");
+        Serial.println(motorTarget);
+        Serial.println();
+        Serial.println();
+    }
+    
+    if(Serial.peek() == 'e')
+    {
+        Serial.read();
+        eStopInterrupt();
+    }
+    
+    if(Serial.peek() == ' ') {
+      Serial.read();
+    }
+  }
+}
+
+void doPinA()
+{
+    motor.doPinA();
+}
+
+void doPinB()
+{
+    motor.doPinB();
+}
+
+
 //=========================================
 //=========================================
 // State Outputs
@@ -205,10 +285,6 @@ void loop()
 void set_halt_outputs()
 //=========================================
 {
-    // Prevent the motors from moving by setting their targets to their current positions.
-    drawingLinac.moveTo(drawingLinac.getPosition());
-    verticalLinac.moveTo(verticalLinac.getPosition());
-    horizontalMotor.moveTo(horizontalMotor.getPosition());
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -217,9 +293,6 @@ void set_idle_outputs()
 //=========================================
 {
     // Prevent the motors from moving by setting their targets to their current positions.
-    drawingLinac.moveTo(drawingLinac.getPosition());
-    verticalLinac.moveTo(verticalLinac.getPosition());
-    horizontalMotor.moveTo(horizontalMotor.getPosition());
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -228,9 +301,6 @@ void set_armed_outputs()
 //=========================================
 {
     // Prevent the motors from moving by setting their targets to their current positions.
-    drawingLinac.moveTo(drawingLinac.getPosition());
-    verticalLinac.moveTo(verticalLinac.getPosition());
-    horizontalMotor.moveTo(horizontalMotor.getPosition());
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -243,9 +313,10 @@ void set_aiming_outputs()
     // Move to the vertical target position first.
     if ( !yMovementCompleted )
     {
-        verticalLinac.moveTo(yTarget);
+        verticalLinac.moveTo(verticalLinacTarget);
         if( verticalLinac.isMovementComplete() )
         {
+            movementRequested = false;
             yMovementCompleted = true;
             startMovementTime = 0;
         }
@@ -253,16 +324,15 @@ void set_aiming_outputs()
     // Move to the horizontal target position when the vertical movement is done.
     else if ( !xMovementCompleted )
     {
-        horizontalMotor.moveTo(xTarget);
-        if( horizontalMotor.isMovementComplete() )
+        motor.moveTo(motorTarget);
+        if( motor.isMovementComplete() )
         {
+            movementRequested = false;
             xMovementCompleted = true;
             startMovementTime = 0;
         }
     }
 
-    // Prevent drawing drawing linac movement.
-    drawingLinac.moveTo(horizontalMotor.getPosition());
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -274,17 +344,15 @@ void set_drawing_outputs()
     // TODO get drawn amount from EEPROM, use it.
     if (!zMovementCompleted)
     {
-        drawingLinac.moveTo(zDrawnPosition);
+        drawingLinac.moveTo(drawingLinacTarget);
         if ( drawingLinac.isMovementComplete() )
         {
+            drawSerialIn = false;
             zMovementCompleted = true;
             startMovementTime = 0;
         }
     }
     
-    // Prevent vertical and horizontal movement
-    verticalLinac.moveTo(verticalLinac.getPosition());
-    horizontalMotor.moveTo(horizontalMotor.getPosition());
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -292,10 +360,6 @@ void set_drawing_outputs()
 void set_drawn_outputs()
 //=========================================
 {
-    // Prevent the motors from moving by setting their targets to their current positions.
-    drawingLinac.moveTo(drawingLinac.getPosition());
-    verticalLinac.moveTo(verticalLinac.getPosition());
-    horizontalMotor.moveTo(horizontalMotor.getPosition());
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -309,14 +373,11 @@ void set_retracting_outputs()
         drawingLinac.moveTo(zRetractedPosition);
         if ( drawingLinac.isMovementComplete() )
         {
+            retractSerialIn = false;
             zMovementCompleted = true;
             startMovementTime = 0;
         }
     }
-    
-    // Prevent vertical and horizontal movement
-    verticalLinac.moveTo(verticalLinac.getPosition());
-    horizontalMotor.moveTo(horizontalMotor.getPosition());
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -324,10 +385,6 @@ void set_retracting_outputs()
 void set_firing_outputs()
 //=========================================
 {
-    // Prevent the motors from moving by setting their targets to their current positions.
-    drawingLinac.moveTo(drawingLinac.getPosition());
-    verticalLinac.moveTo(verticalLinac.getPosition());
-    horizontalMotor.moveTo(horizontalMotor.getPosition());
     digitalWrite(fireSolenoid, HIGH);
 }
 
@@ -335,10 +392,6 @@ void set_firing_outputs()
 void set_fired_outputs()
 //=========================================
 {
-    // Prevent the motors from moving by setting their targets to their current positions.
-    drawingLinac.moveTo(drawingLinac.getPosition());
-    verticalLinac.moveTo(verticalLinac.getPosition());
-    horizontalMotor.moveTo(horizontalMotor.getPosition());
     digitalWrite(fireSolenoid, LOW);
 }
 
@@ -363,7 +416,7 @@ void test_idle_transitions()
     {
         currentState = STATE_AIMING;
     }
-    else if ( digitalRead(armingChain) == HIGH )
+    else if ( armingChainSerialIn ) // digitalRead(armingChain) == HIGH )
     {
         currentState = STATE_ARMED;
     }
@@ -377,14 +430,15 @@ void test_armed_transitions()
     {
         currentState = STATE_AIMING;
     }
-    else if ( digitalRead(armingChain) == HIGH 
+    else if ( armingChainSerialIn // digitalRead(armingChain) == HIGH 
          && drawSerialIn // && digitalRead(drawIn) == HIGH
          && digitalRead(fOptic) == LOW
          && digitalRead(rOptic) == HIGH )
     {
         currentState = STATE_DRAWING;
+        startMovementTime = 0;
     }
-    else if ( digitalRead(armingChain) == LOW )
+    else if ( !armingChainSerialIn) // digitalRead(armingChain) == LOW )
     {
         currentState = STATE_IDLE;
     }
@@ -416,7 +470,8 @@ void test_drawing_transitions()
         {
             // The drawing linac reports being at the drawn position, 
             // but there is not an arrow present in the front and back.
-            eStopInterrupt();
+            
+            //eStopInterrupt();
         }
     }
     
@@ -428,9 +483,9 @@ void test_drawn_transitions()
 {
     if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == LOW )
     {
-        if ( digitalRead(armingChain) == HIGH )
+        if ( armingChainSerialIn )// digitalRead(armingChain) == HIGH )
         {
-            if( fireSerialIn /*digitalRead(fireIn) == HIGH */)
+            if( fireSerialIn) //digitalRead(fireIn) == HIGH */)
             {
                 currentState = STATE_FIRING; 
                 fireSerialIn = false;
@@ -439,6 +494,7 @@ void test_drawn_transitions()
             {
                 currentState = STATE_RETRACTING;
                 retractSerialIn = false;
+                drawingLinacTarget = zRetractedPosition;
             }
         }
         // Do nothing if the arming chain is inactive.
@@ -447,7 +503,7 @@ void test_drawn_transitions()
     {
         // The machine is in the drawn position, 
         // but an arrow isn't present in both the front and back.
-        eStopInterrupt();
+        // eStopInterrupt();
     }
 }
 
@@ -465,7 +521,8 @@ void test_retracting_transitions()
         {
             // The drawing linac reports being at the retracted position, 
             // but there is something blocking the rear sensor.
-            eStopInterrupt();
+            
+            // eStopInterrupt();
         }
     }
 }
@@ -474,6 +531,7 @@ void test_retracting_transitions()
 void test_firing_transitions()
 //=========================================
 {
+   
     if ( digitalRead(fOptic) == HIGH
          && digitalRead(rOptic) == HIGH )
     {
@@ -485,15 +543,17 @@ void test_firing_transitions()
 void test_fired_transitions()
 //=========================================
 {
-    if ( fireDelay == 0 ) 
+    if ( fireDelay == -1 ) 
     {
         fireDelay = millis();
     }
     // Wait one second after firing to start retracting.
-    else if ((millis() - fireDelay) >= 1000)
+    else if ((millis() - fireDelay) >= 5000)
     {
         currentState = STATE_RETRACTING;
-        fireDelay = 0;
+        zMovementCompleted = false;
+        drawingLinac.setMovementComplete(false);
+        fireDelay = -1;
     }
 }
 
@@ -505,7 +565,7 @@ void check_movement_time()
     {
         startMovementTime = millis();
     } 
-    else if ( ( millis() - startMovementTime ) > 11000 )
+    else if ( ( millis() - startMovementTime ) > 15000 )
     {
         eStopInterrupt();
     }
@@ -533,11 +593,17 @@ void eStopInterrupt()
       currentTime = millis();
       // Manually disable the linacs and motor by pin.
       digitalWrite(verticalLinacEnable, MOTOR_DISABLED);
-      digitalWrite(verticalLinacEnable, MOTOR_DISABLED);
-      digitalWrite(horizontalMotorEnable, MOTOR_DISABLED);
+      digitalWrite(drawingLinacEnable, MOTOR_DISABLED);
+      digitalWrite(motorEnablePin, MOTOR_DISABLED);
       digitalWrite(fireSolenoid, LOW);
-    } while( ( currentTime - startWaitTime ) < 1000 );
-   
+    } while( ( currentTime - startWaitTime ) < 2000 );
+    
+    drawingLinac.setMovementComplete(false);
+    while( !drawingLinac.isMovementComplete() )
+    {
+        drawingLinac.moveTo(zRetractedPosition);
+    }
+    
     while(true)
     {
         // Allow nothing to happen until hardware reset.
@@ -545,36 +611,3 @@ void eStopInterrupt()
     }
 }
 
-
-//=========================================
-//=========================================
-// Rotary Encoder Interrupt functions
-//=========================================
-//=========================================
-void doPinA()
-{
-    horizontalMotor.doPinA();
-}
-
-void doPinB()
-{
-    horizontalMotor.doPinB();
-}
-
-//=========================================
-//=========================================
-// Serial Communication
-//=========================================
-//=========================================
-
-String getPaddedIntString(int i)
-{
-  String iStr = String(i);
-  String ret = "";
-  for(int i = 0; i < 4-iStr.length(); i++ )
-  {
-    ret += "0";
-  }
-  ret += iStr;
-  return ret;
-}

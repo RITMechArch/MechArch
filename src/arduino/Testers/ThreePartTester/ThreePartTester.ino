@@ -1,24 +1,27 @@
 #include <LinearActuator.h>
 #include <GearMotor.h>
 
-const int pinA         = 2;
-const int pinB         = 3;
 
-const int linacDirPin      = 7;
-const int linacEnablePin   = 8;
-const int linacFeedbackPin = 1;
+// D
+const int linacFeedbackPin = 2;
+const int linacEnablePin   = 3;
+const int linacDirPin      = 4;
 
-const int linac2EnablePin   = 4;
-const int linac2DirPin      = 5;
-const int linac2FeedbackPin = 6;
+// Y
 
-const int motorEnablePin  = 12;
-const int motorDirPin     = 14;
+const int linac2FeedbackPin = 5;
+const int linac2EnablePin   = 6;
+const int linac2DirPin      = 8;
 
+const int motorEnablePin  = 10;
+const int motorDirPin     = 12;
+
+const int pinA         = 21;
+const int pinB         = 20;
 
 int motorTarget = 0;
-int linac1Target = 26;
-int linac2Target = 26;
+int linac1Target = -1;
+int linac2Target = -1;
 
 long lastReportTime = 0;
 int counter = 0;
@@ -39,47 +42,38 @@ void setup() {
   pinMode(motorEnablePin, OUTPUT);
   pinMode(motorDirPin, OUTPUT);
   
+  pinMode(pinA, INPUT);
+  pinMode(pinB, INPUT);
+  
   Serial.begin(9600);
+  Serial1.end();
+  Serial2.end();
+  Serial3.end();
+  
   linac.init(linacDirPin, linacEnablePin, linacFeedbackPin);
   linac2.init(linac2DirPin, linac2EnablePin, linac2FeedbackPin);
   motor.init(motorDirPin, motorEnablePin, pinA, pinB);
   
-  attachInterrupt(0, doPinA, CHANGE);
-  attachInterrupt(1, doPinB, CHANGE);
+  attachInterrupt(2, doPinA, CHANGE);
+  attachInterrupt(3, doPinB, CHANGE);
+  
+  for(int i = 0; i <100; i++)
+  {
+      linac.samplePosition();
+      linac2.samplePosition();
+  }
 }
 
-void loop() {
-  int linac1Pos = linac.getPosition();
-  int linac2Pos = linac2.getPosition();
-  int motorPos = motor.getPosition();
-  
-  linac.moveTo(linac1Target);
-  linac2.moveTo(linac2Target);
-  motor.moveTo(motorTarget);
-  
-  long curTime = millis();
-  if ( (curTime - lastReportTime) >= 15000 )
+void loop() {  
+  if (linac1Target != -1)
   {
-    lastReportTime = curTime;
-    Serial.println("Linac 1 Position: ");
-    Serial.println(linac1Pos);
-    Serial.println("Linac 1 target: ");
-    Serial.println(linac1Target);
-    Serial.println();
-    
-    Serial.println("Linac 2 Position: ");
-    Serial.println(linac2Pos);
-    Serial.println("Linac 2 target: ");
-    Serial.println(linac2Target);
-    Serial.println();
-    
-    Serial.println("Motor Position: ");
-    Serial.println(motorPos);
-    Serial.println("Motor target: ");
-    Serial.println(motorTarget);
-    Serial.println();
-    Serial.println();
+      linac.moveTo(linac1Target);
   }
+  if (linac2Target != -1)
+  {
+      linac2.moveTo(linac2Target);
+  }
+  motor.moveTo(motorTarget); 
 }
 
 void serialEvent() {
@@ -92,7 +86,7 @@ void serialEvent() {
   while(Serial.available()) {
     
     int in2;
-    if(Serial.peek() == 'm') {
+    if(Serial.peek() == 'x') {
       Serial.read();
       in2 = Serial.parseInt();
       motorTarget = in2;
@@ -103,7 +97,7 @@ void serialEvent() {
     }
     
     int in3;
-    if(Serial.peek() == 'p') {
+    if(Serial.peek() == 'z') {
       Serial.read();
       in3 = Serial.parseInt();
       linac1Target = in3;
@@ -114,7 +108,7 @@ void serialEvent() {
     }
     
     int in4;
-    if(Serial.peek() == 'q') {
+    if(Serial.peek() == 'y') {
       Serial.read();
       in4 = Serial.parseInt();
       linac2Target = in4;
@@ -122,6 +116,33 @@ void serialEvent() {
         Serial.print("Target position is ");
         Serial.println(linac2Target);
       } 
+    }
+    
+    if (Serial.peek() == 'p')
+    {
+        Serial.read();
+        {
+            Serial.println("Linac Z Position: ");
+            Serial.println(analogRead(linacFeedbackPin));
+            Serial.println(linac.getPosition());
+            Serial.println("Linac Z target: ");
+            Serial.println(linac1Target);
+            Serial.println();
+            
+            Serial.println("Linac Y Position: ");
+            Serial.println(analogRead(linac2FeedbackPin));
+            Serial.println(linac2.getPosition());
+            Serial.println("Linac Y target: ");
+            Serial.println(linac2Target);
+            Serial.println();
+            
+            Serial.println("Motor Position: ");
+            Serial.println(motor.getPosition());
+            Serial.println("Motor target: ");
+            Serial.println(motorTarget);
+            Serial.println();
+            Serial.println();
+        }
     }
     
     if(Serial.peek() == ' ') {

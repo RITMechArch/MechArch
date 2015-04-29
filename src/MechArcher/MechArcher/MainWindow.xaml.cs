@@ -13,7 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Drawing.Imaging;
-using Nikon;
+// using Nikon;
 
 namespace MechArcher
 {
@@ -28,8 +28,8 @@ namespace MechArcher
         private const int MinCamFeedHeight = 540;
         private const int MinCamFeedWidth = 860;
 
-        private NikonManager manager;
-        private NikonDevice camera;
+       // private NikonManager manager;
+       // private NikonDevice camera;
 
         public MainWindow()
         {
@@ -53,14 +53,15 @@ namespace MechArcher
 
         private void InitializeWebcam()
         {
-            manager = new NikonManager("Type0003.md3");
-            manager.DeviceAdded += new DeviceAddedDelegate(manager_DeviceAdded);
+           //  manager = new NikonManager("Type0003.md3");
+           //  manager.DeviceAdded += new DeviceAddedDelegate(manager_DeviceAdded);
 
             const string requiredDllFile = "NkdPTP.dll";
             string requiredDllPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName("Type0003.md3"), requiredDllFile);
             Console.WriteLine(requiredDllPath);
         }
 
+        /*
         void manager_DeviceAdded(NikonManager sender, NikonDevice device)
         {
             Console.WriteLine("CAMERA ADDED");
@@ -71,7 +72,7 @@ namespace MechArcher
                 camera.CaptureComplete += new CaptureCompleteDelegate();
 
             }
-        }
+        } */
 
         private Rect GetWebcamDimensions()
         {
@@ -99,6 +100,7 @@ namespace MechArcher
             return dimensions;
         }
 
+        /*
         void onImageReady(NikonDevice sender, NikonImage image)
         {
             // TODO: Do something with 'image'
@@ -107,15 +109,16 @@ namespace MechArcher
 
         void onCaptureComplete(NikonDevice sender)
         {
-        }
+        } */
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            
         }
 
         private void EStopButton_Click(object sender, RoutedEventArgs e)
         {
-            NkMAIDCapInfo[] capInfo = camera.GetCapabilityInfo();
+            /*NkMAIDCapInfo[] capInfo = camera.GetCapabilityInfo();
             foreach(NkMAIDCapInfo info in capInfo)
             {
                 Console.WriteLine(info.GetDescription());
@@ -123,12 +126,13 @@ namespace MechArcher
 
             String filename = DateTime.Now.ToString();
             Console.WriteLine(filename);
-            camera.Capture();
+            camera.Capture();*/
         }
 		
 		private void DrawButton_Click(object sender, RoutedEventArgs e)
         {
             // Take snapshot of webcam image.
+            Console.WriteLine("TEST__________TEST__________TEST");
         }
 		
 		private void RetractButton_Click(object sender, RoutedEventArgs e)
@@ -149,12 +153,12 @@ namespace MechArcher
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);
-
+            /*
             if (manager != null)
             {
                 manager.Shutdown();
 
-            }
+            } */
         }
 
         private void QueuePanel_Loaded(object sender, RoutedEventArgs e)

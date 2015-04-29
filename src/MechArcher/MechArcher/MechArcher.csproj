@@ -68,6 +68,9 @@
     <Compile Include="QueuePanel.xaml.cs">
       <DependentUpon>QueuePanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CameraController.xaml.cs">
+      <DependentUpon>CameraController.xaml</DependentUpon>
+    </Compile>
     <Page Include="LCDPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -85,6 +88,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="QueuePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CameraController.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

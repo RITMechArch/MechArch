@@ -5,34 +5,35 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         Title="MainWindow" WindowState="Maximized" WindowStyle="None">
     <DockPanel>
-      <Grid DockPanel.Dock="Bottom">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition />
-          <ColumnDefinition />
-          <ColumnDefinition />
-          <ColumnDefinition />
-          <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Button Grid.Column="0" Margin="5" FontSize="24" Background="Red" Click="EStopButton_Click">E-Stop</Button>
-        <Button Grid.Column="1" Margin="5" FontSize="24" Background="Black" Foreground ="White" Click="DrawButton_Click">Draw</Button>
-        <Button Grid.Column="2" Margin="5" FontSize="24" Background="Blue" Foreground ="White" Click="RetractButton_Click">Retract</Button>
-        <Button Grid.Column="3" Margin="5" FontSize="24" Background="Green" Foreground ="White" Click="FireManualButton_Click">Fire Manual</Button>
-        <Button Grid.Column="4" Margin="5" FontSize="24" Background="Aqua" Click="FireAutoButton_Click">Fire Auto</Button>
-      </Grid>
-      <Grid DockPanel.Dock="Bottom">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition />
-          <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <local:QueuePanel Grid.Column="0" Margin="5,10,5,0" Loaded="QueuePanel_Loaded" />
-        <local:LCDPanel Grid.Column="1" Margin="5,10,5,0" />
-      </Grid>
-      <Grid DockPanel.Dock="Top">
+        <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Margin="5" FontSize="24" Background="Red" Click="EStopButton_Click">E-Stop</Button>
+            <Button Grid.Column="1" Margin="5" FontSize="24" Background="Black" Foreground ="White" Click="DrawButton_Click">Draw</Button>
+            <Button Grid.Column="2" Margin="5" FontSize="24" Background="Blue" Foreground ="White" Click="RetractButton_Click">Retract</Button>
+            <Button Grid.Column="3" Margin="5" FontSize="24" Background="Green" Foreground ="White" Click="FireManualButton_Click">Fire Manual</Button>
+            <Button Grid.Column="4" Margin="5" FontSize="24" Background="Aqua" Click="FireAutoButton_Click">Fire Auto</Button>
+        </Grid>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <local:QueuePanel Grid.Column="0" Margin="5,10,5,0" Loaded="QueuePanel_Loaded" />
+            <local:LCDPanel Grid.Column="1" Margin="5,10,5,0" />
+        </Grid>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="13*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <local:CameraController Grid.Row="0" Grid.Column="1" />
         </Grid>
     </DockPanel>
 </Window>

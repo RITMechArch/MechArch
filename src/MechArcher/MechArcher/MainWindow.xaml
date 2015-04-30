@@ -33,7 +33,7 @@
                 <ColumnDefinition Width="13*" />
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
-            <local:CameraController Grid.Row="0" Grid.Column="1" />
+            <local:CameraController Name="Camera" Grid.Row="0" Grid.Column="1"/>
         </Grid>
     </DockPanel>
 </Window>

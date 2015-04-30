@@ -38,6 +38,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Encoder, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86" />
+    <Reference Include="nikoncswrapper">
+      <HintPath>..\..\..\lib\nikoncswrapper_v1.6\bin\x86\Release\nikoncswrapper.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -61,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="NetworkController.cs" />
     <Compile Include="CommuncationControl.cs" />
     <Compile Include="LCDPanel.xaml.cs">
       <DependentUpon>LCDPanel.xaml</DependentUpon>
@@ -71,6 +75,7 @@
     <Compile Include="CameraController.xaml.cs">
       <DependentUpon>CameraController.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MachineStatus.cs" />
     <Page Include="LCDPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,15 +1,17 @@
-#include <LinearActuator.h>
+#include <Ethernet.h>
 #include <GearMotor.h>
+#include <LinearActuator.h>
+#include <SPI.h>
 
 const int drawingLinacFeedback = 2;
 const int drawingLinacEnable   = 3;
-const int drawingLinacDir      = 4;
+const int drawingLinacDir      = 1;
 
-const int verticalFeedback    = 5;
-const int verticalLinacEnable = 6;
-const int verticalLinacDir    = 8;
+const int verticalFeedback     = 5;
+const int verticalLinacEnable  = 6;
+const int verticalLinacDir     = 8;
 
-const int motorEnablePin  = 10;
+const int motorEnablePin  = 9;
 const int motorDirPin     = 12;
 const int pinA            = 21;
 const int pinB            = 20;
@@ -18,6 +20,18 @@ const int fOptic          = 30;
 const int rOptic          = 32;
 
 const int fireSolenoid    = 38;
+
+// ------- Ethernet Server Settings and Variables
+byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };  
+byte ip[] = { 169, 254, 211, 1 };    
+byte gateway[] = { 129, 21, 249, 254 };
+byte subnet[] = { 255, 255, 255, 0 };
+
+EthernetServer server = EthernetServer(23);
+EthernetClient tcpClient;
+boolean hasConnected = false;
+char buf[128];
+int bufferSize = 0;
 
 //-------- STATE const declarations -------------
 const int STATE_IDLE        = 1;
@@ -33,11 +47,7 @@ String stateNames[10] = {"STATE_IDLE", "STATE_ARMED", "STATE_AIMING", "STATE_DRA
 
 int currentState = STATE_IDLE;
 
-
-
 const int MOTOR_DISABLED = 1;
-
-
 
 int startMovementTime = 0;
 int fireDelay = -1;
@@ -58,60 +68,69 @@ int verticalLinacTarget = 400;
 // Serial booleans, set when valid commands are read from the Serial connection.
 
 boolean armingChainSerialIn = false;
-boolean drawSerialIn = false;
-boolean retractSerialIn = false;
-boolean fireSerialIn = false;
+boolean drawSerialIn        = false;
+boolean retractSerialIn     = false;
+boolean fireSerialIn        = false;
 
-boolean movementRequested = false;
-boolean xMovementCompleted = true;
-boolean yMovementCompleted = true;
-boolean zMovementCompleted = true;
+boolean movementRequested   = false;
+boolean xMovementCompleted  = true;
+boolean yMovementCompleted  = true;
+boolean zMovementCompleted  = true;
 
-const long zDrawnPosition = 400;
+const long zDrawnPosition     = 400;
 const long zRetractedPosition = 3600;
 
 void setup() {
-  Serial.begin(115200);
-  Serial1.end();
-  Serial2.end();
-  Serial3.end();
+    Serial.begin(9600);
+    Serial1.end();
+    Serial2.end();
+    Serial3.end();
+    
+    // Mandatory ethernet pins
+    // Disable DS card select.
+    pinMode(4, OUTPUT);
+    digitalWrite(4, HIGH);
+    pinMode(10, OUTPUT);
+    pinMode(53, OUTPUT);
+    
+    
+    // Set up the pins for the motors
+    pinMode(drawingLinacDir, OUTPUT);
+    pinMode(drawingLinacEnable, OUTPUT);
+    
+    pinMode(verticalLinacDir, OUTPUT);
+    pinMode(verticalLinacEnable, OUTPUT);
+    
+    pinMode(motorEnablePin, OUTPUT);
+    pinMode(motorDirPin, OUTPUT);
+    pinMode(pinA, INPUT);
+    pinMode(pinB, INPUT);
+  
+    // Initialize all three of the motors.
+    drawingLinac.init(drawingLinacDir, drawingLinacEnable, drawingLinacFeedback);
+    verticalLinac.init(verticalLinacDir, verticalLinacEnable, verticalFeedback);
+    motor.init(motorDirPin, motorEnablePin, pinA, pinB);
+  
+    // Take position samples and run them through the filter so our starting values are accurate
+    for(int i = 0; i<100; i++)
+    {
+        drawingLinac.samplePosition();
+        verticalLinac.samplePosition();
+    }
   
   
-  // Set up the pins for the motors
-  pinMode(drawingLinacDir, OUTPUT);
-  pinMode(drawingLinacEnable, OUTPUT);
-  
-  pinMode(verticalLinacDir, OUTPUT);
-  pinMode(verticalLinacEnable, OUTPUT);
-  
-  pinMode(motorEnablePin, OUTPUT);
-  pinMode(motorDirPin, OUTPUT);
-  pinMode(pinA, INPUT);
-  pinMode(pinB, INPUT);
-
-  // Initialize all three of the motors.
-  drawingLinac.init(drawingLinacDir, drawingLinacEnable, drawingLinacFeedback);
-  verticalLinac.init(verticalLinacDir, verticalLinacEnable, verticalFeedback);
-  motor.init(motorDirPin, motorEnablePin, pinA, pinB);
-
-  // Take position samples and run them through the filter so our starting values are accurate
-  for(int i = 0; i<100; i++)
-  {
-      drawingLinac.samplePosition();
-      verticalLinac.samplePosition();
-  }
-
-
-  pinMode(fireSolenoid, OUTPUT);
-  
-  attachInterrupt(2, doPinA, CHANGE);
-  attachInterrupt(3, doPinB, CHANGE);
+    pinMode(fireSolenoid, OUTPUT);
+    
+    attachInterrupt(2, doPinA, CHANGE);
+    attachInterrupt(3, doPinB, CHANGE);
+    Ethernet.begin(mac, ip, gateway, subnet);
 }
 
 void loop() { 
     motorPos = motor.getPosition();
     verticalLinacPos = verticalLinac.getPosition();
     drawingLinacPos = drawingLinac.getPosition();
+    checkEthernetInput();
   
     switch(currentState)
     {
@@ -157,111 +176,6 @@ void loop() {
         default:
             break;
     }
-}
-
-void serialEvent() {
-  /*
-  This whole block interprets the serial port inputs into commands for the system.
-  Each command is a single letter followed directly by an integer argument.  Spaces between commands are optional.
-  The commands are as follows:
-    p        Sets the target position of the linear actuator.  Valid values are approximately from 8 to 995.
-  */
-  while(Serial.available()) {
-    
-    if(Serial.peek() == 'a')
-    {
-        Serial.read();
-        armingChainSerialIn = 1-armingChainSerialIn;
-    }
-    
-    int in2;
-    if(Serial.peek() == 'x') {
-      Serial.read();
-      in2 = Serial.parseInt();
-      motorTarget = in2;
-      movementRequested = true;
-      xMovementCompleted = false;
-      motor.setMovementComplete(false);
-      
-      if(motorTarget != -1) {
-        Serial.print("Motor Target position is ");
-        Serial.println(motorTarget);
-      }
-    }
-    
-    int in4;
-    if(Serial.peek() == 'y') {
-      Serial.read();
-      in4 = Serial.parseInt();
-      verticalLinacTarget = in4;
-      movementRequested = true;
-      yMovementCompleted = false;
-      verticalLinac.setMovementComplete(false);
-      if(verticalLinacTarget != -1) {
-          Serial.print("Target position is ");
-          Serial.println(verticalLinacTarget);
-      } 
-    }
-    
-    if(Serial.peek() == 'd')
-    {
-        Serial.read();
-        zMovementCompleted = false;
-        drawingLinacTarget = zDrawnPosition; 
-        drawingLinac.setMovementComplete(false);
-        drawSerialIn = true;
-    }
-    
-    if(Serial.peek() == 'f')
-    {
-        Serial.read();
-        fireSerialIn = true;
-    }
-    
-    if(Serial.peek() == 'r')
-    {
-        Serial.read();
-        drawingLinacTarget = zRetractedPosition;
-        zMovementCompleted = false;
-        drawingLinac.setMovementComplete(false);
-        retractSerialIn = true;
-    }
-    
-    if(Serial.peek() == 'p')
-    {
-        Serial.read();
-        Serial.println(stateNames[currentState-1]);
-        
-        Serial.println("Linac Z Position: ");
-        Serial.println(drawingLinacPos);
-        Serial.println("Linac Z target: ");
-        Serial.println(drawingLinacTarget);
-        Serial.println();
-    
-        Serial.println("Linac Y Position: ");
-        Serial.println(verticalLinacPos);
-        Serial.println("Linac Y target: ");
-        Serial.println(verticalLinacTarget);
-        Serial.println();
-    
-        Serial.println("Motor Position: ");
-        Serial.println(motorPos);
-        Serial.println("Motor target: ");
-        Serial.println(motorTarget);
-        Serial.println();
-        Serial.println();
-    }
-    
-    if(Serial.peek() == 'e')
-    {
-        Serial.read();
-        eStopInterrupt();
-    }
-    
-    if(Serial.peek() == ' ') {
-      Serial.read();
-    }
-  }
 }
 
 void doPinA()
@@ -344,7 +258,7 @@ void set_drawing_outputs()
     // TODO get drawn amount from EEPROM, use it.
     if (!zMovementCompleted)
     {
-        drawingLinac.moveTo(drawingLinacTarget);
+        drawingLinac.moveTo(zDrawnPosition);
         if ( drawingLinac.isMovementComplete() )
         {
             drawSerialIn = false;
@@ -543,18 +457,23 @@ void test_firing_transitions()
 void test_fired_transitions()
 //=========================================
 {
-    if ( fireDelay == -1 ) 
+    long startTime = millis();
+    while( millis() - startTime < 5000)
     {
-        fireDelay = millis();
     }
+    
+    //if ( fireDelay == -1 ) 
+    //{
+    //    fireDelay = millis();
+    //}
     // Wait one second after firing to start retracting.
-    else if ((millis() - fireDelay) >= 5000)
-    {
+    //else if ((millis() - fireDelay) >= 5000)
+    //{
         currentState = STATE_RETRACTING;
         zMovementCompleted = false;
         drawingLinac.setMovementComplete(false);
-        fireDelay = -1;
-    }
+    //    fireDelay = -1;
+    //}
 }
 
 //=========================================
@@ -611,3 +530,176 @@ void eStopInterrupt()
     }
 }
 
+void checkEthernetInput()
+{
+    if(!hasConnected)
+    {
+        tcpClient = server.available();
+        if(tcpClient)
+        {
+            hasConnected = true;
+        }
+    }
+    
+    if(tcpClient && hasConnected && tcpClient.available())
+    {
+        char c = tcpClient.read();
+        if(c == '~')
+        {
+            Serial.println(buf);
+            parseEthernetBuffer();
+            clearEthernetBuffer();
+        }
+        else if (c != '\n')
+        {
+            buf[bufferSize++] = c;
+        }
+    }
+    if (!tcpClient.connected())
+    {
+        hasConnected=false;
+    }
+}
+
+void parseEthernetBuffer()
+{
+  if (bufferSize > 0)
+  {
+      char first = (char) buf[0];
+      switch(first)
+      {
+          case 'e':
+          case 'E':
+          {
+              eStopInterrupt();
+              break;
+          }
+          case 'a':
+          case 'A':
+          {
+              armingChainSerialIn = atoi(&buf[1]);
+              break;
+          }
+          case 'd':
+          case 'D':
+          {
+              if ( currentState != STATE_ARMED )
+              {
+                  tcpClient.print("ERR~");
+                  //Serial.println("Wrong state");
+              }
+              else if (digitalRead(fOptic) != LOW)
+              {
+                  tcpClient.print("ERR~");
+                  // Serial.println("fOptic should be LOW");
+              }
+              else if (digitalRead(rOptic) != HIGH )
+              {
+                  tcpClient.print("ERR~");
+                  // Serial.println("rOptic should be HIGH");
+              }
+              else
+              {
+                  zMovementCompleted = false;
+                  drawingLinac.setMovementComplete(false);
+                  drawSerialIn = true;
+              }
+              break;
+          }
+          case 'f':
+          case 'F':
+          {
+              if (currentState == STATE_DRAWN && armingChainSerialIn 
+                  && digitalRead(fOptic) == LOW && digitalRead(rOptic) == LOW)
+              {
+                  fireSerialIn = true;
+              }
+              else
+              {
+                  tcpClient.print("ERR~~~~~");
+              }
+              break;
+          }
+          case'g':
+          case 'G':
+          {
+              String ret = String(currentState);
+              ret += "_" + String(digitalRead(fOptic));
+              ret += "_" + String(digitalRead(rOptic));
+              ret += "_" + String(xMovementCompleted && yMovementCompleted && zMovementCompleted);
+              ret += "_" + String(motor.getPosition());
+              ret += "_" + String(verticalLinac.getPosition());
+              tcpClient.print(ret);
+              break;
+          }
+          case 'r':
+          case 'R':
+          {
+              if (currentState == STATE_DRAWN && armingChainSerialIn)
+              {
+                  zMovementCompleted = false;
+                  drawingLinac.setMovementComplete(false);
+                  retractSerialIn = true;
+              }
+              else
+              {
+                  tcpClient.print("ERR~~~~~");
+              }
+              break;
+          }
+          case 'x':
+          case 'X':
+          {
+              char* substr = &buf[1];
+              int requestedTarget = atoi(substr);
+              Serial.println(requestedTarget);
+              if ( requestedTarget > -4096 && requestedTarget < 4096 && (currentState == STATE_IDLE || currentState == STATE_ARMED || currentState == STATE_AIMING))
+              {
+                  motorTarget = requestedTarget;
+                  movementRequested = true;
+                  xMovementCompleted = false;
+                  motor.setMovementComplete(false);
+              }
+              else
+              {
+                  Serial.println("REQ: " + requestedTarget);
+                  Serial.println("STATE: " + stateNames[currentState-1]);
+                  tcpClient.write("ERR~~~~~");
+              }
+              break;
+          }
+          case 'y':
+          case 'Y':
+          {
+              char* substr = &buf[1];
+              int requestedTarget = atoi(substr);
+              if ( requestedTarget >= 0 && requestedTarget < 4096 && (currentState == STATE_IDLE || currentState == STATE_ARMED))
+              {
+                  verticalLinacTarget = requestedTarget;
+                  movementRequested = true;
+                  yMovementCompleted = false;
+                  verticalLinac.setMovementComplete(false);
+              }
+              else
+              {
+                  tcpClient.write("ERR~~~~~");
+              }
+              break;
+          }
+          default:
+          {
+              // Unrecognized command
+              Serial.print("ERR~~~~~");
+          }
+      }
+  }
+}
+
+void clearEthernetBuffer()
+{
+    for(int i = 0; i < bufferSize; i++)
+    {
+        buf[i] = 0;
+    }
+    bufferSize = 0;
+}

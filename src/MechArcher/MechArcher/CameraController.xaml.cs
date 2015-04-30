@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Nikon;
 
 namespace MechArcher
 {
@@ -23,10 +24,39 @@ namespace MechArcher
         private Point target = NO_TARGET;
         private Ellipse targetMarker = null;
 
+        private NikonManager manager = null;
+        private NikonDevice camera = null;
+
         public CameraController()
         {
             InitializeComponent();
+            InitializeCameraFeed();
         }
+
+        private void HandleClose(DependencyPropertyChangedEventArgs e)
+        {
+
+        }
+
+        public void InitializeCameraFeed()
+        {
+            manager = new NikonManager("Type0003.md3");
+            manager.DeviceAdded += new DeviceAddedDelegate(manager_DeviceAdded);
+
+        }
+
+
+        void manager_DeviceAdded(NikonManager sender, NikonDevice device)
+        {
+            camera = device;
+            
+            // Set shooting mode to 'continuous, highspeed'
+            NikonEnum shootingMode = camera.GetEnum(eNkMAIDCapability.kNkMAIDCapability_ShootingMode);
+            shootingMode.Index = (int)eNkMAIDShootingMode.kNkMAIDShootingMode_CH;
+            camera.SetEnum(eNkMAIDCapability.kNkMAIDCapability_ShootingMode, shootingMode);
+
+        }
+
 
         public void clearTarget()
         {
@@ -53,8 +83,8 @@ namespace MechArcher
             targetMarker.StrokeThickness = 3;
             targetMarker.Stroke = Brushes.Red;
             canvas.Children.Add(targetMarker);
-            Canvas.SetLeft(targetMarker, target.X);
-            Canvas.SetTop(targetMarker, target.Y);
+            Canvas.SetLeft(targetMarker, target.X-15);
+            Canvas.SetTop(targetMarker, target.Y-15);
 
             Console.WriteLine(getTarget());
         }

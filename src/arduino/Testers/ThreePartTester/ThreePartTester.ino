@@ -5,7 +5,8 @@
 // D
 const int linacFeedbackPin = 2;
 const int linacEnablePin   = 3;
-const int linacDirPin      = 4;
+const int linacDirPin     
+= 5;
 
 // Y
 
@@ -13,7 +14,7 @@ const int linac2FeedbackPin = 5;
 const int linac2EnablePin   = 6;
 const int linac2DirPin      = 8;
 
-const int motorEnablePin  = 10;
+const int motorEnablePin  = 9;
 const int motorDirPin     = 12;
 
 const int pinA         = 21;
@@ -63,6 +64,8 @@ void setup() {
       linac2.samplePosition();
   }
 }
+
+
 
 void loop() {  
   if (linac1Target != -1)

@@ -1,8 +1,8 @@
 #ifndef LinearActuator_h
 #define LinearActuator_h
 
-#define EXTEND LOW
-#define RETRACT HIGH
+#define EXTEND HIGH
+#define RETRACT LOW
 
 #include "Arduino.h"
 

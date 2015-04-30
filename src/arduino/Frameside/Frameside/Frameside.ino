@@ -5,7 +5,7 @@
 
 const int drawingLinacFeedback = 2;
 const int drawingLinacEnable   = 3;
-const int drawingLinacDir      = 1;
+const int drawingLinacDir      = 5;
 
 const int verticalFeedback     = 5;
 const int verticalLinacEnable  = 6;
@@ -67,7 +67,7 @@ int verticalLinacTarget = 400;
 
 // Serial booleans, set when valid commands are read from the Serial connection.
 
-boolean armingChainSerialIn = false;
+//boolean armingChainSerialIn = false;
 boolean drawSerialIn        = false;
 boolean retractSerialIn     = false;
 boolean fireSerialIn        = false;
@@ -77,11 +77,14 @@ boolean xMovementCompleted  = true;
 boolean yMovementCompleted  = true;
 boolean zMovementCompleted  = true;
 
-const long zDrawnPosition     = 400;
-const long zRetractedPosition = 3600;
+
+const int yMinimum = 130;
+const int zMinimum = 300;
+const long zDrawnPosition     = 2000;
+const long zRetractedPosition = 3000;
 
 void setup() {
-    Serial.begin(9600);
+    Serial.end();
     Serial1.end();
     Serial2.end();
     Serial3.end();
@@ -118,12 +121,38 @@ void setup() {
         verticalLinac.samplePosition();
     }
   
+    delay(10000);
+    initializeMotorPositions();
   
     pinMode(fireSolenoid, OUTPUT);
     
     attachInterrupt(2, doPinA, CHANGE);
     attachInterrupt(3, doPinB, CHANGE);
     Ethernet.begin(mac, ip, gateway, subnet);
+}
+
+void initializeMotorPositions()
+{
+    verticalLinac.setMovementComplete(false);
+    while (!verticalLinac.isMovementComplete())
+    {
+        verticalLinac.moveTo(1000);
+    }
+    drawingLinac.setMovementComplete(false);
+    while(!drawingLinac.isMovementComplete())
+    {
+        drawingLinac.moveTo(zRetractedPosition);
+    }
+    motor.setMovementComplete(false);
+    while(!motor.isMovementComplete())
+    {
+        motor.moveTo(-200);
+    }
+    motor.setMovementComplete(false);
+    while(!motor.isMovementComplete())
+    {
+        motor.moveTo(200);
+    }
 }
 
 void loop() { 
@@ -330,7 +359,7 @@ void test_idle_transitions()
     {
         currentState = STATE_AIMING;
     }
-    else if ( armingChainSerialIn ) // digitalRead(armingChain) == HIGH )
+    else if ( digitalRead(fOptic) == LOW ) // digitalRead(armingChain) == HIGH )
     {
         currentState = STATE_ARMED;
     }
@@ -344,15 +373,15 @@ void test_armed_transitions()
     {
         currentState = STATE_AIMING;
     }
-    else if ( armingChainSerialIn // digitalRead(armingChain) == HIGH 
-         && drawSerialIn // && digitalRead(drawIn) == HIGH
+    else if ( //armingChainSerialIn // digitalRead(armingChain) == HIGH 
+         /*&&*/ drawSerialIn // && digitalRead(drawIn) == HIGH
          && digitalRead(fOptic) == LOW
          && digitalRead(rOptic) == HIGH )
     {
         currentState = STATE_DRAWING;
         startMovementTime = 0;
     }
-    else if ( !armingChainSerialIn) // digitalRead(armingChain) == LOW )
+    else if ( digitalRead(fOptic) == HIGH) // digitalRead(armingChain) == LOW )
     {
         currentState = STATE_IDLE;
     }
@@ -397,8 +426,8 @@ void test_drawn_transitions()
 {
     if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == LOW )
     {
-        if ( armingChainSerialIn )// digitalRead(armingChain) == HIGH )
-        {
+        //if ( armingChainSerialIn )// digitalRead(armingChain) == HIGH )
+        //{
             if( fireSerialIn) //digitalRead(fireIn) == HIGH */)
             {
                 currentState = STATE_FIRING; 
@@ -410,7 +439,7 @@ void test_drawn_transitions()
                 retractSerialIn = false;
                 drawingLinacTarget = zRetractedPosition;
             }
-        }
+        //}
         // Do nothing if the arming chain is inactive.
     }
     else
@@ -502,7 +531,7 @@ void eStopInterrupt()
 {
     // Nothing should ever interrupt an eStop
     //noInterrupts();
-    Serial.println("eSTOP");
+    // Serial.println("eSTOP");
     currentState = STATE_HALT;
     
     unsigned long currentTime = millis();
@@ -537,6 +566,7 @@ void checkEthernetInput()
         tcpClient = server.available();
         if(tcpClient)
         {
+            // Serial.println("Client connected.");
             hasConnected = true;
         }
     }
@@ -544,9 +574,9 @@ void checkEthernetInput()
     if(tcpClient && hasConnected && tcpClient.available())
     {
         char c = tcpClient.read();
+        // Serial.println(c);
         if(c == '~')
         {
-            Serial.println(buf);
             parseEthernetBuffer();
             clearEthernetBuffer();
         }
@@ -577,7 +607,7 @@ void parseEthernetBuffer()
           case 'a':
           case 'A':
           {
-              armingChainSerialIn = atoi(&buf[1]);
+              //armingChainSerialIn = atoi(&buf[1]);
               break;
           }
           case 'd':
@@ -609,7 +639,7 @@ void parseEthernetBuffer()
           case 'f':
           case 'F':
           {
-              if (currentState == STATE_DRAWN && armingChainSerialIn 
+              if (currentState == STATE_DRAWN //&& armingChainSerialIn 
                   && digitalRead(fOptic) == LOW && digitalRead(rOptic) == LOW)
               {
                   fireSerialIn = true;
@@ -626,7 +656,7 @@ void parseEthernetBuffer()
               String ret = String(currentState);
               ret += "_" + String(digitalRead(fOptic));
               ret += "_" + String(digitalRead(rOptic));
-              ret += "_" + String(xMovementCompleted && yMovementCompleted && zMovementCompleted);
+              ret += "_" + String(!(xMovementCompleted && yMovementCompleted && zMovementCompleted));
               ret += "_" + String(motor.getPosition());
               ret += "_" + String(verticalLinac.getPosition());
               tcpClient.print(ret);
@@ -635,7 +665,7 @@ void parseEthernetBuffer()
           case 'r':
           case 'R':
           {
-              if (currentState == STATE_DRAWN && armingChainSerialIn)
+              if (currentState == STATE_DRAWN ) //&& armingChainSerialIn)
               {
                   zMovementCompleted = false;
                   drawingLinac.setMovementComplete(false);
@@ -652,7 +682,7 @@ void parseEthernetBuffer()
           {
               char* substr = &buf[1];
               int requestedTarget = atoi(substr);
-              Serial.println(requestedTarget);
+              // Serial.println(requestedTarget);
               if ( requestedTarget > -4096 && requestedTarget < 4096 && (currentState == STATE_IDLE || currentState == STATE_ARMED || currentState == STATE_AIMING))
               {
                   motorTarget = requestedTarget;
@@ -662,8 +692,8 @@ void parseEthernetBuffer()
               }
               else
               {
-                  Serial.println("REQ: " + requestedTarget);
-                  Serial.println("STATE: " + stateNames[currentState-1]);
+                  //Serial.println("REQ: " + requestedTarget);
+                  //Serial.println("STATE: " + stateNames[currentState-1]);
                   tcpClient.write("ERR~~~~~");
               }
               break;
@@ -686,10 +716,17 @@ void parseEthernetBuffer()
               }
               break;
           }
+          
+          case 'z':
+          case 'Z':
+          {
+              // Serial.println(drawingLinac.getPosition());
+          }
+          
           default:
           {
               // Unrecognized command
-              Serial.print("ERR~~~~~");
+              // Serial.print("ERR~~~~~");
           }
       }
   }

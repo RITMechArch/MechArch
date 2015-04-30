@@ -9,7 +9,7 @@ void LinearActuator::init(int dirPin, int enablePin, int feedbackPin)
     _feedbackPin = feedbackPin;
     digitalWrite(_dirPin, LOW);
     direction = false;
-    analogWrite(_enablePin, 255);
+    analogWrite(_enablePin, 0);
     isEnabled = false;
     position = analogRead( _feedbackPin ) << 20;
 }
@@ -63,29 +63,29 @@ void LinearActuator::moveTo( int target )
     //}
     long position = getPosition();
     samplePosition();
-    if(target > position && abs(target - position) > error) 
+    if(target > position && abs(target - position) > backlash) 
     {
         if(!direction) 
         {
             digitalWrite(_dirPin, EXTEND);
             direction = true;
         }
-        analogWrite(_enablePin, 255-power);
+        analogWrite(_enablePin, power);
         isEnabled = true;
     } 
-    else if (target < position && abs(target - position) > error) 
+    else if (target < position && abs(target - position) > backlash) 
     {
         if(direction) 
         {
             digitalWrite(_dirPin, RETRACT);
             direction = false;
         }
-        analogWrite(_enablePin, 255-power);
+        analogWrite(_enablePin, power);
         isEnabled = true;
     } 
     else if (isEnabled && abs(target - position) <= backlash) 
     {
-        analogWrite(_enablePin, 255);
+        analogWrite(_enablePin, 0);
         isEnabled = false;  
         movementComplete = true;
     }

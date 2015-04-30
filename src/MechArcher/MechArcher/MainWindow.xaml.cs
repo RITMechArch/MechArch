@@ -28,93 +28,24 @@ namespace MechArcher
         private const int MinCamFeedHeight = 540;
         private const int MinCamFeedWidth = 860;
 
-       // private NikonManager manager;
-       // private NikonDevice camera;
+        private NetworkController netController;
+        private MachineStatus status;
+
 
         public MainWindow()
         {
-            this.Hide();
-
+            //this.Hide();
             InitializeComponent();
 
-            if (!Directory.Exists(ImgPath))
-            {
-                Directory.CreateDirectory(ImgPath);
-            }
-
-            InitializeWebcam();
-            show();
+            status = new MachineStatus();
+            netController = new NetworkController(status);
+            // show();
         }
 
-        public void show(/*Binding bndg_1*/)
-        {
+        //public void show(/*Binding bndg_1*/)
+        /*{
             base.Show();
-        }
-
-        private void InitializeWebcam()
-        {
-           //  manager = new NikonManager("Type0003.md3");
-           //  manager.DeviceAdded += new DeviceAddedDelegate(manager_DeviceAdded);
-
-            const string requiredDllFile = "NkdPTP.dll";
-            string requiredDllPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName("Type0003.md3"), requiredDllFile);
-            Console.WriteLine(requiredDllPath);
-        }
-
-        /*
-        void manager_DeviceAdded(NikonManager sender, NikonDevice device)
-        {
-            Console.WriteLine("CAMERA ADDED");
-            if (camera == null)
-            {
-                camera = device;
-                camera.ImageReady += new ImageReadyDelegate(onImageReady);
-                camera.CaptureComplete += new CaptureCompleteDelegate();
-
-            }
-        } */
-
-        private Rect GetWebcamDimensions()
-        {
-            Rect workArea = SystemParameters.WorkArea;
-            Rect dimensions = new Rect();
-
-            if ( workArea.Height <= (2*MinCamFeedHeight) )
-            {
-                dimensions.Height = MinCamFeedHeight;
-            }
-            else
-            {
-                dimensions.Height = workArea.Height / 2;
-            }
-
-            if ( workArea.Width <=  MinCamFeedWidth )
-            {
-                dimensions.Width = MinCamFeedWidth;
-            }
-            else
-            {
-                dimensions.Width = workArea.Width;
-            }
-
-            return dimensions;
-        }
-
-        /*
-        void onImageReady(NikonDevice sender, NikonImage image)
-        {
-            // TODO: Do something with 'image'
-            Console.WriteLine(image.GetType());
-        }
-
-        void onCaptureComplete(NikonDevice sender)
-        {
-        } */
-
-        private void StartButton_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
+        }*/
 
         private void EStopButton_Click(object sender, RoutedEventArgs e)
         {
@@ -132,22 +63,38 @@ namespace MechArcher
 		private void DrawButton_Click(object sender, RoutedEventArgs e)
         {
             // Take snapshot of webcam image.
-            Console.WriteLine("TEST__________TEST__________TEST");
+            netController.updateMachineStatus();
+            if ((status.getCurrentState() == MachineStatus.States.ARMED) && status.getFOptic() && !status.getROptic() && !status.getIsMoving())
+            {
+                netController.draw();
+                netController.updateMachineStatus();
+            }
         }
 		
 		private void RetractButton_Click(object sender, RoutedEventArgs e)
         {
             // Take snapshot of webcam image.
+            netController.updateMachineStatus();
+            if ((status.getCurrentState() == MachineStatus.States.DRAWN) && !status.getIsMoving())
+            {
+                netController.retract();
+                netController.updateMachineStatus();
+            }
         }
 		
 		private void FireManualButton_Click(object sender, RoutedEventArgs e)
         {
-            // Take snapshot of webcam image.
+            netController.updateMachineStatus();
+            if ((status.getCurrentState() == MachineStatus.States.DRAWN) && status.getFOptic() && status.getROptic() && !status.getIsMoving())
+            {
+                netController.draw();
+                netController.updateMachineStatus();
+            }
         }
 		
-		private void FireAutoButton_Click(object sender, RoutedEventArgs e)
+		private void ClearTargetButton_Click(object sender, RoutedEventArgs e)
         {
-            // Take snapshot of webcam image.
+            Camera.clearTarget();
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)

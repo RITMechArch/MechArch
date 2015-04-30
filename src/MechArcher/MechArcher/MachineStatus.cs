@@ -2,73 +2,73 @@
 
 public class MachineStatus
 {
-    private States currentState, newState;
+    private States currentState;
 
     // For the purposes of the state machine, fOptic and rOptic will return true if there is an arrow present.
     // This is the opposite of the convention in the Arduino.
-    private bool armingChain, fOptic, rOptic, drawInput, retractInput, fireInput, movementRequested = false;
+    private bool armingChain, fOptic, rOptic, drawInput, fireInput, moving = false;
 
     private int xPosition, yPosition, xTarget, yTarget = 0;
 
     public enum States { IDLE = 1, ARMED = 2, AIMING = 3, DRAWING = 4, DRAWN = 5, RETRACTING = 6, FIRING = 7, FIRED = 8, HALT = 9 };
-    
-	public MachineStatus()
-	{
+
+    public MachineStatus()
+    {
         currentState = States.IDLE;
-	}
+    }
 
     private void checkStateTransitions()
     {
-        switch(currentState)
+        switch (currentState)
         {
             case States.IDLE:
-            {
-                if (armingChain)
                 {
-                    currentState = States.ARMED;
+                    if (armingChain)
+                    {
+                        currentState = States.ARMED;
+                    }
+                    break;
                 }
-                break;
-            }
             case States.ARMED:
-            {
-                if (!armingChain)
                 {
-                    currentState = States.ARMED;
+                    if (!armingChain)
+                    {
+                        currentState = States.ARMED;
+                    }
+                    break;
                 }
-                break;
-            }
             case States.AIMING:
-            {
-                break;
-            }
+                {
+                    break;
+                }
             case States.DRAWING:
-            {
-                break;
-            }
+                {
+                    break;
+                }
             case States.DRAWN:
-            {
-                break;
-            }
+                {
+                    break;
+                }
             case States.RETRACTING:
-            {
-                break;
-            }
+                {
+                    break;
+                }
             case States.FIRING:
-            {
-                break;
-            }
+                {
+                    break;
+                }
             case States.FIRED:
-            {
-                break;
-            }
+                {
+                    break;
+                }
             case States.HALT:
-            {
-                break;
-            }
+                {
+                    break;
+                }
         }
     }
 
-    public States getState()
+    public States getCurrentState()
     {
         return currentState;
     }
@@ -78,24 +78,14 @@ public class MachineStatus
         return armingChain;
     }
 
-    public bool getDrawInput()
-    {
-        return drawInput;
-    }
-
-    public bool getFireInput()
-    {
-        return fireInput;
-    }
-
     public bool getFOptic()
     {
         return fOptic;
     }
 
-    public bool getRetractInput()
+    public bool getIsMoving()
     {
-        return retractInput;
+        return moving;
     }
 
     public bool getROptic()
@@ -129,6 +119,11 @@ public class MachineStatus
         checkStateTransitions();
     }
 
+    public void setCurrentState(States state)
+    {
+        currentState = state;
+    }
+
     public void setDrawInput(bool draw)
     {
         drawInput = draw;
@@ -147,15 +142,30 @@ public class MachineStatus
         checkStateTransitions();
     }
 
+    public void setMoving(bool isMoving)
+    {
+        moving = isMoving;
+    }
+
     public void setROptic(bool rOpt)
     {
         rOptic = rOpt;
         checkStateTransitions();
     }
 
+    public void setXPosition(int x)
+    {
+        xPosition = x;
+    }
+
     public void setXTarget(int x)
     {
         xTarget = x;
+    }
+
+    public void setYPosition(int y)
+    {
+        yPosition = y;
     }
 
     public void setYTarget(int y)

@@ -32,6 +32,7 @@ EthernetClient tcpClient;
 boolean hasConnected = false;
 char buf[128];
 int bufferSize = 0;
+boolean hasArrow = false;
 
 //-------- STATE const declarations -------------
 const int STATE_IDLE        = 1;
@@ -281,6 +282,17 @@ void set_aiming_outputs()
 void set_drawing_outputs()
 //=========================================
 {
+    if (!hasArrow)
+    {
+        drawingLinac.setMovementComplete(false);
+        while(!drawingLinac.isMovementComplete())
+        {
+            digitalWrite(fireSolenoid, HIGH);
+            drawingLinac.moveTo(zDrawnPosition+100);
+        }
+        digitalWrite(fireSolenoid, LOW);
+        drawingLinac.setMovementComplete(false);
+    }
     // TODO get drawn amount from EEPROM, use it.
     if (!zMovementCompleted)
     {

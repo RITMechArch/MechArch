@@ -87,7 +87,7 @@ namespace MechArcher
             netController.updateMachineStatus();
             if ((status.getCurrentState() == MachineStatus.States.DRAWN) && status.getFOptic() && status.getROptic() && !status.getIsMoving())
             {
-                netController.draw();
+                netController.fire();
                 netController.updateMachineStatus();
             }
         }

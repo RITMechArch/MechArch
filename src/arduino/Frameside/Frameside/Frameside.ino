@@ -47,7 +47,7 @@ String stateNames[10] = {"STATE_IDLE", "STATE_ARMED", "STATE_AIMING", "STATE_DRA
 
 int currentState = STATE_IDLE;
 
-const int MOTOR_DISABLED = 1;
+const int MOTOR_DISABLED = 0;
 
 int startMovementTime = 0;
 int fireDelay = -1;
@@ -80,11 +80,11 @@ boolean zMovementCompleted  = true;
 
 const int yMinimum = 130;
 const int zMinimum = 300;
-const long zDrawnPosition     = 2000;
+const long zDrawnPosition     = 1000;
 const long zRetractedPosition = 3000;
 
 void setup() {
-    Serial.end();
+    Serial.begin(9600);
     Serial1.end();
     Serial2.end();
     Serial3.end();
@@ -120,9 +120,6 @@ void setup() {
         drawingLinac.samplePosition();
         verticalLinac.samplePosition();
     }
-  
-    delay(10000);
-    initializeMotorPositions();
   
     pinMode(fireSolenoid, OUTPUT);
     
@@ -424,23 +421,16 @@ void test_drawing_transitions()
 void test_drawn_transitions()
 //=========================================
 {
-    if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == LOW )
+    if( retractSerialIn /*digitalRead(retractInput) == HIGH*/ )
     {
-        //if ( armingChainSerialIn )// digitalRead(armingChain) == HIGH )
-        //{
-            if( fireSerialIn) //digitalRead(fireIn) == HIGH */)
-            {
-                currentState = STATE_FIRING; 
-                fireSerialIn = false;
-            }
-            else if( retractSerialIn /*digitalRead(retractInput) == HIGH*/ )
-            {
-                currentState = STATE_RETRACTING;
-                retractSerialIn = false;
-                drawingLinacTarget = zRetractedPosition;
-            }
-        //}
-        // Do nothing if the arming chain is inactive.
+        currentState = STATE_RETRACTING;
+        retractSerialIn = false;
+        drawingLinacTarget = zRetractedPosition;
+    }
+    else if ( digitalRead(fOptic) == LOW && digitalRead(rOptic) == LOW && fireSerialIn == HIGH)
+    {
+        currentState = STATE_FIRING; 
+        fireSerialIn = false;
     }
     else
     {
@@ -566,7 +556,7 @@ void checkEthernetInput()
         tcpClient = server.available();
         if(tcpClient)
         {
-            // Serial.println("Client connected.");
+            Serial.println("Client connected.");
             hasConnected = true;
         }
     }

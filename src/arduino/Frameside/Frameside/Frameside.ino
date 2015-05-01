@@ -81,8 +81,9 @@ boolean zMovementCompleted  = true;
 
 const int yMinimum = 130;
 const int zMinimum = 300;
-const long zDrawnPosition     = 1000;
-const long zRetractedPosition = 3000;
+const long zDrawnPosition     = 400;
+const long zRetractedPosition = 3500;
+const long zBowstringPosition = 3785;
 
 void setup() {
     Serial.begin(9600);
@@ -129,7 +130,7 @@ void setup() {
     Ethernet.begin(mac, ip, gateway, subnet);
 }
 
-void initializeMotorPositions()
+/* void initializeMotorPositions()
 {
     verticalLinac.setMovementComplete(false);
     while (!verticalLinac.isMovementComplete())
@@ -151,7 +152,7 @@ void initializeMotorPositions()
     {
         motor.moveTo(200);
     }
-}
+} */
 
 void loop() { 
     motorPos = motor.getPosition();
@@ -288,7 +289,7 @@ void set_drawing_outputs()
         while(!drawingLinac.isMovementComplete())
         {
             digitalWrite(fireSolenoid, HIGH);
-            drawingLinac.moveTo(zDrawnPosition+100);
+            drawingLinac.moveTo(zBowstringPosition);
         }
         digitalWrite(fireSolenoid, LOW);
         drawingLinac.setMovementComplete(false);

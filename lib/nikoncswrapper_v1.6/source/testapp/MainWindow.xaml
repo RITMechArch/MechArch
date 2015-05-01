@@ -137,7 +137,7 @@
         </Grid.RowDefinitions>
 
         <!-- Tab control -->
-        <TabControl Grid.Row="0" ItemsSource="{Binding Objects}" SelectedIndex="{Binding NewestIndex, Mode=OneWay}">
+        <TabControl Grid.Row="0" ItemsSource="{Binding Objects}" SelectedIndex="{Binding NewestIndex, Mode=OneWay}" SelectionChanged="TabControl_SelectionChanged">
 
             <!-- Tab title -->
             <TabControl.ItemTemplate>
@@ -150,39 +150,14 @@
             <TabControl.ContentTemplate>
                 <DataTemplate>
                     <Grid>
-
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="8"/>
-                            <ColumnDefinition Width="300" MinWidth="200"/>
+                            <ColumnDefinition Width="*" MinWidth="200"/>
                         </Grid.ColumnDefinitions>
-
-                        <!-- List view -->                                
-                        <ListView ItemsSource="{Binding Caps}">
-                            <ListView.View>
-                                <GridView>
-                                    <GridViewColumn Header="Name" Width="210" DisplayMemberBinding="{Binding CapTitle}"/>
-                                    <GridViewColumn Header="Value" Width="140" CellTemplateSelector="{StaticResource CapTypeTemplateSelector}"/>
-                                    <GridViewColumn Header="Type" Width="100" DisplayMemberBinding="{Binding CapTypeFriendlyName}"/>
-                                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding CapId}"/>
-                                    <GridViewColumn Header="Numerical ID" Width="100" DisplayMemberBinding="{Binding CapNumericalId}"/>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-                        
-                        <!-- Vertical grid splitter -->
-                        <GridSplitter 
-                            Grid.Column="1" 
-                            VerticalAlignment="Stretch" 
-                            HorizontalAlignment="Stretch"/>
 
                         <!-- Live view stuff -->
                         <Grid Grid.Column="2">
 
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="24"/>
-                                <RowDefinition Height="24"/>
-                                <RowDefinition Height="24"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="24"/>
                             </Grid.RowDefinitions>
@@ -191,36 +166,6 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-
-                            <CheckBox 
-                                Grid.Row="0" 
-                                Grid.ColumnSpan="2" 
-                                IsChecked="{Binding ThumbnailReadyIsAttached, Mode=TwoWay}"
-                                IsEnabled="{Binding SupportsCapture}"
-                                Visibility="{Binding SupportsCapture, Converter={StaticResource BoolToVisibility}}"
-                                VerticalAlignment="Center">
-                                Acquire Thumbnails
-                            </CheckBox>
-                            
-                            <CheckBox 
-                                Grid.Row="1" 
-                                Grid.ColumnSpan="2"
-                                IsChecked="{Binding PreviewReadyIsAttached, Mode=TwoWay}"
-                                IsEnabled="{Binding SupportsPreview}" 
-                                Visibility="{Binding SupportsCapture, Converter={StaticResource BoolToVisibility}}"
-                                VerticalAlignment="Center">
-                                Acquire Previews
-                            </CheckBox>
-                            
-                            <CheckBox 
-                                Grid.Row="2" 
-                                Grid.ColumnSpan="2"
-                                IsChecked="{Binding LowResolutionPreviewReadyIsAttached, Mode=TwoWay}"
-                                IsEnabled="{Binding SupportsLowResPreview}" 
-                                Visibility="{Binding SupportsCapture, Converter={StaticResource BoolToVisibility}}"
-                                VerticalAlignment="Center">
-                                Acquire Low Resolution Previews
-                            </CheckBox>
 
                             <!-- Live view help text -->
                             <TextBlock 
@@ -233,14 +178,14 @@
                                 Text="Live View"/>
 
                             <!-- Live view image -->
-                            <Image 
-                                Grid.Row="3"
-                                Grid.ColumnSpan="2" 
+                            <Image Name="LiveFeed"
+                                MouseDown="LiveFeed_MouseDown" Grid.Row="0"
+                                Grid.ColumnSpan="2"
                                 Source="{Binding LiveViewImage, Mode=OneWay}"/>
 
                             <!-- Live view start button -->
                             <Button 
-                                Grid.Row="4" 
+                                Grid.Row="1" 
                                 Grid.Column="0" 
                                 Content="Start" 
                                 IsEnabled="{Binding SupportsLiveView}" 
@@ -268,27 +213,22 @@
             Grid.Row="1" 
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Stretch"/>
+        <Grid Grid.Row="3" Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Margin="5" FontSize="24" Background="Red" >E-Stop</Button>
+            <Button Grid.Column="1" Margin="5" FontSize="24" Background="Black" Foreground ="White" >Draw</Button>
+            <Button Grid.Column="2" Margin="5" FontSize="24" Background="Blue" Foreground ="White" >Retract</Button>
+            <Button Grid.Column="3" Margin="5" FontSize="24" Background="Green" Foreground ="White" >Fire Manual</Button>
+            <Button Grid.Column="4" Margin="5" FontSize="24" Background="Aqua" >Clear Target</Button>
+            <Button Grid.Column="5" Margin="5" FontSize="24" Background="Aqua" >Set Target</Button>
+        </Grid>
 
-        <!-- Log -->
-        <TextBox 
-            Grid.Row="2" 
-            VerticalScrollBarVisibility="Visible" 
-            HorizontalScrollBarVisibility="Auto" 
-            IsReadOnly="True" 
-            DataContext="{StaticResource LogModel}" 
-            Text="{Binding LogText, Mode=OneWay}" 
-            FontFamily="Consolas" 
-            FontSize="11" 
-            TextChanged="TextBox_TextChanged"
-            SnapsToDevicePixels="True">
-
-            <!-- Log context menu -->
-            <TextBox.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Clear Log" Click="MenuItem_Click"/>
-                </ContextMenu>
-            </TextBox.ContextMenu>
-
-        </TextBox>
     </Grid>
 </Window>

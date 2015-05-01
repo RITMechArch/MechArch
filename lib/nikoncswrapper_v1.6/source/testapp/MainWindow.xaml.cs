@@ -29,6 +29,10 @@ namespace testapp
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static Point NO_TARGET = new Point();
+        private Point target = NO_TARGET;
+        private Ellipse targetMarker = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -97,6 +101,33 @@ namespace testapp
             {
                 model.Start();
             }
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void LiveFeed_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (target != NO_TARGET)
+            {
+                //canvas.Children.Remove(targetMarker);
+            }
+            Point pixelClicked = e.GetPosition(this);
+            target = pixelClicked;
+
+            targetMarker = new Ellipse();
+
+            targetMarker.Height = 30;
+            targetMarker.Width = 30;
+            targetMarker.StrokeThickness = 3;
+            targetMarker.Stroke = Brushes.Red;
+            // canvas.Children.Add(targetMarker);
+            Canvas.SetLeft(targetMarker, target.X - 15);
+            Canvas.SetTop(targetMarker, target.Y - 15);
+
+           //  Console.WriteLine(getTarget());
         }
     }
 

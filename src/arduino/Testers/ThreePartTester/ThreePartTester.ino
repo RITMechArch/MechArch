@@ -5,8 +5,7 @@
 // D
 const int linacFeedbackPin = 2;
 const int linacEnablePin   = 3;
-const int linacDirPin     
-= 5;
+const int linacDirPin      = 5;
 
 // Y
 

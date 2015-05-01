@@ -83,7 +83,7 @@ const int yMinimum = 130;
 const int zMinimum = 300;
 const long zDrawnPosition     = 400;
 const long zRetractedPosition = 3500;
-const long zBowstringPosition = 3785;
+const long zBowstringPosition = 3810;
 
 void setup() {
     Serial.begin(9600);
@@ -286,13 +286,16 @@ void set_drawing_outputs()
     if (!hasArrow)
     {
         drawingLinac.setMovementComplete(false);
+        digitalWrite(fireSolenoid, HIGH);
         while(!drawingLinac.isMovementComplete())
         {
-            digitalWrite(fireSolenoid, HIGH);
             drawingLinac.moveTo(zBowstringPosition);
         }
+        delayWithInterrupts(1000);
         digitalWrite(fireSolenoid, LOW);
+        delayWithInterrupts(1000);
         drawingLinac.setMovementComplete(false);
+        hasArrow = true;
     }
     // TODO get drawn amount from EEPROM, use it.
     if (!zMovementCompleted)
@@ -482,6 +485,7 @@ void test_firing_transitions()
          && digitalRead(rOptic) == HIGH )
     {
         currentState = STATE_FIRED;
+        hasArrow = false;
     }
 }
 
@@ -490,9 +494,7 @@ void test_fired_transitions()
 //=========================================
 {
     long startTime = millis();
-    while( millis() - startTime < 5000)
-    {
-    }
+    delayWithInterrupts(3000);
     
     //if ( fireDelay == -1 ) 
     //{
@@ -742,4 +744,10 @@ void clearEthernetBuffer()
         buf[i] = 0;
     }
     bufferSize = 0;
+}
+
+void delayWithInterrupts(long time)
+{
+    long curTime = millis();
+    while ( millis() - curTime < time );
 }

@@ -1,0 +1,82 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nikoncswrapper", "nikoncswrapper\nikoncswrapper.csproj", "{AADE1DF5-4C46-4760-B72B-474D90336F5B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demos", "demos", "{E6A887CC-306E-4E8B-B1D7-D2F5B09B3A23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demo_capture", "demo_capture\demo_capture.csproj", "{69F8CD0A-322E-4FC7-AD59-3354B4CC73A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demo_video", "demo_video\demo_video.csproj", "{7852C3A2-5AAD-4DA1-99F4-EA4302A060C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demo_manualfocus", "demo_manualfocus\demo_manualfocus.csproj", "{CCEB0802-25CB-431A-BDF8-4E62F3E504CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demo_capabilities", "demo_capabilities\demo_capabilities.csproj", "{436953C9-5AC6-41ED-BE92-E1DEDB5295F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "testapp", "testapp", "{948E7B71-B7FA-4296-9630-C3AB4375E6FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testapp", "testapp\testapp.csproj", "{079AC104-DD21-449A-961D-B678F90A59A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demo_continuouscapture", "demo_continuouscapture\demo_continuouscapture.csproj", "{CCBA610B-AA4D-4D1E-B940-60929B80BD5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demo_winforms_csharp", "demo_winforms_csharp\demo_winforms_csharp.csproj", "{8F6CC266-4B55-4889-A2D4-02A62EB9AED3}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "demo_winforms_vb", "demo_winforms_vb\demo_winforms_vb.vbproj", "{53A50A62-3FBD-4EFE-A8F4-C7083A53157E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AADE1DF5-4C46-4760-B72B-474D90336F5B}.Debug|x86.ActiveCfg = Debug|x86
+		{AADE1DF5-4C46-4760-B72B-474D90336F5B}.Debug|x86.Build.0 = Debug|x86
+		{AADE1DF5-4C46-4760-B72B-474D90336F5B}.Release|x86.ActiveCfg = Release|x86
+		{AADE1DF5-4C46-4760-B72B-474D90336F5B}.Release|x86.Build.0 = Release|x86
+		{69F8CD0A-322E-4FC7-AD59-3354B4CC73A4}.Debug|x86.ActiveCfg = Debug|x86
+		{69F8CD0A-322E-4FC7-AD59-3354B4CC73A4}.Debug|x86.Build.0 = Debug|x86
+		{69F8CD0A-322E-4FC7-AD59-3354B4CC73A4}.Release|x86.ActiveCfg = Release|x86
+		{69F8CD0A-322E-4FC7-AD59-3354B4CC73A4}.Release|x86.Build.0 = Release|x86
+		{7852C3A2-5AAD-4DA1-99F4-EA4302A060C1}.Debug|x86.ActiveCfg = Debug|x86
+		{7852C3A2-5AAD-4DA1-99F4-EA4302A060C1}.Debug|x86.Build.0 = Debug|x86
+		{7852C3A2-5AAD-4DA1-99F4-EA4302A060C1}.Release|x86.ActiveCfg = Release|x86
+		{7852C3A2-5AAD-4DA1-99F4-EA4302A060C1}.Release|x86.Build.0 = Release|x86
+		{CCEB0802-25CB-431A-BDF8-4E62F3E504CF}.Debug|x86.ActiveCfg = Debug|x86
+		{CCEB0802-25CB-431A-BDF8-4E62F3E504CF}.Debug|x86.Build.0 = Debug|x86
+		{CCEB0802-25CB-431A-BDF8-4E62F3E504CF}.Release|x86.ActiveCfg = Release|x86
+		{CCEB0802-25CB-431A-BDF8-4E62F3E504CF}.Release|x86.Build.0 = Release|x86
+		{436953C9-5AC6-41ED-BE92-E1DEDB5295F1}.Debug|x86.ActiveCfg = Debug|x86
+		{436953C9-5AC6-41ED-BE92-E1DEDB5295F1}.Debug|x86.Build.0 = Debug|x86
+		{436953C9-5AC6-41ED-BE92-E1DEDB5295F1}.Release|x86.ActiveCfg = Release|x86
+		{436953C9-5AC6-41ED-BE92-E1DEDB5295F1}.Release|x86.Build.0 = Release|x86
+		{079AC104-DD21-449A-961D-B678F90A59A4}.Debug|x86.ActiveCfg = Debug|x86
+		{079AC104-DD21-449A-961D-B678F90A59A4}.Debug|x86.Build.0 = Debug|x86
+		{079AC104-DD21-449A-961D-B678F90A59A4}.Release|x86.ActiveCfg = Release|x86
+		{079AC104-DD21-449A-961D-B678F90A59A4}.Release|x86.Build.0 = Release|x86
+		{CCBA610B-AA4D-4D1E-B940-60929B80BD5D}.Debug|x86.ActiveCfg = Debug|x86
+		{CCBA610B-AA4D-4D1E-B940-60929B80BD5D}.Debug|x86.Build.0 = Debug|x86
+		{CCBA610B-AA4D-4D1E-B940-60929B80BD5D}.Release|x86.ActiveCfg = Release|x86
+		{CCBA610B-AA4D-4D1E-B940-60929B80BD5D}.Release|x86.Build.0 = Release|x86
+		{8F6CC266-4B55-4889-A2D4-02A62EB9AED3}.Debug|x86.ActiveCfg = Debug|x86
+		{8F6CC266-4B55-4889-A2D4-02A62EB9AED3}.Debug|x86.Build.0 = Debug|x86
+		{8F6CC266-4B55-4889-A2D4-02A62EB9AED3}.Release|x86.ActiveCfg = Release|x86
+		{8F6CC266-4B55-4889-A2D4-02A62EB9AED3}.Release|x86.Build.0 = Release|x86
+		{53A50A62-3FBD-4EFE-A8F4-C7083A53157E}.Debug|x86.ActiveCfg = Debug|x86
+		{53A50A62-3FBD-4EFE-A8F4-C7083A53157E}.Debug|x86.Build.0 = Debug|x86
+		{53A50A62-3FBD-4EFE-A8F4-C7083A53157E}.Release|x86.ActiveCfg = Release|x86
+		{53A50A62-3FBD-4EFE-A8F4-C7083A53157E}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{69F8CD0A-322E-4FC7-AD59-3354B4CC73A4} = {E6A887CC-306E-4E8B-B1D7-D2F5B09B3A23}
+		{7852C3A2-5AAD-4DA1-99F4-EA4302A060C1} = {E6A887CC-306E-4E8B-B1D7-D2F5B09B3A23}
+		{CCEB0802-25CB-431A-BDF8-4E62F3E504CF} = {E6A887CC-306E-4E8B-B1D7-D2F5B09B3A23}
+		{436953C9-5AC6-41ED-BE92-E1DEDB5295F1} = {E6A887CC-306E-4E8B-B1D7-D2F5B09B3A23}
+		{CCBA610B-AA4D-4D1E-B940-60929B80BD5D} = {E6A887CC-306E-4E8B-B1D7-D2F5B09B3A23}
+		{8F6CC266-4B55-4889-A2D4-02A62EB9AED3} = {E6A887CC-306E-4E8B-B1D7-D2F5B09B3A23}
+		{53A50A62-3FBD-4EFE-A8F4-C7083A53157E} = {E6A887CC-306E-4E8B-B1D7-D2F5B09B3A23}
+		{079AC104-DD21-449A-961D-B678F90A59A4} = {948E7B71-B7FA-4296-9630-C3AB4375E6FC}
+	EndGlobalSection
+EndGlobal

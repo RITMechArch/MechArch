@@ -97,6 +97,13 @@ namespace MechArcher
             Camera.clearTarget();
         }
 
+        public void SetTarget(object sender, RoutedEventArgs e)
+        {
+            Point target = Camera.getTarget();
+            netController.aimY((int)target.Y);
+            netController.aimX((int)target.X);
+        }
+
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             base.OnClosing(e);

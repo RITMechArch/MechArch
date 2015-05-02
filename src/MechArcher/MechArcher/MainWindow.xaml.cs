@@ -13,7 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Drawing.Imaging;
-// using Nikon;
+using Nikon;
 
 namespace MechArcher
 {
@@ -38,7 +38,7 @@ namespace MechArcher
             InitializeComponent();
 
             status = new MachineStatus();
-            netController = new NetworkController(status);
+            // netController = new NetworkController(status);
             // show();
         }
 
@@ -47,22 +47,26 @@ namespace MechArcher
             base.Show();
         }*/
 
-        private void EStopButton_Click(object sender, RoutedEventArgs e)
+        object GetDataContext(object sender)
         {
-            /*NkMAIDCapInfo[] capInfo = camera.GetCapabilityInfo();
-            foreach(NkMAIDCapInfo info in capInfo)
+            FrameworkElement element = sender as FrameworkElement;
+
+            if (element != null)
             {
-                Console.WriteLine(info.GetDescription());
+                Console.WriteLine("YEE");
+                return element.DataContext;
             }
 
-            String filename = DateTime.Now.ToString();
-            Console.WriteLine(filename);
-            camera.Capture();*/
+            return null;
+        }
+
+        private void EStopButton_Click(object sender, RoutedEventArgs e)
+        {
+            netController.eStop();
         }
 		
 		private void DrawButton_Click(object sender, RoutedEventArgs e)
         {
-            // Take snapshot of webcam image.
             netController.updateMachineStatus();
             if ((status.getCurrentState() == MachineStatus.States.ARMED) && status.getFOptic() && !status.getROptic() && !status.getIsMoving())
             {
@@ -73,7 +77,6 @@ namespace MechArcher
 		
 		private void RetractButton_Click(object sender, RoutedEventArgs e)
         {
-            // Take snapshot of webcam image.
             netController.updateMachineStatus();
             if ((status.getCurrentState() == MachineStatus.States.DRAWN) && !status.getIsMoving())
             {

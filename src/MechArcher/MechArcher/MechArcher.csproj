@@ -76,6 +76,7 @@
       <DependentUpon>CameraController.xaml</DependentUpon>
     </Compile>
     <Compile Include="MachineStatus.cs" />
+    <Compile Include="ViewModel.cs" />
     <Page Include="LCDPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

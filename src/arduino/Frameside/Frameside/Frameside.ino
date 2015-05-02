@@ -370,6 +370,7 @@ void test_idle_transitions()
 {
     if (movementRequested)
     {
+        delayWithInterrupts(1000);
         currentState = STATE_AIMING;
     }
     else if ( digitalRead(fOptic) == LOW ) // digitalRead(armingChain) == HIGH )
@@ -382,6 +383,7 @@ void test_idle_transitions()
 void test_armed_transitions()
 //=========================================
 {
+    
     if (movementRequested)
     {
         currentState = STATE_AIMING;
@@ -580,7 +582,11 @@ void checkEthernetInput()
     {
         char c = tcpClient.read();
         // Serial.println(c);
-        if(c == '~')
+        if(c=='e' || c=='E')
+        {
+            eStopInterrupt();
+        }
+        else if(c == '~')
         {
             parseEthernetBuffer();
             clearEthernetBuffer();
@@ -613,6 +619,18 @@ void parseEthernetBuffer()
           case 'A':
           {
               //armingChainSerialIn = atoi(&buf[1]);
+              break;
+          }
+          case 'c':
+          case 'C':
+          {
+              motorTarget = 0;
+              xMovementCompleted = false;
+              motor.setMovementComplete(false);
+              verticalLinacTarget = 1000;
+              yMovementCompleted = false;
+              verticalLinac.setMovementComplete(false);
+              movementRequested = true;
               break;
           }
           case 'd':
@@ -651,7 +669,7 @@ void parseEthernetBuffer()
               }
               else
               {
-                  tcpClient.print("ERR~~~~~");
+                  tcpClient.print("ERR~");
               }
               break;
           }
@@ -678,7 +696,7 @@ void parseEthernetBuffer()
               }
               else
               {
-                  tcpClient.print("ERR~~~~~");
+                  tcpClient.print("ERR~");
               }
               break;
           }
@@ -699,7 +717,7 @@ void parseEthernetBuffer()
               {
                   //Serial.println("REQ: " + requestedTarget);
                   //Serial.println("STATE: " + stateNames[currentState-1]);
-                  tcpClient.write("ERR~~~~~");
+                  tcpClient.write("ERR~");
               }
               break;
           }
@@ -717,7 +735,7 @@ void parseEthernetBuffer()
               }
               else
               {
-                  tcpClient.write("ERR~~~~~");
+                  tcpClient.write("ERR~");
               }
               break;
           }

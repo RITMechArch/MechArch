@@ -42,7 +42,6 @@ namespace MechArcher
         {
             manager = new NikonManager("Type0003.md3");
             manager.DeviceAdded += new DeviceAddedDelegate(manager_DeviceAdded);
-
         }
 
 

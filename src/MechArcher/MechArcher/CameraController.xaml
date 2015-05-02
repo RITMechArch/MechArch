@@ -6,12 +6,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Canvas Name="canvas">
-        <Rectangle Canvas.Left="0" Canvas.Top="0" Width="{Binding RelativeSource={RelativeSource FindAncestor, 
+        <!--<Rectangle Canvas.Left="0" Canvas.Top="0" Width="{Binding RelativeSource={RelativeSource FindAncestor, 
                                                AncestorType=UserControl, 
                                                AncestorLevel=1},
                 Path=ActualWidth}" Height="{Binding RelativeSource={RelativeSource FindAncestor, 
                                                AncestorType=UserControl, 
                                                AncestorLevel=1},
-                Path=ActualHeight}" Fill="Black" MouseDown="MouseClick"/>
+                Path=ActualHeight}" Fill="Black" MouseDown="MouseClick"/> -->
+        <Image Canvas.Left="0" Canvas.Top="0" Source="{Binding LiveViewImage, Mode=OneWay}" />
     </Canvas>
 </UserControl>

@@ -13,6 +13,7 @@ namespace testapp
 
         private static string estopCommand = "e~";
 
+        private static string centerCommand = "c~";
         private static string drawCommand = "d~";
         private static string fireCommand = "f~";
         private static string getStatusCommand = "g~";
@@ -24,7 +25,6 @@ namespace testapp
             connection = new TcpClient("169.254.211.1", 23);
             ns = connection.GetStream();
             updateMachineStatus();
-
         }
 
 
@@ -33,6 +33,12 @@ namespace testapp
             ns.Write(Encoding.ASCII.GetBytes(estopCommand), 0, estopCommand.Length);
             ns.Flush();
 
+        }
+
+        public void center()
+        {
+            ns.Write(Encoding.ASCII.GetBytes(centerCommand), 0, centerCommand.Length);
+            ns.Flush();
         }
 
         public void draw()
@@ -84,6 +90,12 @@ namespace testapp
             int recv = ns.Read(data, 0, data.Length);
             string stringData = Encoding.ASCII.GetString(data, 0, recv);
             string[] attributes = stringData.Split('_');
+
+            if (stringData.Equals(""))
+            {
+                status.setCurrentState(MachineStatus.States.HALT);
+                eStop();
+            }
 
             // We override the machine's state without a validity check because the machine is holding the true state.
             // If the machine advances in state twice between updates, validation on this side will fail, so we use

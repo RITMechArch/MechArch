@@ -128,6 +128,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="8"/>
             <RowDefinition Height="100" MinHeight="60"/>
+            <RowDefinition Height="100" MinHeight="60"/>
         </Grid.RowDefinitions>
 
         <!-- Tab control -->
@@ -203,7 +204,8 @@
             HorizontalAlignment="Stretch" 
             VerticalAlignment="Stretch"/>
 
-        <Grid Grid.Row="2" Grid.ColumnSpan="3">
+        <TextBlock Name ="StatusText" Grid.Row="2" TextWrapping="Wrap" TextAlignment="Center"/>
+        <Grid Grid.Row="3" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -211,13 +213,15 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Margin="5" FontSize="24" Background="Red" Click="EStopButton_Click">E-Stop</Button>
+            <Button Grid.Column="0" Margin="5" FontSize="24" Background="Red" Foreground ="White" Click="EStopButton_Click">E-Stop</Button>
             <Button Grid.Column="1" Margin="5" FontSize="24" Background="Black" Foreground ="White" Click="DrawButton_Click">Draw</Button>
             <Button Grid.Column="2" Margin="5" FontSize="24" Background="Blue" Foreground ="White" Click="RetractButton_Click">Retract</Button>
-            <Button Grid.Column="3" Margin="5" FontSize="24" Background="Green" Foreground ="White" Click="FireButton_Click">Fire Manual</Button>
-            <Button Grid.Column="4" Margin="5" FontSize="24" Background="Aqua" >Clear Target</Button>
-            <Button Grid.Column="5" Margin="5" FontSize="24" Background="Aqua" Click="SetButton_Click">Set Target</Button>
+            <Button Grid.Column="3" Margin="5" FontSize="24" Background="Green" Foreground ="White" Click="FireButton_Click">Fire</Button>
+            <Button Grid.Column="4" Margin="5" FontSize="24" Background="Orange" Foreground ="White" Click="ClearButton_Click">Clear Target</Button>
+            <Button Grid.Column="5" Margin="5" FontSize="24" Background="Brown" Foreground ="White" Click="SetButton_Click">Set Target</Button>
+            <Button Grid.Column="6" Margin="6" FontSize="24" Background="OrangeRed" Foreground ="White" Click="CenterButton_Click">Center Target</Button>
         </Grid>
     </Grid>
 </Window>

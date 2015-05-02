@@ -32,6 +32,7 @@ namespace testapp
         private static Point NO_TARGET = new Point();
         private Point target = NO_TARGET;
         private Ellipse targetMarker = null;
+        private Ellipse targetMarker2 = null;
         
         private MachineStatus status;
         private NetworkController netController;
@@ -39,11 +40,16 @@ namespace testapp
         private double canvasWidth;
         private double canvasHeight;
 
+        private Canvas canvas = null;
+
         public MainWindow()
         {
             InitializeComponent();
+            StatusText.Text = "System starting...";
+
             status = new MachineStatus();
             netController = new NetworkController(status);
+            updateStatusText();
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -109,6 +115,7 @@ namespace testapp
         private void EStopButton_Click(object sender, RoutedEventArgs e)
         {
             netController.eStop();
+            updateStatusText();
         }
 
         private void DrawButton_Click(object sender, RoutedEventArgs e)
@@ -128,6 +135,7 @@ namespace testapp
                 netController.retract();
                 netController.updateMachineStatus();
             }
+            updateStatusText();
         }
 
         private void FireButton_Click(object sender, RoutedEventArgs e)
@@ -138,11 +146,36 @@ namespace testapp
                 netController.fire();
                 netController.updateMachineStatus();
             }
+            if (status.getCurrentState() == MachineStatus.States.IDLE || status.getCurrentState() == MachineStatus.States.ARMED)
+            {
+                netController.center();
+            }
+            updateStatusText();
+        }
+
+        private void CenterButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (status.getCurrentState() == MachineStatus.States.IDLE || status.getCurrentState() == MachineStatus.States.ARMED)
+            {
+                netController.center();
+            }
+            updateStatusText();
         }
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
+            ClearTarget();
+            updateStatusText();
+        }
 
+        private void ClearTarget()
+        {
+            if (canvas != null && target != NO_TARGET)
+            {
+                canvas.Children.Remove(targetMarker);
+                canvas.Children.Remove(targetMarker2);
+                target = NO_TARGET;
+            }
         }
 
         private void SetButton_Click(object sender, RoutedEventArgs e)
@@ -150,22 +183,53 @@ namespace testapp
             Point scaledPoint = GetScaledPosition(target, canvasWidth, canvasHeight);
             int x = (int) scaledPoint.X;
             int y = (int) scaledPoint.Y;
-            //Console.WriteLine( "X: " + x);
-            //Console.WriteLine( "Y: " + y);
-            // netController.aimX((int)scaledPoint.X);
-            Console.WriteLine(x);
-            Console.WriteLine(y);
             netController.aimY(y);
             netController.aimX(x);
+            updateStatusText();
         }
 
         private void LiveFeed_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Image canvas = (Image) sender;
-            canvasWidth = canvas.ActualWidth;
-            canvasHeight = canvas.ActualHeight;
-            Point pixelClicked = e.GetPosition(canvas);
+            Image image = (Image) sender;
+            canvasWidth = image.ActualWidth;
+            canvasHeight = image.ActualHeight;
+            Point pixelClicked = e.GetPosition(image);
+            Canvas canvas = (Canvas)image.Parent;
+            if (this.canvas == null)
+            {
+                this.canvas = canvas;
+            }
+            if (target != NO_TARGET)
+            {
+                canvas.Children.Remove(targetMarker);
+                canvas.Children.Remove(targetMarker2);
+            }
             target = pixelClicked;
+
+            targetMarker = new Ellipse();
+            targetMarker.Height = 30;
+            targetMarker.Width = 30;
+            targetMarker.StrokeThickness = 3;
+            targetMarker.Stroke = Brushes.Red;
+            canvas.Children.Add(targetMarker);
+            Canvas.SetLeft(targetMarker, target.X - 15);
+            Canvas.SetTop(targetMarker, target.Y - 15);
+
+            targetMarker2 = new Ellipse();
+            targetMarker2.Height = 6;
+            targetMarker2.Width = 6;
+            targetMarker2.StrokeThickness = 3;
+            targetMarker2.Stroke = Brushes.Red;
+            canvas.Children.Add(targetMarker2);
+            Canvas.SetLeft(targetMarker2, target.X - 3);
+            Canvas.SetTop(targetMarker2, target.Y - 3);
+
+            Point scaledPoint = GetScaledPosition(target, canvasWidth, canvasHeight);
+            int x = (int)scaledPoint.X;
+            int y = (int)scaledPoint.Y;
+            Console.WriteLine("X: " + x);
+            Console.WriteLine("Y: " + y);
+            updateStatusText();
         }
 
         private Point GetScaledPosition(Point pixel, double width, double height)
@@ -175,6 +239,32 @@ namespace testapp
             double newX = -1 * ((pixel.X * xScaleFactor) - 4096);
             double newY = (pixel.Y * yScaleFactor);
             return new Point(newX, newY);
+        }
+
+        private void updateStatusText()
+        {
+            netController.updateMachineStatus();
+            String statusText = "Current Frame State: " + status.getCurrentState().ToString() + "\n";
+            statusText += "Front Optic Sensor: ";
+            if (status.getFOptic())
+            {
+                statusText += "Arrow Present\n";
+            }
+            else
+            {
+                statusText += "No Arrow\n";
+            }
+            statusText += "Rear Optic Sensor: ";
+            if(status.getROptic())
+            {
+                statusText += "Arrow Present\n";
+            }
+            else
+            {
+                statusText += "No Arrow\n";
+            }
+
+            StatusText.Text = statusText;
         }
     }
 

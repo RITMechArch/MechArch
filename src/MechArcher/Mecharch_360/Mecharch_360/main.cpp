@@ -2,6 +2,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <string>
 #include "Gamepad.h"
 #include "SerialClass.h"
 
@@ -15,7 +16,13 @@ int main() {
 
 	Gamepad * player1;
 
-	Serial arduino("COM5");
+	char comport [5];
+
+	ZeroMemory(comport, sizeof(comport));
+
+	cin >> comport;
+
+	Serial arduino(comport);
 
 	player1 = new Gamepad(1);
 

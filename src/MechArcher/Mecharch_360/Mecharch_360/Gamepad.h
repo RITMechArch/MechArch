@@ -60,11 +60,12 @@ class Gamepad {
 
 	XINPUT_STATE m_State;   // Current gamepad state
 	int m_iGamepadIndex;    // Gamepad index (eg. 1,2,3,4)
+
 	// When abs(analog value) < deadzone, 0 is returned
-	short LXDeadzone = 4096;
-	short LYDeadzone = 4096;
-	short RXDeadzone = 4096;
-	short RYDeadzone = 4096;
+	short LXDeadzone = 6000;
+	short LYDeadzone = 6000;
+	short RXDeadzone = 6000;
+	short RYDeadzone = 6000;
 
 	// Triggers are treated digitally.  Deadzone is where they switch.
 	BYTE LTDeadzone = 128;
@@ -72,13 +73,6 @@ class Gamepad {
 
 	// Maximum absolute value of raw analog stick data
 	const int stickMax = 1 << 15;
-
-	// Stick values are mapped so that 1 is next to the deadzone
-	// and the Scale value is at the extreme
-	int LXScale = 256;
-	int LYScale = 256;
-	int RXScale = 256;
-	int RYScale = 256;
 
 	// Returns the sign of the number, -1 for negative, 0 for 0, 1 for positive
 	int Signum(int);
@@ -103,6 +97,13 @@ public:
 	int	LeftStick_Y();
 	int RightStick_X();
 	int RightStick_Y();
+
+	// Stick values are mapped so that 1 is next to the deadzone
+	// and the Scale value is at the extreme
+	int LXScale = 256;
+	int LYScale = 256;
+	int RXScale = 256;
+	int RYScale = 256;
 
 	// Trigger functions
 

@@ -1,4 +1,3 @@
-
 #include "Gamepad.h"
 
 #pragma comment(lib, "Xinput9_1_0.lib")
@@ -155,11 +154,11 @@ bool Gamepad::LeftTrigger() {
 
 	BYTE raw = m_State.Gamepad.bLeftTrigger;
 
-	if (raw <= LTDeadzone) {
-		return false;
+	if (raw > LTDeadzone) {
+		return true;
 	}
 	else {
-		return true;
+		return false;
 	}
 
 }
@@ -168,12 +167,13 @@ bool Gamepad::RightTrigger() {
 
 	BYTE raw = m_State.Gamepad.bRightTrigger;
 
-	if (raw <= RTDeadzone) {
-		return false;
-	}
-	else {
+	if (raw > RTDeadzone) {
 		return true;
 	}
+	else {
+		return false;
+	}
+	
 
 }
 
@@ -206,4 +206,20 @@ bool Gamepad::GetButtonPressed(int iButton) {
 
 	return bGamepad_ButtonsDown[iButton];
 
+}
+
+void Gamepad::SetLXScale(int in) {
+	LXScale = in;
+}
+
+void Gamepad::SetLYScale(int in) {
+	LYScale = in;
+}
+
+void Gamepad::SetRXScale(int in) {
+	RXScale = in;
+}
+
+void Gamepad::SetRYScale(int in) {
+	RYScale = in;
 }

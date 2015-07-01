@@ -1,10 +1,3 @@
-/*
-* File:   Gamepad.h
-* Author: Alex
-*
-* Created on June 28, 2015, 1:20 PM
-*/
-
 #ifndef GAMEPAD_H
 #define	GAMEPAD_H
 
@@ -67,6 +60,13 @@ class Gamepad {
 	short RXDeadzone = 6000;
 	short RYDeadzone = 6000;
 
+	// Stick values are mapped so that 1 is next to the deadzone
+	// and the Scale value is at the extreme
+	int LXScale = 255;
+	int LYScale = 255;
+	int RXScale = 255;
+	int RYScale = 255;
+
 	// Triggers are treated digitally.  Deadzone is where they switch.
 	BYTE LTDeadzone = 128;
 	BYTE RTDeadzone = 128;
@@ -98,12 +98,10 @@ public:
 	int RightStick_X();
 	int RightStick_Y();
 
-	// Stick values are mapped so that 1 is next to the deadzone
-	// and the Scale value is at the extreme
-	int LXScale = 256;
-	int LYScale = 256;
-	int RXScale = 256;
-	int RYScale = 256;
+	void SetLXScale(int);
+	void SetLYScale(int);
+	void SetRXScale(int);
+	void SetRYScale(int);
 
 	// Trigger functions
 

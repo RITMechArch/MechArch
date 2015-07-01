@@ -1,10 +1,3 @@
-/*
-* File:   SerialClass.h
-* Author: Alex
-*
-* Created on June 24, 2015, 10:22 AM
-*/
-
 #ifndef SERIALCLASS_H_INCLUDED
 #define SERIALCLASS_H_INCLUDED
 

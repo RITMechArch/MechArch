@@ -17,41 +17,35 @@ WheelmountYoffset = 1.75;
 WheelmountAngle = -(90-76);
 MountholeR = 0.07;    //#6-32 clearance hole;  Will be countersunk
 
-MotormountWidth = 3;
-MotormountLength = 1.875;
+MotormountWidth = 3.25;
+MotormountLength = 2.125;
 MotormountYoffset = 4;
-
-
 
 $fn =50;
 
-difference()
+square([PlateX,PlateY]);
+
+//Castor mounting holes
+translate([CastorXoffset,CastorYoffset]) circle(r=CastorholeR);
+translate([CastorXoffset,CastorYoffset+CastorLength]) circle(r=CastorholeR);
+translate([CastorXoffset+CastorWidth,CastorYoffset]) circle(r=CastorholeR);
+translate([CastorXoffset+CastorWidth,CastorYoffset+CastorLength]) circle(r=CastorholeR);
+
+
+translate([WheelmountXoffset,WheelmountYoffset]) rotate(WheelmountAngle)
 {
-	cube([PlateX,PlateY,PlateThickness]);
+    //Wheel mounting holes
+    circle(r=MountholeR);
+    translate([WheelmountWidth,0]) circle(r=MountholeR);
+    translate([0,WheelmountLength]) circle(r=MountholeR);
+    translate([WheelmountWidth,WheelmountLength]) circle(r=MountholeR);
 
-	//Castor mounting holes
-	translate([CastorXoffset,CastorYoffset,-.1]) cylinder(r=CastorholeR, h=PlateThickness+.2);
-	translate([CastorXoffset,CastorYoffset+CastorLength,-.1]) cylinder(r=CastorholeR, h=PlateThickness+.2);
-	translate([CastorXoffset+CastorWidth,CastorYoffset,-.1]) cylinder(r=CastorholeR, h=PlateThickness+.2);
-	translate([CastorXoffset+CastorWidth,CastorYoffset+CastorLength,-.1]) cylinder(r=CastorholeR, h=PlateThickness+.2);
-
-	
-	translate([WheelmountXoffset,WheelmountYoffset,-.1]) rotate([0,0,WheelmountAngle])
-	union()
-	{
-		//Wheel mounting holes
-		cylinder(r=MountholeR, h=PlateThickness+.2);
-		translate([WheelmountWidth,0,0]) cylinder(r=MountholeR, h=PlateThickness+.2);
-		translate([0,WheelmountLength,0]) cylinder(r=MountholeR, h=PlateThickness+.2);
-		translate([WheelmountWidth,WheelmountLength,0]) cylinder(r=MountholeR, h=PlateThickness+.2);
-
-		//Motor mounting holes
-		translate([0,MotormountYoffset,0]) union()
-		{
-			translate([WheelmountWidth/2-MotormountWidth/2,0,0]) cylinder(r=MountholeR, h=PlateThickness+.2);
-			translate([WheelmountWidth/2+MotormountWidth/2,0,0]) cylinder(r=MountholeR, h=PlateThickness+.2);
-			translate([WheelmountWidth/2-MotormountWidth/2,MotormountLength,0]) cylinder(r=MountholeR, h=PlateThickness+.2);
-			translate([WheelmountWidth/2+MotormountWidth/2,MotormountLength,0]) cylinder(r=MountholeR, h=PlateThickness+.2);
-		}
-	}
+    //Motor mounting holes
+    translate([0,MotormountYoffset])
+    {
+        translate([WheelmountWidth/2-MotormountWidth/2,0]) circle(r=MountholeR);
+        translate([WheelmountWidth/2+MotormountWidth/2,0]) circle(r=MountholeR);
+        translate([WheelmountWidth/2-MotormountWidth/2,MotormountLength]) circle(r=MountholeR);
+        translate([WheelmountWidth/2+MotormountWidth/2,MotormountLength]) circle(r=MountholeR);
+    }
 }

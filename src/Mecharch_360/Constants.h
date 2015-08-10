@@ -1,0 +1,11 @@
+#define STATE_IDLE 1
+#define STATE_ARMED 2
+#define STATE_AIMING 3
+#define STATE_DRAWING 4
+#define STATE_DRAWN 5
+#define STATE_RETRACTING 6
+#define STATE_FIRING 7
+#define STATE_FIRED 8
+#define STATE_HALT 9
+#define STATE_AIMING_RELATIVE 30
+#define STATE_DEBUG 255

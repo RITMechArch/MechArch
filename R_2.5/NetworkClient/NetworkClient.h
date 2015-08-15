@@ -1,16 +1,17 @@
 #ifndef NETWORK_CLIENT_H_
 #define NETWORK_CLIENT_H_
 
+#include <iostream>
 #include <netinet/in.h>
 #include <sys/socket.h>
 
 class NetworkClient {
     public:
         NetworkClient();
-        void connectToServer( const char * const hostname, const int port );
+        void connectToServer( std::string hostname, const int port );
         void closeConnection();
-        char *receiveMessage();
-        void sendMessage( char *msg );
+        std::string receiveMessage();
+        void sendMessage( std::string msg );
     private:
         int _sockfd;
         struct sockaddr_in _destAddr;

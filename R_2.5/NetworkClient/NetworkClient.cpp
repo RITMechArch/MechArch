@@ -1,4 +1,3 @@
-#include <iostream>
 #include <netdb.h>
 #include <string.h>
 #include <unistd.h>
@@ -12,11 +11,11 @@ NetworkClient::NetworkClient()
 {
 }
 
-void NetworkClient::connectToServer( const char* const hostname, const int port )
+void NetworkClient::connectToServer( std::string hostname, const int port )
 {
     _sockfd = socket( AF_INET, SOCK_STREAM, 0 );
 
-    struct hostent * destHostent = gethostbyname( hostname );
+    struct hostent * destHostent = gethostbyname( hostname.c_str() );
     if ( destHostent != NULL )
     {
         memset( &_destAddr, 0, sizeof(_destAddr) );
@@ -44,7 +43,7 @@ void NetworkClient::closeConnection()
     }
 }
 
-char* NetworkClient::receiveMessage()
+std::string NetworkClient::receiveMessage()
 {
     if ( _hasConn )
     {
@@ -56,29 +55,26 @@ char* NetworkClient::receiveMessage()
             std::cerr << "There was a problem receiving a message from the server." << std::endl;
         }
     }
-    char* bufCopy = new char[_bufSize];
-    strcpy( bufCopy, _buffer );
-    return bufCopy;
+    char bufCopy[_bufSize];
+    strcpy(bufCopy, _buffer);
+    return std::string(bufCopy);
 }
 
-void NetworkClient::sendMessage( char *msg )
+void NetworkClient::sendMessage( std::string msg )
 {
-    if ( send( _sockfd, msg, strlen(msg)+1, 0 ) < 0 )
+    if ( send( _sockfd, msg.c_str(), msg.length(), 0 ) < 0 )
     {
         // TODO error
         std::cerr << "There was a problem receiving a message from the server." << std::endl;
     }
 }
 
+/*
 int main( int argc, char** argv )
 {
     NetworkClient client = NetworkClient();
     client.connectToServer( "127.0.0.1", 2400 );
     client.sendMessage( "test message" );
-    
-    char * msg = client.receiveMessage();
-    std::cout << msg << std::endl;
-    delete msg;
-    
+    std::cout << client.receiveMessage() << std::endl;
     client.closeConnection();
-}
+} */

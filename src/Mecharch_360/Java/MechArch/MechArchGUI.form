@@ -70,11 +70,13 @@
                                   <Component id="drawMinLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="drawingBar" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="drawLabel" min="-2" max="-2" attributes="0"/>
-                                          <Component id="drawPosLabel" min="-2" max="-2" attributes="0"/>
+                                          <Component id="drawPosLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jScrollPane1" min="-2" pref="301" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -149,7 +151,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="76" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
                               <Component id="fireButton" alignment="0" min="-2" pref="255" max="-2" attributes="0"/>
@@ -205,9 +207,9 @@
                               <Component id="currentDisplayLabel" min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="drawLinacLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="yLinacLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="drawLinacLabel" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="drawLinacCurrentBar" min="-2" max="-2" attributes="0"/>
@@ -275,6 +277,7 @@
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="yAxisBar" min="-2" max="-2" attributes="0"/>
                                               <Component id="drawingBar" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jScrollPane1" alignment="1" min="-2" pref="228" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -293,7 +296,7 @@
                               <Component id="yPosLabel" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace pref="16" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="yMinLabel" min="-2" max="-2" attributes="0"/>
                           <Component id="drawMinLabel" min="-2" max="-2" attributes="0"/>
@@ -352,9 +355,6 @@
           <Dimension value="[256, 14]"/>
         </Property>
       </Properties>
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
-      </AccessibilityProperties>
     </Component>
     <Component class="javax.swing.JLabel" name="xMinLabel">
       <Properties>
@@ -380,9 +380,6 @@
           <Dimension value="[14, 256]"/>
         </Property>
       </Properties>
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
-      </AccessibilityProperties>
     </Component>
     <Component class="javax.swing.JLabel" name="yMinLabel">
       <Properties>
@@ -408,9 +405,6 @@
           <Dimension value="[14, 256]"/>
         </Property>
       </Properties>
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleDescription" type="java.lang.String" value=""/>
-      </AccessibilityProperties>
     </Component>
     <Component class="javax.swing.JLabel" name="drawMinLabel">
       <Properties>
@@ -644,5 +638,20 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="debugCheckActionPerformed"/>
       </Events>
     </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="consoleArea">
+          <Properties>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>

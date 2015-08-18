@@ -9,28 +9,50 @@ public class MechArchState {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        int portNumber = 2222;
-        System.out.println("Listening on port "+ portNumber + "...");
-        try (
-            ServerSocket serverSocket = new ServerSocket(portNumber);
-            Socket clientSocket = serverSocket.accept();
-            PrintWriter out = 
-                    new PrintWriter(clientSocket.getOutputStream(), true);
-            BufferedReader in = 
-                    new BufferedReader(
-                    new InputStreamReader(clientSocket.getInputStream()));
-        ) {
-            System.out.println("Connection Established.");
-            while(true) {
-                if (in.ready()) {
-                    System.out.println(in.readLine());
-                }
-            }
-            
-        } catch (IOException e) {
-            
-            
+        
+        
+        final int hostPortNo = 2222;
+        final int arduinoPortNo = 2300;
+        final String arduinoIP = "192.168.1.177";
+        
+        ServerSocket serverSocket = null;
+        Socket clientSocket = null;
+        
+        MechanicalArcher machine = new MechanicalArcher(arduinoIP, arduinoPortNo);
+        machine.start();
+        System.out.println("Opening server on port 2222...");
+        try {
+            serverSocket = new ServerSocket(hostPortNo);
+        } catch (IOException ex) {
+            System.out.println(ex);
+            machine.Exit();
+            System.exit(1);
         }
+        System.out.println("Server open. Listening for clients...");
+        while(!machine.terminate) {
+            try {
+                clientSocket = null;
+                clientSocket = serverSocket.accept();
+            } catch(IOException ex) {
+                System.out.println(ex);
+            }
+
+            if (clientSocket != null) {
+                machine.CreateClient(clientSocket);
+            } else {
+                System.out.println("Error: Failed to create client socket!");
+                machine.Exit();
+                System.exit(1);
+            }
+        }
+        System.out.println("State machine has ended. Tidying up resources...");
+        try {
+            //machine.join();
+            serverSocket.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        System.out.println("Exiting...");
     }
     
 }

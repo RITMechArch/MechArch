@@ -9,24 +9,38 @@ package MechArch;
  *
  * @author Alex
  */
-public class Updater implements Runnable {
+public class Updater extends Thread {
     
     private MechArchGUI MechArch;
-    private int delay;
+    private int time;
     
-    public Updater(MechArchGUI gui, int cps) {
+    public Updater(MechArchGUI gui) {
     
+        int cps = 20;
         MechArch = gui;
-        delay = 1000/cps;
+        time = 1000/cps;
+
     }
     
     public void run() {
-    
+        
         while(!MechArch.terminateThread) {
+            
+            long lastTime = System.currentTimeMillis();
+            
             MechArch.Update();
+            
+            long delay = time - (System.currentTimeMillis() - lastTime);
+            
+            if(delay < 0) {
+                delay = 0;
+            }
+            
             try {
                 Thread.sleep(delay);
-            } catch (InterruptedException ex) {}
+            } catch (InterruptedException ex) {
+                System.out.println(ex);
+            }
         
         }
     }

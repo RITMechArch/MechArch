@@ -1,7 +1,8 @@
-package MechArch;
+package mecharch360.GUI;
 
 import java.io.*;
 import java.net.*;
+import mecharch360.common.*;
 
 public class MechArchGUI extends javax.swing.JFrame {
 
@@ -68,7 +69,6 @@ public class MechArchGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mechanical Archer GUI");
-        setPreferredSize(new java.awt.Dimension(1024, 768));
         setSize(new java.awt.Dimension(1024, 768));
 
         connectStateButton.setText("Connect to State Machine");
@@ -436,13 +436,13 @@ public class MechArchGUI extends javax.swing.JFrame {
                             .addComponent(yMinLabel)
                             .addComponent(drawMinLabel)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(eStopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(debugCheck)
                                     .addComponent(modeLabel))
@@ -468,39 +468,34 @@ public class MechArchGUI extends javax.swing.JFrame {
 
     private void connectArduinoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectArduinoButtonActionPerformed
         // Send command to the state machine telling to connect to the arduino
-        command = command_connect_arduino;
+        command = Command.connect_arduino;
     }//GEN-LAST:event_connectArduinoButtonActionPerformed
 
     private void fireButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fireButtonActionPerformed
         // Send FIRE command to the state machine
-        command = command_fire;
+        command = Command.fire;
     }//GEN-LAST:event_fireButtonActionPerformed
 
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
         // Send DRAW command to the state machine
-        command = command_draw;
+        command = Command.draw;
     }//GEN-LAST:event_drawButtonActionPerformed
 
     private void retractButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retractButtonActionPerformed
         // send RETRACT command to the state machine
-        command = command_retract;
+        command = Command.retract;
     }//GEN-LAST:event_retractButtonActionPerformed
 
     private void eStopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eStopButtonActionPerformed
         // send ESTOP command to the state machine
-        command = command_estop;
+        command = Command.estop;
     }//GEN-LAST:event_eStopButtonActionPerformed
 
     private void endStateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endStateButtonActionPerformed
         // Close the state machine, tidy up resources, and exit;
         if (connected) {
-            stateout.printf("%d\n", command_exit);
+            stateout.println(Command.exit);
             stateout.flush();
-            DisconnectFromStateMachine();
-            try{
-                Thread.sleep(50);
-            } catch (InterruptedException ex) {}
-            ConnectToStateMachine();
             DisconnectFromStateMachine();
         }
         System.exit(0);
@@ -548,7 +543,7 @@ public class MechArchGUI extends javax.swing.JFrame {
         
         stateout.printf("%d\n",command);
         stateout.flush();
-        command = command_no_action;
+        command = Command.no_action;
         
         try{
             if(statein.ready()) {
@@ -607,10 +602,6 @@ public class MechArchGUI extends javax.swing.JFrame {
                 }
             }
             
-            
-            
-            
-            
         } catch (IOException ex) {
             consoleArea.append(ex + "\n");
         }
@@ -626,7 +617,6 @@ public class MechArchGUI extends javax.swing.JFrame {
         
         if(whiteSpace != -1) {
             output = Integer.parseInt(s.substring(0, whiteSpace));
-            s = s.substring(whiteSpace+1);
         } else if (newLine != -1) {
             output = Integer.parseInt(s.substring(0, newLine-1));
         } else {
@@ -640,7 +630,6 @@ public class MechArchGUI extends javax.swing.JFrame {
         
         String output;
         
-        int newLine = s.indexOf("\n");
         int whiteSpace = s.indexOf(" ");
         
         if(whiteSpace != -1) {
@@ -693,17 +682,6 @@ public class MechArchGUI extends javax.swing.JFrame {
     // Thread variables
     
     public boolean terminateThread;
-    
-    // GUI command constants
-    
-    static final short command_no_action = 0;
-    static final short command_connect_arduino = 1;
-    static final short command_disconnect_arduino = 2;
-    static final short command_exit = 3;
-    static final short command_draw = 4;
-    static final short command_retract = 5;
-    static final short command_fire = 6;
-    static final short command_estop = 7;
     
     // Network variables
     

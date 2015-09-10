@@ -1,21 +1,14 @@
-package mecharchstate;
+package mecharch360.statemachine;
 
 import java.io.*;
 import java.net.*;
+import mecharch360.common.*;
 
 public class MechanicalArcher extends Thread {
  
     // Feedback variables from arduino
-    private short state;
-    private short draw_pos;
-    private short aim_x_pos;
-    private short aim_y_pos;
-    private byte f_optic;
-    private byte r_optic;
-    private short aim_y_cs;
-    private short aim_x_r_cs;
-    private short aim_x_l_cs;
-    private short draw_cs;
+    
+    private InternalState state = new InternalState();
     
     // Output variables to arduino
     private short state_out;
@@ -28,6 +21,10 @@ public class MechanicalArcher extends Thread {
     private String hostName;
     private int arduinoPortNo;
     public boolean terminate = false;
+    private int hostPortNo = 2222;
+    public boolean connected = false;
+    private long lastHeartBeat;
+    private ServerListener host;
     private int time;
     
     // Network Variable
@@ -49,19 +46,19 @@ public class MechanicalArcher extends Thread {
         hostName = host;
         arduinoPortNo = port;
         
-        draw_pos = 3500;
-        aim_x_pos = 20;
-        aim_y_pos = 1000;
-        f_optic = 1;
-        r_optic = 0;
-        aim_y_cs = 20;
-        aim_x_r_cs = 15;
-        aim_x_l_cs = 10;
-        draw_cs = 25;
+        state.draw_pos = 3500;
+        state.aim_x_pos = 20;
+        state.aim_y_pos = 1000;
+        state.f_optic = 1;
+        state.r_optic = 0;
+        state.aim_y_cs = 20;
+        state.aim_x_r_cs = 15;
+        state.aim_x_l_cs = 10;
+        state.draw_cs = 25;
     
     }
     
-    public void CreateClient(Socket s) {
+    private void CreateClient(Socket s) {
         
         gui = s;
         try {
@@ -71,6 +68,23 @@ public class MechanicalArcher extends Thread {
         } catch (IOException ex) {
             System.out.println(ex);
         }
+    }
+    
+    private void DisconnectClient() {
+        
+        try {
+            if(gui != null && guiOut != null && guiIn != null) {
+                guiOut.close();
+                guiIn.close();
+                gui.close();
+                gui = null;
+                guiIn = null;
+                guiOut = null;
+            }
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        
     }
     
     private void ConnectToArduino() {
@@ -111,22 +125,23 @@ public class MechanicalArcher extends Thread {
         try {
             if(guiIn != null && guiIn.ready()) {
                 // Recieve command and deal with it
+                lastHeartBeat = System.currentTimeMillis();
                 String input = guiIn.readLine();
-                //System.out.println(input);
-                if(input.startsWith(String.valueOf(command_exit))) {
+
+                if(input.startsWith(String.valueOf(Command.exit))) {
                     Exit();
                 }
                 
                 // Return status of machine to the GUI
-                guiOut.print(draw_pos-- + " " +
-                            aim_x_pos-- + " " +
-                            aim_y_pos++ + " " +
-                            f_optic + " " +
-                            r_optic + " " +
-                            aim_y_cs + " " +
-                            aim_x_r_cs + " " +
-                            aim_x_l_cs + " " +
-                            draw_cs +"\n");
+                guiOut.print(state.draw_pos-- + " " +
+                            state.aim_x_pos-- + " " +
+                            state.aim_y_pos++ + " " +
+                            state.f_optic + " " +
+                            state.r_optic + " " +
+                            state.aim_y_cs + " " +
+                            state.aim_x_r_cs + " " +
+                            state.aim_x_l_cs + " " +
+                            state.draw_cs +"\n");
                 guiOut.flush();
             }
         } catch (IOException ex) {
@@ -136,12 +151,32 @@ public class MechanicalArcher extends Thread {
     }
     
     public void run() {
+        host = new ServerListener(hostPortNo);
+        host.start();
         
         while (!terminate) {
             // Update the machine's state
             long lastTime = System.currentTimeMillis();
             
+            if (lastTime - lastHeartBeat > 200 && connected) {
+                DisconnectClient();
+                connected = false;
+            }
+            
             Update();
+            
+            if(connected) {}
+            else {
+                if(host.hasClient) {
+                    lastHeartBeat = System.currentTimeMillis();
+                    CreateClient(host.client);
+                    host.hasClient = false;
+                    host.needClient = false;
+                    connected = true;
+                } else {
+                    host.needClient = true;
+                }
+            }
             
             long delay = time - (System.currentTimeMillis() - lastTime);
 
@@ -156,30 +191,14 @@ public class MechanicalArcher extends Thread {
                 System.out.println(ex);
             }
         }
+        host.terminate = true;
+        try {
+            host.join();
+        } catch (InterruptedException ex) {
+            System.out.println(ex);
+        }
+        DisconnectClient();
+        
     }
     
-    // GUI Command Constants
-    
-    static final short command_no_action = 0;
-    static final short command_connect_arduino = 1;
-    static final short command_disconnect_arduino = 2;
-    static final short command_exit = 3;
-    static final short command_draw = 4;
-    static final short command_retract = 5;
-    static final short command_fire = 6;
-    static final short command_estop = 7;
-    
-    // Arduino State Constants
-    
-    static final short state_idle = 1;
-    static final short state_armed = 2;
-    static final short state_aiming = 3;
-    static final short state_drawing = 4;
-    static final short state_drawn = 5;
-    static final short state_retracting = 6;
-    static final short state_firing = 7;
-    static final short state_fired = 8;
-    static final short state_halt = 9;
-    static final short state_aiming_relative = 30;
-    static final short state_debug = 255;
 }

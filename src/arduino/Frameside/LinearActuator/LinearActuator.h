@@ -21,7 +21,7 @@ class LinearActuator
 
         long lastSampleTime;
 
-        const int backlash = 4;
+        const int backlash = 10;
         const int error    = 10;
         const int minPower = 128;
         const int maxPower = 255;

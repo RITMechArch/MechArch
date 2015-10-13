@@ -2,7 +2,7 @@
 #include "RotaryEncoderReader.h"
  
 GearMotor::GearMotor() {}
- 
+
 void GearMotor::init(int dirPin, int enablePin, int pinA, int pinB)
 {
     _dirPin = dirPin;
@@ -18,48 +18,50 @@ void GearMotor::init(int dirPin, int enablePin, int pinA, int pinB)
 
 void GearMotor::moveTo( int target )
 {
-    
     if (abs(target) > minMax) {
         // TODO: Report back an error
         return;
     }
-    
+
     position = reader.getPosition();
     if(target > position && abs(target - position) > error) 
     {
-        if(!direction) 
-        {
-            digitalWrite(_dirPin, HIGH);
-            direction = true;
-        }
-        analogWrite(_enablePin, 255-power);
-        isEnabled = true;
-    } 
-    else if (target < position && abs(target - position ) > error) 
-    {
-        if(direction) 
+        if(direction)
         {
             digitalWrite(_dirPin, LOW);
             direction = false;
         }
-        analogWrite(_enablePin, 255-power);
+        analogWrite(_enablePin, power);
         isEnabled = true;
-    } 
-    else if (isEnabled && abs(target - position) <= backlash) 
+    }
+    else if (target < position && abs(target - position ) > error) 
     {
-        analogWrite(_enablePin, 255);
+        if(!direction)
+        {
+            digitalWrite(_dirPin, HIGH);
+            direction = true;
+        }
+        analogWrite(_enablePin, power);
+        isEnabled = true;
+    }
+    else
+    {
+        analogWrite(_enablePin, 0);
         isEnabled = false;   
+    }
+
+    if (isEnabled && abs(target - position) <= backlash)
+    {
         movementComplete = true;
     }
-    
     if (isEnabled && abs(target - position) <= propDist) 
     {
-      power = calculatePower(abs(target - position) * 255 / propDist);
+        power = calculatePower(abs(target - position) * 255 / propDist);
     } 
     else if (isEnabled && abs(target - position) > propDist) 
     {
-      power = calculatePower(255);
-    }   
+       power = calculatePower(255);
+    }
 }
 
 long GearMotor::getPosition()

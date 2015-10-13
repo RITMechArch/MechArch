@@ -1,7 +1,8 @@
-package MechArch;
+package mecharch360.GUI;
 
 import java.io.*;
 import java.net.*;
+import mecharch360.common.*;
 
 public class MechArchGUI extends javax.swing.JFrame {
 
@@ -63,10 +64,11 @@ public class MechArchGUI extends javax.swing.JFrame {
         eStopButton = new javax.swing.JButton();
         modeLabel = new javax.swing.JLabel();
         debugCheck = new javax.swing.JCheckBox();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        consoleArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Mechanical Archer GUI");
-        setPreferredSize(new java.awt.Dimension(1024, 768));
         setSize(new java.awt.Dimension(1024, 768));
 
         connectStateButton.setText("Connect to State Machine");
@@ -223,6 +225,10 @@ public class MechArchGUI extends javax.swing.JFrame {
             }
         });
 
+        consoleArea.setColumns(20);
+        consoleArea.setRows(5);
+        jScrollPane1.setViewportView(consoleArea);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -259,10 +265,12 @@ public class MechArchGUI extends javax.swing.JFrame {
                                     .addComponent(drawMinLabel)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(drawingBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(drawLabel)
-                                            .addComponent(drawPosLabel)))))
+                                            .addComponent(drawPosLabel))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(xMinLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -313,7 +321,7 @@ public class MechArchGUI extends javax.swing.JFrame {
                                                         .addComponent(yLinacLabel)
                                                         .addGap(22, 22, 22)))
                                                 .addComponent(drawLinacLabel)))))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(fireButton, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -355,9 +363,9 @@ public class MechArchGUI extends javax.swing.JFrame {
                                 .addComponent(currentDisplayLabel)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(drawLinacLabel)
-                                            .addComponent(yLinacLabel))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(yLinacLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(drawLinacLabel))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(drawLinacCurrentBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -411,7 +419,8 @@ public class MechArchGUI extends javax.swing.JFrame {
                                                 .addComponent(rOpticDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(yAxisBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(drawingBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                .addComponent(drawingBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(100, 100, 100)
                                         .addComponent(drawLabel)
@@ -422,18 +431,18 @@ public class MechArchGUI extends javax.swing.JFrame {
                                 .addComponent(yLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(yPosLabel)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(yMinLabel)
                             .addComponent(drawMinLabel)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(eStopButton, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(drawButton, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(debugCheck)
                                     .addComponent(modeLabel))
@@ -444,10 +453,6 @@ public class MechArchGUI extends javax.swing.JFrame {
                         .addComponent(fireButton, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
-
-        xAxisBar.getAccessibleContext().setAccessibleDescription("");
-        yAxisBar.getAccessibleContext().setAccessibleDescription("");
-        drawingBar.getAccessibleContext().setAccessibleDescription("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -463,27 +468,34 @@ public class MechArchGUI extends javax.swing.JFrame {
 
     private void connectArduinoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_connectArduinoButtonActionPerformed
         // Send command to the state machine telling to connect to the arduino
+        command = Command.connect_arduino;
     }//GEN-LAST:event_connectArduinoButtonActionPerformed
 
     private void fireButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fireButtonActionPerformed
         // Send FIRE command to the state machine
+        command = Command.fire;
     }//GEN-LAST:event_fireButtonActionPerformed
 
     private void drawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawButtonActionPerformed
         // Send DRAW command to the state machine
+        command = Command.draw;
     }//GEN-LAST:event_drawButtonActionPerformed
 
     private void retractButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_retractButtonActionPerformed
-        // TODO add your handling code here:
+        // send RETRACT command to the state machine
+        command = Command.retract;
     }//GEN-LAST:event_retractButtonActionPerformed
 
     private void eStopButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eStopButtonActionPerformed
-        // TODO add your handling code here:
+        // send ESTOP command to the state machine
+        command = Command.estop;
     }//GEN-LAST:event_eStopButtonActionPerformed
 
     private void endStateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_endStateButtonActionPerformed
         // Close the state machine, tidy up resources, and exit;
         if (connected) {
+            stateout.println(Command.exit);
+            stateout.flush();
             DisconnectFromStateMachine();
         }
         System.exit(0);
@@ -495,31 +507,139 @@ public class MechArchGUI extends javax.swing.JFrame {
 
     private void ConnectToStateMachine() {
         try {
-            socket = new Socket("localhost", 2222);
-            out = new PrintWriter(socket.getOutputStream());
-            in = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
+            state = new Socket("localhost", 2222);
+            stateout = new PrintWriter(state.getOutputStream());
+            statein = new BufferedReader(
+                    new InputStreamReader(state.getInputStream()));
             connectStateButton.setText("Disconnect from State Machine");
             connected = true;
-            timedUpdater = new Updater(this, updatesPerSecond);
+            terminateThread = false;
+            timedUpdater = new Updater(this);
             new Thread(timedUpdater).start();
-        } catch (IOException ex) {}
+        } catch (IOException ex) {
+            consoleArea.append(ex + "\n");
+        }
     }
     
     private void DisconnectFromStateMachine() {
         try {
-                in.close();
-                out.close();
-                socket.close();
-                connectStateButton.setText("Connect to State Machine");
-                connected = false;
-            } catch (IOException ex) {}
+            terminateThread = true;
+            try{
+                timedUpdater.join();
+            } catch (InterruptedException ex) {
+                consoleArea.append(ex + "\n");
+            }
+            statein.close();
+            stateout.close();
+            state.close();
+            connectStateButton.setText("Connect to State Machine");
+            connected = false;
+        } catch (IOException ex) {
+            consoleArea.append(ex + "\n");
+        }
     }
     
     public void Update() {
         
+        stateout.printf("%d\n",command);
+        stateout.flush();
+        command = Command.no_action;
+        
+        try{
+            if(statein.ready()) {
+                String input = statein.readLine();
+                if (!input.equalsIgnoreCase("")) {
+                    // Populate drawing linac position information
+                    int number = ParseInt(input);
+                    input = TrimLeadingInt(input);
+                    drawingBar.setValue(number);
+                    drawPosLabel.setText(String.valueOf(number));
+                    
+                    // Populate X-Axis position information
+                    number = ParseInt(input);
+                    input = TrimLeadingInt(input);
+                    xAxisBar.setValue(number);
+                    xPosLabel.setText(String.valueOf(number));
+                    
+                    // Populate Y-Axis position information
+                    number = ParseInt(input);
+                    input = TrimLeadingInt(input);
+                    yAxisBar.setValue(number);
+                    yPosLabel.setText(String.valueOf(number));
+                    
+                    // Populate front optic information
+                    number = ParseInt(input);
+                    input = TrimLeadingInt(input);
+                    fOpticDisplay.setValue(number);
+                    
+                    // Populate rear optic information
+                    number = ParseInt(input);
+                    input = TrimLeadingInt(input);
+                    rOpticDisplay.setValue(number);
+                    
+                    // Populate Y-Axis aiming linac current information
+                    number = ParseInt(input);
+                    input = TrimLeadingInt(input);
+                    yLinacCurrentBar.setValue(number);
+                    yLinacCurrentLabel.setText(String.valueOf(number));
+                    
+                    // Populate right gear motor current information
+                    number = ParseInt(input);
+                    input = TrimLeadingInt(input);
+                    rMotorCurrentBar.setValue(number);
+                    rMotorCurrentLabel.setText(String.valueOf(number));
+                    
+                    // Populate left gear motor current information
+                    number = ParseInt(input);
+                    input = TrimLeadingInt(input);
+                    lMotorCurrentBar.setValue(number);
+                    lMotorCurrentLabel.setText(String.valueOf(number));
+                    
+                    // Populate left gear motor current information
+                    number = ParseInt(input);
+                    drawLinacCurrentBar.setValue(number);
+                    drawLinacCurrentLabel.setText(String.valueOf(number));
+                }
+            }
+            
+        } catch (IOException ex) {
+            consoleArea.append(ex + "\n");
+        }
         
         
+    }
+    
+    private int ParseInt(String s) {
+        int output;
+        
+        int newLine = s.indexOf("\n");
+        int whiteSpace = s.indexOf(" ");
+        
+        if(whiteSpace != -1) {
+            output = Integer.parseInt(s.substring(0, whiteSpace));
+        } else if (newLine != -1) {
+            output = Integer.parseInt(s.substring(0, newLine-1));
+        } else {
+            output = Integer.parseInt(s);
+        }
+        return output;
+        
+    }
+    
+    private String TrimLeadingInt(String s) {
+        
+        String output;
+        
+        int whiteSpace = s.indexOf(" ");
+        
+        if(whiteSpace != -1) {
+
+            output = s.substring(whiteSpace+1);
+        } else {
+            output = "";
+        }
+        
+        return output;
     }
     
     /**
@@ -559,23 +679,26 @@ public class MechArchGUI extends javax.swing.JFrame {
         
     }
     
-    public boolean terminateThread;
-    public int updatesPerSecond = 20;
+    // Thread variables
     
-    public boolean DRAW = false;
-    public boolean FIRE = false;
-    public boolean RETRACT = false;
-    public boolean ESTOP = false;
+    public boolean terminateThread;
+    
+    // Network variables
     
     private Updater timedUpdater;
     static private boolean connected = false;
-    static private Socket socket;
-    static private PrintWriter out;
-    static private BufferedReader in;
+    static private Socket state;
+    static private PrintWriter stateout;
+    static private BufferedReader statein;
+    
+    // Command tracking variables
+    
+    private short command;
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton connectArduinoButton;
     private javax.swing.JButton connectStateButton;
+    private javax.swing.JTextArea consoleArea;
     private javax.swing.JLabel currentDisplayLabel;
     private javax.swing.JCheckBox debugCheck;
     private javax.swing.JButton drawButton;
@@ -593,6 +716,7 @@ public class MechArchGUI extends javax.swing.JFrame {
     private javax.swing.JLabel fOpticLabel;
     private javax.swing.JLabel feedbackLabel;
     private javax.swing.JButton fireButton;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JProgressBar lMotorCurrentBar;
     private javax.swing.JLabel lMotorCurrentLabel;
     private javax.swing.JLabel lMotorLabel;
